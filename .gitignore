@@ -386,3 +386,7 @@ FodyWeavers.xsd
 /*.ico
 
 /MainWindow.xaml.cs.txt
+/.gitattributes
+/.gitignore
+/rigol_icon.ico
+/.gitignore

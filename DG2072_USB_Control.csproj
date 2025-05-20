@@ -24,4 +24,8 @@
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Docs\" />
+  </ItemGroup>
+
 </Project>

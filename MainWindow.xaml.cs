@@ -48,40 +48,14 @@ namespace DG2072_USB_Control
         private DispatcherTimer _offsetUpdateTimer;
         private DispatcherTimer _phaseUpdateTimer;
         private DispatcherTimer _primaryFrequencyUpdateTimer;
-        private DockPanel SymmetryDockPanel;
+        //private DockPanel SymmetryDockPanel;
 
         // private DispatcherTimer _dutyCycleUpdateTimer;
         private DockPanel DutyCycleDockPanel;
 
-        // Add this with the other timer declarations in MainWindow.xaml.cs:
-       // private DispatcherTimer _secondaryFrequencyUpdateTimer;
         private bool _frequencyModeActive = true; // Default to frequency mode
         private DockPanel PulsePeriodDockPanel;
         private DockPanel PhaseDockPanel;
-
-
-        private double frequencyRatio = 2.0; // Default frequency ratio (harmonic)
-
-        // pulse generator management
-        private PulseGen pulseGenerator;
-
-        // Dual Tone management
-        private DualToneGen dualToneGen;
-
-        // Ramp generator management
-        private RampGen rampGenerator;
-
-        //Square Generator management
-        private SquareGen squareGenerator;
-
-        //Sinusoid generator management
-        private SinGen sineGenerator;
-
-        // Noise generator management
-        private NoiseGen noiseGenerator;
-
-        // Arbitrary Waveform Generator Management
-        private ArbitraryWaveformGen arbitraryWaveformGen;
 
         public MainWindow()
         {
@@ -121,23 +95,10 @@ namespace DG2072_USB_Control
                 // update ramp generator with the new active channel
                 if (rampGenerator != null)
                     rampGenerator.ActiveChannel = activeChannel;
-                // Other component updates...
-
-                // update square generator with the new active channel
-                if (squareGenerator != null)
-                    squareGenerator.ActiveChannel = activeChannel;
-
-                // update sine generator with the new active channel
-                if (sineGenerator != null)
-                    sineGenerator.ActiveChannel = activeChannel;
 
                 // Update DC generator with the new active channel
                 if (dcGenerator != null)
                     dcGenerator.ActiveChannel = activeChannel;
-
-                //update noise generator with the new active channel
-                if (noiseGenerator != null)
-                    noiseGenerator.ActiveChannel = activeChannel;
 
                 // Update arbitrary waveform generator with the new active channel
                 if (arbitraryWaveformGen != null)
@@ -1558,9 +1519,6 @@ namespace DG2072_USB_Control
         }
 
 
-        // Modify the ChannelFrequencyTextBox_TextChanged method to update 
-        // dual tone center frequency when in Center/Offset mode
-
         private void ChannelFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!isConnected) return;
@@ -1693,17 +1651,7 @@ namespace DG2072_USB_Control
             _phaseUpdateTimer.Start();
         }
 
-        private void ChannelSymmetryTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (rampGenerator != null)
-                rampGenerator.OnSymmetryTextChanged(sender, e);
-        }
 
-        private void ChannelSymmetryTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (rampGenerator != null)
-                rampGenerator.OnSymmetryLostFocus(sender, e);
-        }
 
         private void ChannelApplyButton_Click(object sender, RoutedEventArgs e)
         {
@@ -1831,87 +1779,6 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region Pulse Parameter Handling
-
-        private void ChannelPulsePeriodTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulsePeriodTextChanged(sender, e);
-        }
-
-        private void ChannelPulsePeriodTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulsePeriodLostFocus(sender, e);
-        }
-
-        private void PulsePeriodUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulsePeriodUnitChanged(sender, e);
-        }
-
-        private void PulseRateModeToggle_Click(object sender, RoutedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseRateModeToggleClicked(sender, e);
-        }
-
-        private void ChannelPulseRiseTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseRiseTimeTextChanged(sender, e);
-        }
-
-        private void ChannelPulseRiseTimeTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseRiseTimeLostFocus(sender, e);
-        }
-
-        private void PulseRiseTimeUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseRiseTimeUnitChanged(sender, e);
-        }
-
-        private void ChannelPulseWidthTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseWidthTextChanged(sender, e);
-        }
-
-        private void ChannelPulseWidthTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseWidthLostFocus(sender, e);
-        }
-
-        private void PulseWidthUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseWidthUnitChanged(sender, e);
-        }
-
-        private void ChannelPulseFallTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseFallTimeTextChanged(sender, e);
-        }
-
-        private void ChannelPulseFallTimeTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseFallTimeLostFocus(sender, e);
-        }
-
-        private void PulseFallTimeUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseFallTimeUnitChanged(sender, e);
-        }
-
-        #endregion
 
         #region Unit Selection Handlers
 
@@ -2245,18 +2112,6 @@ namespace DG2072_USB_Control
             }
         }
 
-        private void ChannelDutyCycleTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (squareGenerator != null)
-                squareGenerator.OnDutyCycleTextChanged(sender, e);
-        }
-
-        private void ChannelDutyCycleTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (squareGenerator != null)
-                squareGenerator.OnDutyCycleLostFocus(sender, e);
-        }
-
         /// <summary>
         /// Updates UI elements based on the selected frequency/period mode
         /// </summary>
@@ -2496,147 +2351,6 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region DualTone Event Handlers
-
-        private void DualToneModeChanged(object sender, RoutedEventArgs e)
-        {
-            if (dualToneGen != null)
-                dualToneGen.OnDualToneModeChanged(sender, e);
-        }
-
-        private void SynchronizeFrequenciesCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
-        {
-            if (dualToneGen != null)
-                dualToneGen.OnSynchronizeFrequenciesCheckChanged(sender, e);
-        }
-
-        private void FrequencyRatioComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dualToneGen != null)
-                dualToneGen.OnFrequencyRatioSelectionChanged(sender, e);
-        }
-
-        private void SecondaryFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (dualToneGen != null)
-                dualToneGen.OnSecondaryFrequencyTextChanged(sender, e);
-        }
-
-        private void SecondaryFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (dualToneGen != null)
-                dualToneGen.OnSecondaryFrequencyLostFocus(sender, e);
-        }
-
-        private void SecondaryFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dualToneGen != null)
-                dualToneGen.OnSecondaryFrequencyUnitChanged(sender, e);
-        }
-
-        private void CenterFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (dualToneGen != null)
-                dualToneGen.OnCenterFrequencyTextChanged(sender, e);
-        }
-
-        private void CenterFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (dualToneGen != null)
-                dualToneGen.OnCenterFrequencyLostFocus(sender, e);
-        }
-
-        private void CenterFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dualToneGen != null)
-                dualToneGen.OnCenterFrequencyUnitChanged(sender, e);
-        }
-
-        private void OffsetFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (dualToneGen != null)
-                dualToneGen.OnOffsetFrequencyTextChanged(sender, e);
-        }
-
-        private void OffsetFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (dualToneGen != null)
-                dualToneGen.OnOffsetFrequencyLostFocus(sender, e);
-        }
-
-        private void OffsetFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dualToneGen != null)
-                dualToneGen.OnOffsetFrequencyUnitChanged(sender, e);
-        }
-
-
-        private void RefreshDualToneSettings(int channel)
-        {
-            if (dualToneGen != null)
-            {
-                dualToneGen.ActiveChannel = channel;
-                dualToneGen.RefreshDualToneSettings();
-            }
-        }
-
-        // This method delegates to the DualToneGen instance
-        private void ApplyDualToneParameters()
-        {
-            if (dualToneGen != null)
-                dualToneGen.ApplyDualToneParameters();
-        }
-
-        #endregion
-
-
-
-        #region Arbitrary Waveform Handlers
-
-        // Event handler for parameter text changes
-        private void ArbitraryParamTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (arbitraryWaveformGen != null)
-                arbitraryWaveformGen.OnParameterTextChanged(sender, e);
-        }
-
-        // Event handler for parameter text box lost focus
-        private void ArbitraryParamTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (arbitraryWaveformGen != null)
-                arbitraryWaveformGen.OnParameterLostFocus(sender, e);
-        }
-
-        // Event handler for when the arbitrary waveform category changes
-        private void ArbitraryWaveformCategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (arbitraryWaveformGen != null)
-                arbitraryWaveformGen.OnCategorySelectionChanged(sender, e);
-        }
-
-        // Update the arbitrary waveform info text when a waveform is selected
-        private void ArbitraryWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (arbitraryWaveformGen != null)
-                arbitraryWaveformGen.OnWaveformSelectionChanged(sender, e);
-        }
-
-        private void RefreshArbitraryWaveformSettings(int channel)
-        {
-            if (arbitraryWaveformGen != null)
-            {
-                arbitraryWaveformGen.ActiveChannel = channel;
-                arbitraryWaveformGen.RefreshParameters(); // Now uses the base class method
-            }
-        }
-
-        private void ApplyArbitraryWaveformButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (arbitraryWaveformGen != null)
-                arbitraryWaveformGen.ApplyParameters(); // Now uses the base class method
-        }
-
-        #endregion
 
     }
 }

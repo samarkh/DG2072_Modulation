@@ -58,16 +58,9 @@ namespace DG2072_USB_Control
         private bool _frequencyModeActive = true; // Default to frequency mode
         private DockPanel PulsePeriodDockPanel;
         private DockPanel PhaseDockPanel;
-        private ChannelHarmonicController harmonicController;
+
 
         private double frequencyRatio = 2.0; // Default frequency ratio (harmonic)
-
-        private DockPanel DCVoltageDockPanel;
-        
-
-        // Harmonics management
-        private HarmonicsManager _harmonicsManager;
-        private HarmonicsUIController _harmonicsUIController;
 
         // pulse generator management
         private PulseGen pulseGenerator;
@@ -83,9 +76,6 @@ namespace DG2072_USB_Control
 
         //Sinusoid generator management
         private SinGen sineGenerator;
-
-        //dc generator management
-        private DCGen dcGenerator;
 
         // Noise generator management
         private NoiseGen noiseGenerator;
@@ -2599,131 +2589,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region Harmonics Event Handlers
-        
-        private void AmplitudeModeChanged(object sender, RoutedEventArgs e)
-        {
-            // The event is defined in the XAML file to be handled by MainWindow
-            // Forward it to the HarmonicsUIController
-            if (_harmonicsUIController != null)
-            {
-                // Use reflection to call the method since it's private in HarmonicsUIController
-                typeof(HarmonicsUIController).GetMethod("AmplitudeModeChanged",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                    .Invoke(_harmonicsUIController, new object[] { sender, e });
-            }
-        }
 
-        private void HarmonicAmplitudeUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (_harmonicsUIController != null)
-            {
-                ComboBox comboBox = sender as ComboBox;
-                if (comboBox != null && int.TryParse(comboBox.Tag.ToString(), out int harmonicNumber))
-                {
-                    // Forward the event to the harmonics controller
-                    _harmonicsUIController.GetType().GetMethod("HarmonicAmplitudeUnitComboBox_SelectionChanged",
-                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                        ?.Invoke(_harmonicsUIController, new object[] { sender, e, harmonicNumber });
-                }
-            }
-        }
-
-        private void HarmonicCheckBox_Changed(object sender, RoutedEventArgs e)
-        {
-            if (_harmonicsUIController != null)
-            {
-                // Extract the harmonic number from the Tag property
-                CheckBox checkBox = sender as CheckBox;
-                if (checkBox != null && int.TryParse(checkBox.Tag.ToString(), out int harmonicNumber))
-                {
-                    // Use reflection to call the method
-                    typeof(HarmonicsUIController).GetMethod("HarmonicCheckBox_Changed",
-                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                        .Invoke(_harmonicsUIController, new object[] { sender, e, harmonicNumber });
-                }
-            }
-        }
-
-        private void HarmonicAmplitudeTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (_harmonicsUIController != null)
-            {
-                // Extract the harmonic number from the Tag property
-                TextBox textBox = sender as TextBox;
-                if (textBox != null && int.TryParse(textBox.Tag.ToString(), out int harmonicNumber))
-                {
-                    // Use reflection to call the method
-                    typeof(HarmonicsUIController).GetMethod("HarmonicAmplitudeTextBox_LostFocus",
-                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                        .Invoke(_harmonicsUIController, new object[] { sender, e, harmonicNumber });
-                }
-            }
-        }
-
-        private void HarmonicPhaseTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (_harmonicsUIController != null)
-            {
-                // Extract the harmonic number from the Tag property
-                TextBox textBox = sender as TextBox;
-                if (textBox != null && int.TryParse(textBox.Tag.ToString(), out int harmonicNumber))
-                {
-                    // Use reflection to call the method
-                    typeof(HarmonicsUIController).GetMethod("HarmonicPhaseTextBox_LostFocus",
-                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                        .Invoke(_harmonicsUIController, new object[] { sender, e, harmonicNumber });
-                }
-            }
-        }
-
-        private void RefreshHarmonicSettings()
-        {
-            if (_harmonicsUIController != null)
-            {
-                _harmonicsUIController.RefreshHarmonicSettings();
-            }
-        }
-
-        private void ResetHarmonicValues()
-        {
-            _harmonicsUIController?.ResetHarmonicValues();
-        }
-
-        private void SetHarmonicUIElementsState(bool enabled)
-        {
-            _harmonicsUIController?.SetHarmonicUIElementsState(enabled);
-        }
-
-        private void HarmonicsToggle_Click(object sender, RoutedEventArgs e)
-        {
-            if (!isConnected) return;
-
-            bool isEnabled = HarmonicsToggle.IsChecked == true;
-            HarmonicsToggle.Content = isEnabled ? "ENABLED" : "DISABLED";
-
-            try
-            {
-                if (isEnabled)
-                {
-                    // Enable harmonics on the device
-                    rigolDG2072.SetHarmonicState(activeChannel, true);
-                    LogMessage($"Harmonics enabled for Channel {activeChannel}");
-                }
-                else
-                {
-                    // Disable harmonics on the device
-                    rigolDG2072.SetHarmonicState(activeChannel, false);
-                    LogMessage($"Harmonics disabled for Channel {activeChannel}");
-                }
-            }
-            catch (Exception ex)
-            {
-                LogMessage($"Error toggling harmonics: {ex.Message}");
-            }
-        }
-
-        #endregion
 
         #region Arbitrary Waveform Handlers
 
@@ -2769,39 +2635,6 @@ namespace DG2072_USB_Control
             if (arbitraryWaveformGen != null)
                 arbitraryWaveformGen.ApplyParameters(); // Now uses the base class method
         }
-
-        #endregion
-
-        #region DC Mode Controls
-
-        // All DC mode-specific methods and handlers
-        // Add this method to handle DC voltage changes
-        private void DCVoltageTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (dcGenerator != null)
-                dcGenerator.OnDCVoltageTextChanged(sender, e);
-        }
-
-        private void DCVoltageTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (dcGenerator != null)
-                dcGenerator.OnDCVoltageLostFocus(sender, e);
-        }
-
-        private void DCVoltageUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dcGenerator != null)
-                dcGenerator.OnDCVoltageUnitChanged(sender, e);
-        }
-
-        private void DCImpedanceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dcGenerator != null)
-                dcGenerator.OnDCImpedanceChanged(sender, e);
-        }
-
-
-
 
         #endregion
 

@@ -8,10 +8,14 @@ namespace Modulation
     public class ModulationController
     {
         private readonly Action<string> _sendToRigol;
+        private readonly Action<string> _updateModulationFrequencyDisplay;
+        private readonly Action<string> _updateModulationDepthDisplay;
 
-        public ModulationController(Action<string> sendToRigol)
+        public ModulationController(Action<string> sendToRigol, Action<string> updateModulationFrequencyDisplay, Action<string> updateModulationDepthDisplay)
         {
             _sendToRigol = sendToRigol;
+            _updateModulationFrequencyDisplay = updateModulationFrequencyDisplay;
+            _updateModulationDepthDisplay = updateModulationDepthDisplay;
         }
 
         public void ApplyModulationSettings(string modulationType, string depth, string frequency, string freqUnit)
@@ -29,6 +33,21 @@ namespace Modulation
             _sendToRigol(cmdType);
             _sendToRigol(cmdDepth);
             _sendToRigol(cmdFreq);
+        }
+
+        public void OnModulationTypeChanged(double currentOutputFrequency, string unit)
+        {
+            // Convert frequency to match unit (Hz/kHz/MHz)
+            double displayFreq = currentOutputFrequency;
+            switch (unit)
+            {
+                case "kHz": displayFreq /= 1e3; break;
+                case "MHz": displayFreq /= 1e6; break;
+            }
+
+            // Format values and update modulation settings (via public properties, bindings, or call-backs)
+            _updateModulationFrequencyDisplay(UnitConversionUtility.FormatWithMinimumDecimals(displayFreq));
+            _updateModulationDepthDisplay("25.0");
         }
     }
 }

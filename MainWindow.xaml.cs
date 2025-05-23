@@ -81,8 +81,11 @@ namespace DG2072_USB_Control
             get => _carrierFrequency;
             set
             {
-                _carrierFrequency = UnitConversionUtility.FormatWithMinimumDecimals(double.Parse(ModulationDepthTextBox.Text));
-                OnPropertyChanged(nameof(CarrierFrequency));
+                if (double.TryParse(value, out double parsedValue))
+                {
+                    _carrierFrequency = UnitConversionUtility.FormatWithMinimumDecimals(parsedValue);
+                    OnPropertyChanged(nameof(CarrierFrequency));
+                }
             }
         }
 
@@ -95,10 +98,14 @@ namespace DG2072_USB_Control
             get => _modulationDepth;
             set
             {
-                _modulationDepth = UnitConversionUtility.FormatWithMinimumDecimals(double.Parse(ModulationDepthTextBox.Text));
-                OnPropertyChanged(nameof(ModulationDepth));
+                if (double.TryParse(value, out double parsedValue))
+                {
+                    _modulationDepth = UnitConversionUtility.FormatWithMinimumDecimals(parsedValue);
+                    OnPropertyChanged(nameof(ModulationDepth));
+                }
             }
         }
+
         private void ApplyModulationSettings()
         {
             string type = ModulationTypeComboBox.SelectedItem.ToString();
@@ -1896,6 +1903,21 @@ namespace DG2072_USB_Control
 
         #endregion
 
+        #region Modulation Event Handlers
+
+        private void ModulationTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!isConnected) return;
+
+            if (double.TryParse(ChannelFrequencyTextBox.Text, out double outputFreq))
+            {
+                string unit = ((ComboBoxItem)ModulationFrequencyUnitComboBox.SelectedItem)?.Content?.ToString() ?? "Hz";
+                modulationController.OnModulationTypeChanged(outputFreq, unit);
+            }
+        }
+
+        #endregion
+
 
         #region Unit Selection Handlers
 
@@ -1992,6 +2014,10 @@ namespace DG2072_USB_Control
             bool isHarmonic = (waveform == "HARMONIC");
             bool isDC = (waveform == "DC");
             bool isArbitraryWaveform = (waveform == "ARBITRARY WAVEFORMS");
+
+
+
+
 
             // Use the pulse generator to update pulse controls
             if (pulseGenerator != null)

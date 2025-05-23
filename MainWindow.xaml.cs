@@ -12,6 +12,7 @@ using DG2072_USB_Control.Modulation.AM;
 using DG2072_USB_Control.Modulation.FM;
 using DG2072_USB_Control.Services;
 using MathNet.Numerics;
+using Modulation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -62,6 +63,10 @@ namespace DG2072_USB_Control
         private DockPanel PhaseDockPanel;
 
 
+        // Modulation controllers
+        private ModulationController modulationController;
+
+
 
         // Bindable properties
         public ObservableCollection<string> CarrierWaveformOptions { get; set; } = new ObservableCollection<string> { "Sine", "Square", "Ramp", "Arbitrary" };
@@ -94,7 +99,28 @@ namespace DG2072_USB_Control
                 OnPropertyChanged(nameof(ModulationDepth));
             }
         }
+        private void ApplyModulationSettings()
+        {
+            string type = ModulationTypeComboBox.SelectedItem.ToString();
+            string depth = ModulationDepthTextBox.Text;
+            string frequency = ModulationFrequencyTextBox.Text;
+            string freqUnit = (ModulationFrequencyUnitComboBox.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Hz";
 
+            modulationController.ApplyModulationSettings(type, depth, frequency, freqUnit);
+        }
+
+        private void SendToRigol(string command)
+        {
+            try
+            {
+                rigolDG2072.SendCommand(command);
+                LogMessage($"Command sent to Rigol: {command}");
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error sending command to Rigol: {ex.Message}");
+            }
+        }
 
         public MainWindow()
         {
@@ -110,7 +136,8 @@ namespace DG2072_USB_Control
             // Initialize auto-refresh feature
             InitializeAutoRefresh();
 
-            InitializeComponent();
+            modulationController = new ModulationController(SendToRigol);
+            
             DataContext = this;
         }
 

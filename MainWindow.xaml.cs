@@ -76,7 +76,7 @@ namespace DG2072_USB_Control
             get => _carrierFrequency;
             set
             {
-                _carrierFrequency = FormatWithMinimumDecimals(value);
+                _carrierFrequency = UnitConversionUtility.FormatWithMinimumDecimals(value);
                 OnPropertyChanged(nameof(CarrierFrequency));
             }
         }
@@ -90,7 +90,7 @@ namespace DG2072_USB_Control
             get => _modulationDepth;
             set
             {
-                _modulationDepth = FormatWithMinimumDecimals(value);
+                _modulationDepth = UnitConversionUtility.FormatWithMinimumDecimals(value);
                 OnPropertyChanged(nameof(ModulationDepth));
             }
         }

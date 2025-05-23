@@ -44,8 +44,9 @@
                             <ToggleButton x:Name="ChannelToggleButton" Content="Channel 1" Width="100" Click="ChannelToggleButton_Click" IsChecked="True"/>
                             <TextBlock x:Name="ActiveChannelTextBlock" Text="Channel 1" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0"/>
                         </StackPanel>
-
-                        <!-- Channel Controls -->
+                        <TabControl>
+                            <TabItem Header="Waveform Controls">
+                                <!-- Channel Controls -->
                         <GroupBox x:Name="ChannelControlsGroupBox" Header="Channel 1 Controls" Grid.Row="1" Margin="5">
                             <StackPanel>
                                 <DockPanel Margin="0,5">
@@ -874,6 +875,44 @@ For accurate voltage measurement, set the load impedance to match your actual lo
 
                             </StackPanel>
                         </GroupBox>
+                                <!-- Move your existing waveform controls here -->
+                            </TabItem>
+
+                            <TabItem Header="Modulation">
+                                <Grid Margin="10">
+                                    <GroupBox Header="Modulation Settings" Margin="5" Padding="10">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,10">
+                                                <TextBlock Text="Modulation Type:" Width="140" VerticalAlignment="Center"/>
+                                                <ComboBox x:Name="ModulationTypeComboBox" Width="150">
+                                                    <ComboBoxItem Content="None" IsSelected="True"/>
+                                                    <ComboBoxItem Content="AM"/>
+                                                    <ComboBoxItem Content="FM"/>
+
+                                                </ComboBox>
+                                            </StackPanel>
+
+                                            <StackPanel Orientation="Horizontal" Margin="0,10">
+                                                <TextBlock Text="Modulation Frequency:" Width="140" VerticalAlignment="Center"/>
+                                                <TextBox x:Name="ModulationFrequencyTextBox" Width="100"/>
+                                                <ComboBox x:Name="ModulationFrequencyUnitComboBox" Width="60" Margin="5,0,0,0">
+                                                    <ComboBoxItem Content="Hz" IsSelected="True"/>
+                                                    <ComboBoxItem Content="kHz"/>
+                                                    <ComboBoxItem Content="MHz"/>
+                                                </ComboBox>
+                                            </StackPanel>
+
+                                            <StackPanel Orientation="Horizontal" Margin="0,10">
+                                                <TextBlock Text="Depth (%):" Width="140" VerticalAlignment="Center"/>
+                                                <TextBox x:Name="ModulationDepthTextBox" Width="100"/>
+                                            </StackPanel>
+
+                                            <Button Content="Apply Modulation" Width="150" Margin="0,10,0,0" Click="ApplyModulationButton_Click"/>
+                                        </StackPanel>
+                                    </GroupBox>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
                     </Grid>
                 </Grid>
             </TabItem>

@@ -1,28 +1,30 @@
+using DG2072_USB_Control.Continuous.ArbitraryWaveform;
+using DG2072_USB_Control.Continuous.DC;
+using DG2072_USB_Control.Continuous.DualTone;
+using DG2072_USB_Control.Continuous.Harmonics;
+using DG2072_USB_Control.Continuous.Noise;
+using DG2072_USB_Control.Continuous.PulseGenerator;
+using DG2072_USB_Control.Continuous.Ramp;
+using DG2072_USB_Control.Continuous.Sinusoid;
+using DG2072_USB_Control.Continuous.Square;
+using DG2072_USB_Control.Modulation.AM;
+using DG2072_USB_Control.Modulation.AM;
+using DG2072_USB_Control.Modulation.FM;
+using DG2072_USB_Control.Services;
+using MathNet.Numerics;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Channels;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using MathNet.Numerics;
 using System.Windows.Controls.Primitives;
-using System.Windows.Threading;
-using DG2072_USB_Control.Services;
 using System.Windows.Media;
-using System.Collections.Generic;
+using System.Windows.Threading;
 using static DG2072_USB_Control.RigolDG2072;
-using System.Threading.Channels;
-
-using DG2072_USB_Control.Continuous.Harmonics;
-using DG2072_USB_Control.Continuous.PulseGenerator;
-using DG2072_USB_Control.Continuous.DualTone;
-using DG2072_USB_Control.Continuous.Ramp;
-using DG2072_USB_Control.Continuous.Square;
-using DG2072_USB_Control.Continuous.Sinusoid;
-using DG2072_USB_Control.Continuous.DC;
-using DG2072_USB_Control.Continuous.Noise;
-using DG2072_USB_Control.Continuous.ArbitraryWaveform;
 
 namespace DG2072_USB_Control
 {
@@ -1686,6 +1688,48 @@ namespace DG2072_USB_Control
                 MessageBox.Show($"Error applying settings: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
+        private void ApplyModulationButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isConnected) return;
+
+            string type = ((ComboBoxItem)ModulationTypeComboBox.SelectedItem).Content.ToString().ToUpper();
+            if (type == "NONE")
+            {
+                rigolDG2072.SendCommand($":SOUR{activeChannel}:MOD:STAT OFF");
+                LogMessage("Modulation disabled.");
+                return;
+            }
+
+            if (!double.TryParse(ModulationFrequencyTextBox.Text, out double modFreq)) modFreq = 1000;
+            string unit = ((ComboBoxItem)ModulationFrequencyUnitComboBox.SelectedItem).Content.ToString();
+            if (unit == "kHz") modFreq *= 1e3;
+            else if (unit == "MHz") modFreq *= 1e6;
+
+            if (!double.TryParse(ModulationDepthTextBox.Text, out double depth)) depth = 80;
+
+            switch (type)
+            {
+                case "AM":
+                    var am = new AMModulation(rigolDG2072, activeChannel);
+                    am.Apply(modFreq, depth);
+                    LogMessage($"Applied AM modulation at {modFreq} Hz, depth {depth}%.");
+                    break;
+
+                case "FM":
+                    var fm = new FMModulation(rigolDG2072, activeChannel);
+                    fm.Apply(modFreq, deviationHz: depth); // depth as deviation here
+                    LogMessage($"Applied FM modulation at {modFreq} Hz, deviation {depth} Hz.");
+                    break;
+
+                default:
+                    LogMessage($"Modulation type {type} is not implemented yet.");
+                    break;
+            }
+
+        }
+
 
         private void ApplyCommonParameters()
         {

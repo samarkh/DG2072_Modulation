@@ -76,7 +76,7 @@ namespace DG2072_USB_Control
             get => _carrierFrequency;
             set
             {
-                _carrierFrequency = UnitConversionUtility.FormatWithMinimumDecimals(value);
+                _carrierFrequency = UnitConversionUtility.FormatWithMinimumDecimals(double.Parse(ModulationDepthTextBox.Text));
                 OnPropertyChanged(nameof(CarrierFrequency));
             }
         }
@@ -90,7 +90,7 @@ namespace DG2072_USB_Control
             get => _modulationDepth;
             set
             {
-                _modulationDepth = UnitConversionUtility.FormatWithMinimumDecimals(value);
+                _modulationDepth = UnitConversionUtility.FormatWithMinimumDecimals(double.Parse(ModulationDepthTextBox.Text));
                 OnPropertyChanged(nameof(ModulationDepth));
             }
         }
@@ -2439,9 +2439,13 @@ namespace DG2072_USB_Control
             }
         }
 
+
         #endregion
 
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
+        }
     }
 }
 

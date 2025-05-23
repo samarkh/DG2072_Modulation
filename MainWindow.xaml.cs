@@ -14,6 +14,8 @@ using DG2072_USB_Control.Services;
 using MathNet.Numerics;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -59,6 +61,41 @@ namespace DG2072_USB_Control
         private DockPanel PulsePeriodDockPanel;
         private DockPanel PhaseDockPanel;
 
+
+
+        // Bindable properties
+        public ObservableCollection<string> CarrierWaveformOptions { get; set; } = new ObservableCollection<string> { "Sine", "Square", "Ramp", "Arbitrary" };
+        public string SelectedCarrierWaveform { get; set; } = "Sine";
+
+        public ObservableCollection<string> FrequencyUnits { get; set; } = new ObservableCollection<string> { "Hz", "kHz", "MHz" };
+        public string SelectedFrequencyUnit { get; set; } = "MHz";
+
+        private string _carrierFrequency = "1.0";
+        public string CarrierFrequency
+        {
+            get => _carrierFrequency;
+            set
+            {
+                _carrierFrequency = FormatWithMinimumDecimals(value);
+                OnPropertyChanged(nameof(CarrierFrequency));
+            }
+        }
+
+        public ObservableCollection<string> ModulationTypeOptions { get; set; } = new ObservableCollection<string> { "AM", "FM", "PM", "ASK", "FSK", "PSK", "PWM" };
+        public string SelectedModulationType { get; set; } = "AM";
+
+        private string _modulationDepth = "25.0";
+        public string ModulationDepth
+        {
+            get => _modulationDepth;
+            set
+            {
+                _modulationDepth = FormatWithMinimumDecimals(value);
+                OnPropertyChanged(nameof(ModulationDepth));
+            }
+        }
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -72,7 +109,16 @@ namespace DG2072_USB_Control
 
             // Initialize auto-refresh feature
             InitializeAutoRefresh();
+
+            InitializeComponent();
+            DataContext = this;
         }
+
+
+        // INotifyPropertyChanged Implementation
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
 
         //**************** Regions
 

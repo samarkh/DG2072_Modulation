@@ -67,10 +67,8 @@ namespace DG2072_USB_Control
         private TabItem _previouslySelectedTab;
 
 
-
         // Modulation controllers
         private ModulationController modulationController;
-
 
 
         // Bindable properties
@@ -154,16 +152,47 @@ namespace DG2072_USB_Control
             // Initialize auto-refresh feature
             InitializeAutoRefresh();
 
-
-            modulationController = new ModulationController(
-                SendToRigol, // Action<string>
-                QueryRigol,  // Func<string, string>
-                UpdateModulationTypeDisplay,
-                UpdateModulationDepthDisplay,
-                UpdateModulationFrequencyDisplay
+            // Refactored controller takes two Funcs rather than a ComboBox
+            _modController = new ModulationController(
+                sendToRigol,
+                queryRigol,
+                updateTypeDisplay,
+                updateDepthDisplay,
+                updateFreqDisplay,
+                () => GetComboContent(CarrierWaveformComboBox),
+                () => GetComboContent(ModulatingWaveformComboBox)
             );
-           
         }
+
+
+            //modulationController = new ModulationController(
+            //    SendToRigol, // Action<string>
+            //    QueryRigol,  // Func<string, string>
+            //    UpdateModulationTypeDisplay,
+            //    UpdateModulationDepthDisplay,
+            //    UpdateModulationFrequencyDisplay
+            //);
+
+            private static string GetComboContent(ComboBox cb)
+        => (cb.SelectedItem as ComboBoxItem)?.Content?.ToString().ToUpper() ?? "";
+
+        // Default both selectors on load
+        private void CarrierWaveformComboBox_Loaded(object s, RoutedEventArgs e)
+            => CarrierWaveformComboBox.SelectedIndex = 0;  // SINE
+
+        private void ModulatingWaveformComboBox_Loaded(object s, RoutedEventArgs e)
+            => ModulatingWaveformComboBox.SelectedIndex = 0;  // or whatever default
+
+        // Forward selection changes into the controller
+        private void CarrierWaveformComboBox_SelectionChanged(object s, SelectionChangedEventArgs e)
+            => _modController.UpdateCarrierWaveform();
+
+        private void ModulatingWaveformComboBox_SelectionChanged(object s, SelectionChangedEventArgs e)
+            => _modController.UpdateModulatingWaveform();
+
+
+
+       
 
 
         private string QueryRigol(string command)

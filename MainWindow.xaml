@@ -905,6 +905,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                                VerticalAlignment="Center"
                                                                Margin="0,5"/>
 
+                                                    <!-- Carrier waveform selector -->
                                                     <ComboBox x:Name="CarrierWaveformComboBox"
                                                                   Grid.Row="0" Grid.Column="1"
                                                                   Grid.ColumnSpan="2"
@@ -918,7 +919,15 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                         <ComboBoxItem Content="Arbitrary"/>
                                                      </ComboBox>
 
-
+                                                    <!-- Modulating waveform selector -->
+                                                    <ComboBox x:Name="ModulatingWaveformComboBox"
+                                                                Loaded="ModulatingWaveformComboBox_Loaded"
+                                                                SelectionChanged="ModulatingWaveformComboBox_SelectionChanged">
+                                                        <ComboBoxItem>SINE</ComboBoxItem>
+                                                        <ComboBoxItem>TRIANGLE</ComboBoxItem>
+                                                        <ComboBoxItem>GAUSSIAN</ComboBoxItem>
+                                                        <!-- etc… -->
+                                                    </ComboBox>
 
 
                                                     <!-- Carrier Frequency -->

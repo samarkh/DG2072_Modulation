@@ -10,29 +10,68 @@ namespace Modulation
     public class ModulationController
     {
         private readonly Action<string> _sendToRigol;
-        private readonly Func<string, string> _queryRigol;
         private readonly Action<string> _updateModulationTypeDisplay;
         private readonly Action<string> _updateModulationDepthDisplay;
         private readonly Action<string> _updateModulationFrequencyDisplay;
         private ComboBox CarrierWaveformComboBox;
 
+        private readonly Func<string, string> _queryRigol;
+        private readonly Func<string> _getCarrierWaveform;
+        private readonly Func<string> _getModulatingWaveform;
+
+
         public ModulationController(
-                Action<string> sendToRigol,
-                Func<string, string> queryRigol,
-                Action<string> updateModulationTypeDisplay,
-                Action<string> updateModulationDepthDisplay,
-                Action<string> updateModulationFrequencyDisplay,
-                ComboBox carrierWaveformComboBox)
+    Action<string> sendToRigol,
+    Func<string, string> queryRigol,          // if still needed
+    Action<string> updateTypeDisplay,
+    Action<string> updateDepthDisplay,
+    Action<string> updateFreqDisplay,
+    Func<string> getCarrierWaveform,
+    Func<string> getModulatingWaveform)
         {
             _sendToRigol = sendToRigol;
-            _queryRigol = queryRigol;
-            _updateModulationTypeDisplay = updateModulationTypeDisplay;
-            _updateModulationDepthDisplay = updateModulationDepthDisplay;
-            _updateModulationFrequencyDisplay = updateModulationFrequencyDisplay;
-            CarrierWaveformComboBox = carrierWaveformComboBox;
+            _getCarrierWaveform = getCarrierWaveform;
+            _getModulatingWaveform = getModulatingWaveform;
+            // … assign other callbacks …
         }
 
+        //public ModulationController(
+        //        Action<string> sendToRigol,
+        //        Func<string, string> queryRigol,
+        //        Action<string> updateModulationTypeDisplay,
+        //        Action<string> updateModulationDepthDisplay,
+        //        Action<string> updateModulationFrequencyDisplay,
+        //        ComboBox carrierWaveformComboBox)
+        //{
+        //    _sendToRigol = sendToRigol;
+        //    _queryRigol = queryRigol;
+        //    _updateModulationTypeDisplay = updateModulationTypeDisplay;
+        //    _updateModulationDepthDisplay = updateModulationDepthDisplay;
+        //    _updateModulationFrequencyDisplay = updateModulationFrequencyDisplay;
+        //    CarrierWaveformComboBox = carrierWaveformComboBox;
+        //}
 
+        public void UpdateCarrierWaveform()
+        {
+            var wf = _getCarrierWaveform();
+            if (!string.IsNullOrWhiteSpace(wf))
+                _sendToRigol($"SOURCE1:FUNC {wf}");
+        }
+
+        public void UpdateModulatingWaveform()
+        {
+            var modWf = _getModulatingWaveform();
+            if (!string.IsNullOrWhiteSpace(modWf))
+            {
+                // for example, set the modulation function
+                _sendToRigol($"SOURCE1:MOD:FUNC {modWf}");
+                // you can also re‐send carrier if you want to enforce default
+                var carrierWf = _getCarrierWaveform();
+                if (string.IsNullOrWhiteSpace(carrierWf))
+                    carrierWf = "SINE";
+                _sendToRigol($"SOURCE1:FUNC:MOD:CARRIER {carrierWf}");
+            }
+        }
 
         private void CarrierWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -49,6 +88,14 @@ namespace Modulation
             }
         }
 
+
+        //private void CarrierWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    // e.g. read the new waveform type:
+        //    var selected = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+        //    string waveform = selected.Content.ToString();
+        //    modulationController.SetCarrierWaveform(waveform);
+        //}
 
         public void InitializeAndLoadModulation()
         {

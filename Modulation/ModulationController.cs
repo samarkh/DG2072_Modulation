@@ -11,7 +11,12 @@ namespace Modulation
         private readonly Action<string> _updateModulationFrequencyDisplay;
         private readonly Action<string> _updateModulationDepthDisplay;
 
-        public ModulationController(Action<string> sendToRigol, Action<string> updateModulationFrequencyDisplay, Action<string> updateModulationDepthDisplay)
+        //public ModulationController(Action<string> sendToRigol, Action<string> updateModulationFrequencyDisplay, Action<string> updateModulationDepthDisplay)
+        public ModulationController(
+             Action<string> sendToRigol,
+             Action<string> updateModulationTypeDisplay,
+             Action<string> updateModulationDepthDisplay,
+             Action<string> updateModulationFrequencyDisplay)
         {
             _sendToRigol = sendToRigol;
             _updateModulationFrequencyDisplay = updateModulationFrequencyDisplay;

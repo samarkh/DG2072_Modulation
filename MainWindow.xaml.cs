@@ -8,7 +8,6 @@ using DG2072_USB_Control.Continuous.Ramp;
 using DG2072_USB_Control.Continuous.Sinusoid;
 using DG2072_USB_Control.Continuous.Square;
 using DG2072_USB_Control.Modulation.AM;
-using DG2072_USB_Control.Modulation.AM;
 using DG2072_USB_Control.Modulation.FM;
 using DG2072_USB_Control.Services;
 using MathNet.Numerics;
@@ -29,6 +28,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using static DG2072_USB_Control.RigolDG2072;
 
+
 namespace DG2072_USB_Control
 {
     public partial class MainWindow : System.Windows.Window
@@ -39,6 +39,7 @@ namespace DG2072_USB_Control
         private const string InstrumentAddress = "USB0::0x1AB1::0x0644::DG2P224100508::INSTR";
         private RigolDG2072 rigolDG2072;
 
+        
         // Active channel tracking
         private int activeChannel = 1; // Default to Channel 1
 
@@ -129,13 +130,19 @@ namespace DG2072_USB_Control
             }
         }
 
-        public MainWindow()
+        // Constructor starting point
+        // Initializes the main window and sets up the device communication
+        // and UI elements
+
+        public MainWindow() 
         {
             InitializeComponent();
 
             // Initialize the device communication
             rigolDG2072 = new RigolDG2072();
             rigolDG2072.LogEvent += (s, message) => LogMessage(message);
+            InitializeComponent();
+            //_rigolDevice = new RigolDG2072Base();
 
             // Initialize ComboBoxes
             ChannelWaveformComboBox.SelectedIndex = 0;
@@ -143,8 +150,12 @@ namespace DG2072_USB_Control
             // Initialize auto-refresh feature
             InitializeAutoRefresh();
 
-            modulationController = new ModulationController(SendToRigol);
-            
+            //            modulationController = new ModulationController(SendToRigol);
+            modulationController = new ModulationController(
+                SendToRigol,
+                UpdateModulationTypeDisplay,
+                UpdateModulationDepthDisplay,
+                UpdateModulationFrequencyDisplay);
             DataContext = this;
         }
 
@@ -1915,6 +1926,22 @@ namespace DG2072_USB_Control
                 modulationController.OnModulationTypeChanged(outputFreq, unit);
             }
         }
+
+        private void UpdateModulationTypeDisplay(string value)
+        {
+            ModulationTypeComboBox.SelectedItem = value;
+        }
+
+        private void UpdateModulationDepthDisplay(string value)
+        {
+            ModulationDepthTextBox.Text = value;
+        }
+
+        private void UpdateModulationFrequencyDisplay(string value)
+        {
+            ModulationFrequencyTextBox.Text = value;
+        }
+
 
         #endregion
 

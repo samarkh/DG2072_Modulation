@@ -21,10 +21,10 @@ namespace DG2072_USB_Control.Continuous.PulseGenerator
         private readonly ToggleButton _pulseRateModeToggle;
 
         // Update timers for debouncing
-        private DispatcherTimer _pulseWidthUpdateTimer;
+       // private DispatcherTimer _pulseWidthUpdateTimer;
         private DispatcherTimer _pulsePeriodUpdateTimer;
-        private DispatcherTimer _pulseRiseTimeUpdateTimer;
-        private DispatcherTimer _pulseFallTimeUpdateTimer;
+       // private DispatcherTimer _pulseRiseTimeUpdateTimer;
+        //private DispatcherTimer _pulseFallTimeUpdateTimer;
 
         // Mode flag
         private bool _frequencyModeActive = true;

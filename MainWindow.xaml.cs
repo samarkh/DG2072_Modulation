@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -62,6 +63,9 @@ namespace DG2072_USB_Control
         private bool _frequencyModeActive = true; // Default to frequency mode
         private DockPanel PulsePeriodDockPanel;
         private DockPanel PhaseDockPanel;
+
+        private TabItem _previouslySelectedTab;
+
 
 
         // Modulation controllers
@@ -134,7 +138,7 @@ namespace DG2072_USB_Control
         // Initializes the main window and sets up the device communication
         // and UI elements
 
-        public MainWindow() 
+        public MainWindow()
         {
             InitializeComponent();
 
@@ -150,15 +154,30 @@ namespace DG2072_USB_Control
             // Initialize auto-refresh feature
             InitializeAutoRefresh();
 
-            //            modulationController = new ModulationController(SendToRigol);
+
             modulationController = new ModulationController(
-                SendToRigol,
+                SendToRigol, // Action<string>
+                QueryRigol,  // Func<string, string>
                 UpdateModulationTypeDisplay,
                 UpdateModulationDepthDisplay,
-                UpdateModulationFrequencyDisplay);
-            DataContext = this;
+                UpdateModulationFrequencyDisplay
+            );
+           
         }
 
+
+        private string QueryRigol(string command)
+        {
+            try
+            {
+                return rigolDG2072.SendQuery(command);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Query failed: {command} - {ex.Message}");
+                return null;
+            }
+        }
 
         // INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;
@@ -1916,6 +1935,41 @@ namespace DG2072_USB_Control
 
         #region Modulation Event Handlers
 
+
+
+        // This method handles the selection change in the TabControl
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!IsLoaded || modulationController == null)
+                return;
+
+            var tabControl = sender as TabControl;
+            if (tabControl == null)
+                return;
+
+            var currentTab = tabControl.SelectedItem as TabItem;
+            if (currentTab == null)
+                return;
+
+            // Check if we're leaving the Modulation tab
+            if (_previouslySelectedTab == ModulationTab && currentTab != ModulationTab)
+            {
+                modulationController.DisableCurrentModulation();
+            }
+
+            // Check if we're entering the Modulation tab
+            if (currentTab == ModulationTab)
+            {
+                modulationController.InitializeAndLoadModulation();
+            }
+
+            _previouslySelectedTab = currentTab;
+        }
+
+
+
+
+        //
         private void ModulationTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!isConnected) return;
@@ -1941,6 +1995,8 @@ namespace DG2072_USB_Control
         {
             ModulationFrequencyTextBox.Text = value;
         }
+
+
 
 
         #endregion

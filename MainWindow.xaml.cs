@@ -1,28 +1,29 @@
+using DG2072_USB_Control.Continuous.ArbitraryWaveform;
+using DG2072_USB_Control.Continuous.DC;
+using DG2072_USB_Control.Continuous.DualTone;
+using DG2072_USB_Control.Continuous.Harmonics;
+using DG2072_USB_Control.Continuous.Noise;
+using DG2072_USB_Control.Continuous.PulseGenerator;
+using DG2072_USB_Control.Continuous.Ramp;
+using DG2072_USB_Control.Continuous.Sinusoid;
+using DG2072_USB_Control.Continuous.Square;
+using DG2072_USB_Control.Modulation;
+using DG2072_USB_Control.Services;
+using MathNet.Numerics;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Channels;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using MathNet.Numerics;
 using System.Windows.Controls.Primitives;
-using System.Windows.Threading;
-using DG2072_USB_Control.Services;
 using System.Windows.Media;
-using System.Collections.Generic;
+using System.Windows.Threading;
 using static DG2072_USB_Control.RigolDG2072;
-using System.Threading.Channels;
-
-using DG2072_USB_Control.Continuous.Harmonics;
-using DG2072_USB_Control.Continuous.PulseGenerator;
-using DG2072_USB_Control.Continuous.DualTone;
-using DG2072_USB_Control.Continuous.Ramp;
-using DG2072_USB_Control.Continuous.Square;
-using DG2072_USB_Control.Continuous.Sinusoid;
-using DG2072_USB_Control.Continuous.DC;
-using DG2072_USB_Control.Continuous.Noise;
-using DG2072_USB_Control.Continuous.ArbitraryWaveform;
+using DG2072_USB_Control.Modulation;
 
 namespace DG2072_USB_Control
 {
@@ -54,7 +55,7 @@ namespace DG2072_USB_Control
         private DockPanel DutyCycleDockPanel;
 
         // Add this with the other timer declarations in MainWindow.xaml.cs:
-       // private DispatcherTimer _secondaryFrequencyUpdateTimer;
+        // private DispatcherTimer _secondaryFrequencyUpdateTimer;
         private bool _frequencyModeActive = true; // Default to frequency mode
         private DockPanel PulsePeriodDockPanel;
         private DockPanel PhaseDockPanel;
@@ -63,7 +64,7 @@ namespace DG2072_USB_Control
         private double frequencyRatio = 2.0; // Default frequency ratio (harmonic)
 
         private DockPanel DCVoltageDockPanel;
-        
+
 
         // Harmonics management
         private HarmonicsManager _harmonicsManager;
@@ -92,6 +93,9 @@ namespace DG2072_USB_Control
 
         // Arbitrary Waveform Generator Management
         private ArbitraryWaveformGen arbitraryWaveformGen;
+
+        // Initialize the modulation manager
+        InitializeModulationManager();
 
         public MainWindow()
         {
@@ -299,7 +303,7 @@ namespace DG2072_USB_Control
                 LogMessage($"Error refreshing Channel {activeChannel} settings: {ex.Message}");
             }
         }
-       
+
         #endregion
 
         #region Auto-Refresh Methods
@@ -995,7 +999,7 @@ namespace DG2072_USB_Control
 
             // In Window_Loaded method, add this to find and store the DC panel
             DCVoltageDockPanel = FindVisualParent<DockPanel>(DCVoltageTextBox);
-            
+
             // Initialize harmonics management
             _harmonicsManager = new HarmonicsManager(rigolDG2072, activeChannel);
             _harmonicsManager.LogEvent += (s, message) => LogMessage(message);
@@ -2145,8 +2149,8 @@ namespace DG2072_USB_Control
                     if (DualToneGroupBox != null)
                         DualToneGroupBox.Visibility = Visibility.Visible;
                 }
-            }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-                if (FrequencyDockPanel != null && FrequencyPeriodModeToggle != null && PulseRateModeToggle != null)
+            }
+            if (FrequencyDockPanel != null && FrequencyPeriodModeToggle != null && PulseRateModeToggle != null)
             {
                 if (FrequencyDockPanel.Visibility == Visibility.Collapsed &&
                     PeriodDockPanel.Visibility == Visibility.Collapsed)
@@ -2600,7 +2604,7 @@ namespace DG2072_USB_Control
         #endregion
 
         #region Harmonics Event Handlers
-        
+
         private void AmplitudeModeChanged(object sender, RoutedEventArgs e)
         {
             // The event is defined in the XAML file to be handled by MainWindow
@@ -2802,6 +2806,114 @@ namespace DG2072_USB_Control
 
 
 
+
+        #endregion
+
+
+        #region Modulation Event Handlers
+
+        private ModulationManager _modulationManager;
+
+        private void InitializeModulationManager()
+        {
+            _modulationManager = new ModulationManager(rigolDG2072, activeChannel, this);
+            _modulationManager.LogEvent += (s, message) => LogMessage(message);
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.Source is TabControl tabControl)
+            {
+                if (tabControl.SelectedItem is TabItem selectedTab && selectedTab.Name == "ModulationTab")
+                {
+                    // Initialize modulation manager if not already done
+                    if (_modulationManager == null)
+                    {
+                        InitializeModulationManager();
+                    }
+
+                    // Update active channel
+                    _modulationManager.ActiveChannel = activeChannel;
+
+                    // Initialize modulation controls when tab is selected
+                    _modulationManager.InitializeModulationTypes();
+                    _modulationManager.InitializeModulatingWaveforms();
+                    _modulationManager.InitializeFrequencyUnits();
+                }
+            }
+        }
+
+        private void CarrierWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_modulationManager != null)
+                _modulationManager.OnCarrierWaveformChanged();
+        }
+
+        private void ModulatingWaveformComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Initialization happens when tab is selected
+        }
+
+        private void ModulatingWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_modulationManager != null)
+                _modulationManager.OnModulatingWaveformChanged();
+        }
+
+        private void CarrierFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_modulationManager != null)
+                _modulationManager.OnCarrierFrequencyChanged();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // This is for the ModulationTypeComboBox
+            if (sender == ModulationTypeComboBox && _modulationManager != null)
+                _modulationManager.OnModulationTypeChanged();
+        }
+
+        private void ModulationFrequencyUnitComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Initialization happens when tab is selected
+        }
+
+        private void ModulationFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_modulationManager != null)
+                _modulationManager.OnModulationFrequencyChanged();
+        }
+
+        // Add these new event handlers for text changes and lost focus
+        private void ModulationFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_modulationManager != null)
+                _modulationManager.OnModulationFrequencyChanged();
+        }
+
+        private void ModulationFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (_modulationManager != null)
+                _modulationManager.OnModulationFrequencyLostFocus();
+        }
+
+        private void ModulationDepthTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_modulationManager != null)
+                _modulationManager.OnModulationDepthChanged();
+        }
+
+        private void ModulationDepthTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (_modulationManager != null)
+                _modulationManager.OnModulationDepthLostFocus();
+        }
+
+        private void CarrierFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_modulationManager != null)
+                _modulationManager.OnCarrierFrequencyChanged();
+        }
 
         #endregion
 

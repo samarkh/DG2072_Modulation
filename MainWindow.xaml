@@ -194,7 +194,6 @@
                                 <!-- Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section -->
                                 <!-- Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section -->
                                 <!-- Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section Pulse Section -->
-                               
                                 <!-- Pulse Rise Time with ComboBox -->
                                 <DockPanel x:Name="PulseRiseTimeDockPanel" Margin="0,5" Visibility="Collapsed">
                                     <Label Content="Rise Time:" Width="100"/>
@@ -267,7 +266,6 @@
                                 <!-- Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section -->
                                 <!-- Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section -->
                                 <!-- Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section -->
-                                
                                 <GroupBox x:Name="HarmonicsGroupBox" Header="Harmonics Controls" Visibility="Collapsed" Margin="0,10,0,0">
                                     <!--   <GroupBox x:Name="HarmonicsGroupBox" Header="Harmonics Controls" Visibility="Visible" Margin="0,10,0,0"> -->
                                         <StackPanel>
@@ -705,12 +703,6 @@
                                 </GroupBox>
 
 
-
-
-                                <!-- End Dual Tone -->
-                                <!-- End Dual Tone -->
-                                <!-- End Dual Tone -->
-
                                 <!-- Arbitrary Waveform Section Arbitrary Waveform Section Arbitrary Waveform Section Arbitrary Waveform Section Arbitrary Waveform Section Arbitrary Waveform Section -->
                                 <!-- Arbitrary Waveform Section Arbitrary Waveform Section Arbitrary Waveform Section Arbitrary Waveform Section Arbitrary Waveform Section Arbitrary Waveform Section -->
                                 <!-- Arbitrary Waveform Section Arbitrary Waveform Section Arbitrary Waveform Section Arbitrary Waveform Section Arbitrary Waveform Section Arbitrary Waveform Section -->
@@ -804,9 +796,7 @@
                 HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </GroupBox>
-                                <!-- End Arbitrary Waveform Section -->
-                                <!-- End Arbitrary Waveform Section -->
-                                <!-- End Arbitrary Waveform Section -->
+
 
 
                                 <!-- DC Section DC Section DC Section DC Section DC Section DC Section DC Section DC Section DC Section DC Section DC Section DC Section DC Section DC Section DC Section DC Section DC Section -->
@@ -868,9 +858,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                         </TextBlock>
                                     </StackPanel>
                                 </GroupBox>
-                                <!-- DC Section END -->
-                                <!-- DC Section END -->
-                                <!-- DC Section END -->
+
 
                             </StackPanel>
                         </GroupBox>

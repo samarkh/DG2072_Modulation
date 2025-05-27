@@ -23,7 +23,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Threading;
 using static DG2072_USB_Control.RigolDG2072;
-using DG2072_USB_Control.Modulation;
+
 
 namespace DG2072_USB_Control
 {
@@ -95,7 +95,7 @@ namespace DG2072_USB_Control
 
         // Arbitrary Waveform Generator Management
         private ArbitraryWaveformGen arbitraryWaveformGen;
-        private DG2072_USB_Control.Modulation.ModulationManager _modulationManager;
+
 
         // Line 99: Constructor starts here
         public MainWindow()
@@ -169,7 +169,7 @@ namespace DG2072_USB_Control
                 _modulationManager.ActiveChannel = channel;
 
             if (_harmonicsManager != null)
-                _harmonicsManager.ActiveChannel = channel;
+                _harmonicsManager.SetActiveChannel(channel);
 
             if (dualToneGen != null)
                 dualToneGen.ActiveChannel = channel;

@@ -65,6 +65,7 @@ namespace DG2072_USB_Control
 
         private DockPanel DCVoltageDockPanel;
 
+        private DG2072_USB_Control.Modulation.ModulationManager _modulationManager;
 
         // Harmonics management
         private HarmonicsManager _harmonicsManager;
@@ -97,6 +98,11 @@ namespace DG2072_USB_Control
         // Initialize the modulation manager
         InitializeModulationManager();
 
+
+        // Add this in Window_Loaded method after other component initializations:
+        // Initialize the modulation manager
+        _modulationManager = new DG2072_USB_Control.Modulation.ModulationManager(rigolDG2072, activeChannel, this);
+        _modulationManager.LogEvent += (s, message) => LogMessage(message);
         public MainWindow()
         {
             InitializeComponent();
@@ -1161,7 +1167,10 @@ namespace DG2072_USB_Control
             CommandLogTextBox.Clear();
         }
 
-
+        // Also update the ChannelToggleButton_Click method to update modulation manager:
+// Add this after updating other components in ChannelToggleButton_Click:
+if (_modulationManager != null)
+    _modulationManager.ActiveChannel = activeChannel;
 
         private void PrimaryFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -2810,38 +2819,8 @@ namespace DG2072_USB_Control
         #endregion
 
 
+        // Add this new region for Modulation Event Handlers:
         #region Modulation Event Handlers
-
-        private ModulationManager _modulationManager;
-
-        private void InitializeModulationManager()
-        {
-            _modulationManager = new ModulationManager(rigolDG2072, activeChannel, this);
-            _modulationManager.LogEvent += (s, message) => LogMessage(message);
-        }
-
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.Source is TabControl tabControl)
-            {
-                if (tabControl.SelectedItem is TabItem selectedTab && selectedTab.Name == "ModulationTab")
-                {
-                    // Initialize modulation manager if not already done
-                    if (_modulationManager == null)
-                    {
-                        InitializeModulationManager();
-                    }
-
-                    // Update active channel
-                    _modulationManager.ActiveChannel = activeChannel;
-
-                    // Initialize modulation controls when tab is selected
-                    _modulationManager.InitializeModulationTypes();
-                    _modulationManager.InitializeModulatingWaveforms();
-                    _modulationManager.InitializeFrequencyUnits();
-                }
-            }
-        }
 
         private void CarrierWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -2851,71 +2830,58 @@ namespace DG2072_USB_Control
 
         private void ModulatingWaveformComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            // Initialization happens when tab is selected
+            // Initialize modulating waveforms when loaded
+            if (_modulationManager != null)
+                _modulationManager.OnModulationTypeChanged();
         }
 
         private void ModulatingWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_modulationManager != null)
-                _modulationManager.OnModulatingWaveformChanged();
-        }
-
-        private void CarrierFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (_modulationManager != null)
-                _modulationManager.OnCarrierFrequencyChanged();
+            // Handle modulating waveform selection changes if needed
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // This is for the ModulationTypeComboBox
-            if (sender == ModulationTypeComboBox && _modulationManager != null)
+            // This is for ModulationTypeComboBox
+            if (_modulationManager != null)
                 _modulationManager.OnModulationTypeChanged();
+        }
+
+        private void CarrierFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Handle carrier frequency unit changes if needed
         }
 
         private void ModulationFrequencyUnitComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            // Initialization happens when tab is selected
+            // Initialize frequency units when loaded
         }
 
         private void ModulationFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_modulationManager != null)
-                _modulationManager.OnModulationFrequencyChanged();
+            // Handle modulation frequency unit changes if needed
         }
 
-        // Add these new event handlers for text changes and lost focus
-        private void ModulationFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_modulationManager != null)
-                _modulationManager.OnModulationFrequencyChanged();
-        }
-
-        private void ModulationFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (_modulationManager != null)
-                _modulationManager.OnModulationFrequencyLostFocus();
-        }
-
-        private void ModulationDepthTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (_modulationManager != null)
-                _modulationManager.OnModulationDepthChanged();
-        }
-
-        private void ModulationDepthTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (_modulationManager != null)
-                _modulationManager.OnModulationDepthLostFocus();
-        }
-
-        private void CarrierFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (_modulationManager != null)
-                _modulationManager.OnCarrierFrequencyChanged();
+            // Handle tab selection changes
+            if (sender is TabControl tabControl)
+            {
+                var selectedTab = tabControl.SelectedItem as TabItem;
+                if (selectedTab != null && selectedTab.Name == "ModulationTab")
+                {
+                    // Refresh modulation settings when switching to modulation tab
+                    if (_modulationManager != null && isConnected)
+                    {
+                        _modulationManager.RefreshSettings();
+                    }
+                }
+            }
         }
 
         #endregion
+
+
 
     }
 }

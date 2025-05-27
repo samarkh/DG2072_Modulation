@@ -50,6 +50,7 @@ namespace DG2072_USB_Control
         private DispatcherTimer _phaseUpdateTimer;
         private DispatcherTimer _primaryFrequencyUpdateTimer;
         private DockPanel SymmetryDockPanel;
+        private List<WaveformGenerator> allGenerators;
 
         // private DispatcherTimer _dutyCycleUpdateTimer;
         private DockPanel DutyCycleDockPanel;
@@ -94,15 +95,9 @@ namespace DG2072_USB_Control
 
         // Arbitrary Waveform Generator Management
         private ArbitraryWaveformGen arbitraryWaveformGen;
+        private DG2072_USB_Control.Modulation.ModulationManager _modulationManager;
 
-        // Initialize the modulation manager
-        InitializeModulationManager();
-
-
-        // Add this in Window_Loaded method after other component initializations:
-        // Initialize the modulation manager
-        _modulationManager = new DG2072_USB_Control.Modulation.ModulationManager(rigolDG2072, activeChannel, this);
-        _modulationManager.LogEvent += (s, message) => LogMessage(message);
+        // Line 99: Constructor starts here
         public MainWindow()
         {
             InitializeComponent();
@@ -123,75 +118,61 @@ namespace DG2072_USB_Control
         #region Channel Toggle Methods
 
         // Update the channel toggle method to update the pulse generator's active channel
+        // Alternative approach with helper method
         private void ChannelToggleButton_Click(object sender, RoutedEventArgs e)
         {
             // Toggle between Channel 1 and Channel 2
-            if (ChannelToggleButton.IsChecked == true)
-            {
-                // Switch to Channel 1
-                activeChannel = 1;
-                ChannelToggleButton.Content = "Channel 1";
-                ActiveChannelTextBlock.Text = "Channel 1";
-                ChannelControlsGroupBox.Header = "Channel 1 Controls";
+            activeChannel = (ChannelToggleButton.IsChecked == true) ? 1 : 2;
 
-                // Update pulse generator with the new active channel
-                if (pulseGenerator != null)
-                    pulseGenerator.ActiveChannel = activeChannel;
+            // Update UI elements
+            string channelText = $"Channel {activeChannel}";
+            ChannelToggleButton.Content = channelText;
+            ActiveChannelTextBlock.Text = channelText;
+            ChannelControlsGroupBox.Header = $"{channelText} Controls";
 
-                // update ramp generator with the new active channel
-                if (rampGenerator != null)
-                    rampGenerator.ActiveChannel = activeChannel;
-                // Other component updates...
-
-                // update square generator with the new active channel
-                if (squareGenerator != null)
-                    squareGenerator.ActiveChannel = activeChannel;
-
-                // update sine generator with the new active channel
-                if (sineGenerator != null)
-                    sineGenerator.ActiveChannel = activeChannel;
-
-                // Update DC generator with the new active channel
-                if (dcGenerator != null)
-                    dcGenerator.ActiveChannel = activeChannel;
-
-                //update noise generator with the new active channel
-                if (noiseGenerator != null)
-                    noiseGenerator.ActiveChannel = activeChannel;
-
-                // Update arbitrary waveform generator with the new active channel
-                if (arbitraryWaveformGen != null)
-                    arbitraryWaveformGen.ActiveChannel = activeChannel;
-
-            }
-            else
-            {
-                // Switch to Channel 2
-                activeChannel = 2;
-                ChannelToggleButton.Content = "Channel 2";
-                ActiveChannelTextBlock.Text = "Channel 2";
-                ChannelControlsGroupBox.Header = "Channel 2 Controls";
-
-                // Update pulse generator with the new active channel
-                if (pulseGenerator != null)
-                    pulseGenerator.ActiveChannel = activeChannel;
-
-                // update ramp generator with the new active channel
-                if (rampGenerator != null)
-                    rampGenerator.ActiveChannel = activeChannel;
-                // Other component updates...
-
-                // Update square generator with the new active channel
-                if (squareGenerator != null)
-                    squareGenerator.ActiveChannel = activeChannel;
-
-            }
+            // Update all waveform generators
+            UpdateAllGeneratorsChannel(activeChannel);
 
             // Refresh the UI to show current settings for the selected channel
             if (isConnected)
             {
                 RefreshChannelSettings();
             }
+        }
+
+        // Helper method to update all generators
+        private void UpdateAllGeneratorsChannel(int channel)
+        {
+            // Update all waveform generators
+            if (pulseGenerator != null)
+                pulseGenerator.ActiveChannel = channel;
+
+            if (rampGenerator != null)
+                rampGenerator.ActiveChannel = channel;
+
+            if (squareGenerator != null)
+                squareGenerator.ActiveChannel = channel;
+
+            if (sineGenerator != null)
+                sineGenerator.ActiveChannel = channel;
+
+            if (dcGenerator != null)
+                dcGenerator.ActiveChannel = channel;
+
+            if (noiseGenerator != null)
+                noiseGenerator.ActiveChannel = channel;
+
+            if (arbitraryWaveformGen != null)
+                arbitraryWaveformGen.ActiveChannel = channel;
+
+            if (_modulationManager != null)
+                _modulationManager.ActiveChannel = channel;
+
+            if (_harmonicsManager != null)
+                _harmonicsManager.ActiveChannel = channel;
+
+            if (dualToneGen != null)
+                dualToneGen.ActiveChannel = channel;
         }
 
         private void RefreshChannelSettings()
@@ -973,6 +954,11 @@ namespace DG2072_USB_Control
                 Interval = TimeSpan.FromMilliseconds(500)  // 500ms delay
             };
 
+            // Add this in Window_Loaded method after other component initializations:
+            // Initialize the modulation manager
+            _modulationManager = new DG2072_USB_Control.Modulation.ModulationManager(rigolDG2072, activeChannel, this);
+            _modulationManager.LogEvent += (s, message) => LogMessage(message);
+
             startupTimer.Tick += (s, args) =>
             {
                 startupTimer.Stop();
@@ -1167,10 +1153,7 @@ namespace DG2072_USB_Control
             CommandLogTextBox.Clear();
         }
 
-        // Also update the ChannelToggleButton_Click method to update modulation manager:
-// Add this after updating other components in ChannelToggleButton_Click:
-if (_modulationManager != null)
-    _modulationManager.ActiveChannel = activeChannel;
+
 
         private void PrimaryFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -2878,6 +2861,21 @@ if (_modulationManager != null)
                 }
             }
         }
+
+
+        private void ApplyModulationButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_modulationManager != null)
+                _modulationManager.ApplyModulation();
+        }
+
+        private void DisableModulationButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_modulationManager != null)
+                _modulationManager.DisableModulation();
+        }
+
+
 
         #endregion
 

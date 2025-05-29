@@ -50,7 +50,7 @@ namespace DG2072_USB_Control
         private DispatcherTimer _phaseUpdateTimer;
         private DispatcherTimer _primaryFrequencyUpdateTimer;
         private DockPanel SymmetryDockPanel;
-        private List<WaveformGenerator> allGenerators;
+        //private List<WaveformGenerator> allGenerators;
 
         // private DispatcherTimer _dutyCycleUpdateTimer;
         private DockPanel DutyCycleDockPanel;
@@ -60,7 +60,7 @@ namespace DG2072_USB_Control
         private bool _frequencyModeActive = true; // Default to frequency mode
         private DockPanel PulsePeriodDockPanel;
         private DockPanel PhaseDockPanel;
-        private ChannelHarmonicController harmonicController;
+        //private ChannelHarmonicController harmonicController;
 
         private double frequencyRatio = 2.0; // Default frequency ratio (harmonic)
 
@@ -69,11 +69,8 @@ namespace DG2072_USB_Control
         private DG2072_USB_Control.Modulation.ModulationManager _modulationManager;
 
         // Harmonics management
-        private HarmonicsManager _harmonicsManager;
-        private HarmonicsUIController _harmonicsUIController;
-
-        // pulse generator management
-        private PulseGen pulseGenerator;
+        //private HarmonicsManager _harmonicsManager;
+        //private HarmonicsUIController _harmonicsUIController;
 
         // Dual Tone management
         private DualToneGen dualToneGen;
@@ -1008,11 +1005,14 @@ namespace DG2072_USB_Control
             _frequencyModeActive = FrequencyPeriodModeToggle.IsChecked == true;
             FrequencyPeriodModeToggle.Content = _frequencyModeActive ? "To Period" : "To Frequency";
 
-            // Update the UI based on the selected mode
+            // First calculate the reciprocal value before switching views
+            UpdateCalculatedRateValue();
+
+            // Then update the UI to show the appropriate controls
             UpdateFrequencyPeriodMode();
 
-            // Recalculate and update the displayed values
-            UpdateCalculatedRateValue();
+            // Log the change
+            LogMessage($"Switched to {(_frequencyModeActive ? "Frequency" : "Period")} mode");
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -1837,88 +1837,6 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region Pulse Parameter Handling
-
-        private void ChannelPulsePeriodTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulsePeriodTextChanged(sender, e);
-        }
-
-        private void ChannelPulsePeriodTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulsePeriodLostFocus(sender, e);
-        }
-
-        private void PulsePeriodUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulsePeriodUnitChanged(sender, e);
-        }
-
-        private void PulseRateModeToggle_Click(object sender, RoutedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseRateModeToggleClicked(sender, e);
-        }
-
-        private void ChannelPulseRiseTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseRiseTimeTextChanged(sender, e);
-        }
-
-        private void ChannelPulseRiseTimeTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseRiseTimeLostFocus(sender, e);
-        }
-
-        private void PulseRiseTimeUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseRiseTimeUnitChanged(sender, e);
-        }
-
-        private void ChannelPulseWidthTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseWidthTextChanged(sender, e);
-        }
-
-        private void ChannelPulseWidthTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseWidthLostFocus(sender, e);
-        }
-
-        private void PulseWidthUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseWidthUnitChanged(sender, e);
-        }
-
-        private void ChannelPulseFallTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseFallTimeTextChanged(sender, e);
-        }
-
-        private void ChannelPulseFallTimeTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseFallTimeLostFocus(sender, e);
-        }
-
-        private void PulseFallTimeUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseFallTimeUnitChanged(sender, e);
-        }
-
-        #endregion
-
         #region Unit Selection Handlers
 
         private void ChannelFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2036,35 +1954,17 @@ namespace DG2072_USB_Control
             // Handle frequency/period control visibility (hide for Noise)
             if (FrequencyDockPanel != null && PeriodDockPanel != null)
             {
-                bool showFrequency = !isNoise;
+                bool showFrequency = !isNoise && !isDC && !isDualTone;
 
-                if (isPulse)
+                if (_frequencyModeActive)
                 {
-                    // For pulse, respect the frequency/period mode toggle
-                    if (_frequencyModeActive)
-                    {
-                        FrequencyDockPanel.Visibility = showFrequency ? Visibility.Visible : Visibility.Collapsed;
-                        PeriodDockPanel.Visibility = Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        FrequencyDockPanel.Visibility = Visibility.Collapsed;
-                        PeriodDockPanel.Visibility = showFrequency ? Visibility.Visible : Visibility.Collapsed;
-                    }
+                    FrequencyDockPanel.Visibility = showFrequency ? Visibility.Visible : Visibility.Collapsed;
+                    PeriodDockPanel.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    // For non-pulse waveforms, apply the current frequency/period mode
-                    if (_frequencyModeActive)
-                    {
-                        FrequencyDockPanel.Visibility = showFrequency ? Visibility.Visible : Visibility.Collapsed;
-                        PeriodDockPanel.Visibility = Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        FrequencyDockPanel.Visibility = Visibility.Collapsed;
-                        PeriodDockPanel.Visibility = showFrequency ? Visibility.Visible : Visibility.Collapsed;
-                    }
+                    FrequencyDockPanel.Visibility = Visibility.Collapsed;
+                    PeriodDockPanel.Visibility = showFrequency ? Visibility.Visible : Visibility.Collapsed;
                 }
             }
 
@@ -2080,31 +1980,23 @@ namespace DG2072_USB_Control
                 PulseRiseTimeDockPanel.Visibility = pulseVisibility;
                 PulseFallTimeDockPanel.Visibility = pulseVisibility;
 
-                // Show/hide the mode toggle
-                if (PulseRateModeDockPanel != null)
-                    PulseRateModeDockPanel.Visibility = pulseVisibility;
+                // REMOVED: References to PulseRateModeDockPanel - we use the general toggle instead
             }
 
+            // Handle the GENERAL frequency/period toggle for ALL waveforms
             if (FrequencyPeriodModeToggle != null)
             {
-                FrequencyPeriodModeToggle.Visibility = isNoise ? Visibility.Collapsed : Visibility.Visible;
-                FrequencyPeriodModeToggle.IsEnabled = !isNoise;
-                LogMessage($"Setting FrequencyPeriodModeToggle visibility to {(isNoise ? "Collapsed" : "Visible")} and IsEnabled to {(!isNoise)} for waveform {waveform}");
-            }
+                bool showToggle = !isNoise && !isDC && !isDualTone;
+                FrequencyPeriodModeToggle.Visibility = showToggle ? Visibility.Visible : Visibility.Collapsed;
+                FrequencyPeriodModeToggle.IsEnabled = showToggle;
 
-            // Also handle the PulseRateModeToggle button visibility
-            if (PulseRateModeToggle != null)
-            {
-                PulseRateModeToggle.Visibility = isNoise ? Visibility.Collapsed : Visibility.Visible;
-                PulseRateModeToggle.IsEnabled = !isNoise;
-                LogMessage($"Setting PulseRateModeToggle visibility to {(isNoise ? "Collapsed" : "Visible")} and IsEnabled to {(!isNoise)} for waveform {waveform}");
+                LogMessage($"Setting FrequencyPeriodModeToggle visibility to {(showToggle ? "Visible" : "Collapsed")} for waveform {waveform}");
             }
 
             // Handle phase control visibility - hide for noise waveform
             if (PhaseDockPanel != null)
             {
-                PhaseDockPanel.Visibility = isNoise ? Visibility.Collapsed : Visibility.Visible;
-                LogMessage($"Setting PhaseDockPanel visibility to {(isNoise ? "Collapsed" : "Visible")} for waveform {waveform}");
+                PhaseDockPanel.Visibility = (isNoise || isDC) ? Visibility.Collapsed : Visibility.Visible;
             }
 
             // Handle fall time control visibility - hide for noise waveform (already handled for non-pulse waveforms)
@@ -2127,7 +2019,6 @@ namespace DG2072_USB_Control
             if (ChannelApplyButton != null)
             {
                 // Hide button for dual tone
-                // In the UpdateWaveformSpecificControls method
                 if (isDualTone)
                 {
                     // Hide main frequency controls when in dual tone mode
@@ -2140,22 +2031,6 @@ namespace DG2072_USB_Control
                     // Make sure dual tone controls are visible
                     if (DualToneGroupBox != null)
                         DualToneGroupBox.Visibility = Visibility.Visible;
-                }
-            }
-            if (FrequencyDockPanel != null && FrequencyPeriodModeToggle != null && PulseRateModeToggle != null)
-            {
-                if (FrequencyDockPanel.Visibility == Visibility.Collapsed &&
-                    PeriodDockPanel.Visibility == Visibility.Collapsed)
-                {
-                    FrequencyPeriodModeToggle.Visibility = Visibility.Collapsed;
-                    PulseRateModeToggle.Visibility = Visibility.Collapsed;
-                    LogMessage($"Setting toggle buttons visibility to Collapsed because both panels are hidden");
-                }
-                else
-                {
-                    FrequencyPeriodModeToggle.Visibility = Visibility.Visible;
-                    PulseRateModeToggle.Visibility = Visibility.Visible;
-                    LogMessage($"Setting toggle buttons visibility to Visible because at least one panel is visible");
                 }
             }
 
@@ -2226,7 +2101,6 @@ namespace DG2072_USB_Control
 
                 // Toggle buttons should be hidden for DC
                 if (FrequencyPeriodModeToggle != null) FrequencyPeriodModeToggle.Visibility = Visibility.Collapsed;
-                if (PulseRateModeToggle != null) PulseRateModeToggle.Visibility = Visibility.Collapsed;
 
                 // Amplitude should be hidden for DC
                 if (FindVisualParent<DockPanel>(ChannelAmplitudeTextBox) != null)
@@ -2271,29 +2145,44 @@ namespace DG2072_USB_Control
             if (!isConnected) return;
 
             string currentWaveform = ((ComboBoxItem)ChannelWaveformComboBox.SelectedItem).Content.ToString().ToUpper();
-            bool isNoise = (currentWaveform == "NOISE"); // Noise doesn't use frequency or period
-            bool isDualTone = (currentWaveform == "DUAL TONE"); // Dual tone uses its own controls
+            bool isNoise = (currentWaveform == "NOISE");
+            bool isDualTone = (currentWaveform == "DUAL TONE");
+            bool isDC = (currentWaveform == "DC");
 
-            // Hide main frequency controls if in dual tone mode
-            if (isDualTone)
+            // Hide frequency/period controls for waveforms that don't use them
+            if (isDualTone || isDC)
             {
                 FrequencyDockPanel.Visibility = Visibility.Collapsed;
                 PeriodDockPanel.Visibility = Visibility.Collapsed;
                 return;
             }
 
-            // Toggle visibility of panels based on selected mode for other waveforms
+            // For all other waveforms (including PULSE)
             if (_frequencyModeActive)
             {
-                // In Frequency mode, show frequency controls, hide period controls
+                // Show frequency, hide period
                 FrequencyDockPanel.Visibility = isNoise ? Visibility.Collapsed : Visibility.Visible;
                 PeriodDockPanel.Visibility = Visibility.Collapsed;
+
+                // Update the main frequency label
+                if (FrequencyDockPanel != null && FrequencyDockPanel.Children.Count > 0)
+                {
+                    var label = FrequencyDockPanel.Children[0] as Label;
+                    if (label != null) label.Content = "Frequency:";
+                }
             }
             else
             {
-                // In Period mode, show period controls, hide frequency controls
+                // Show period, hide frequency
                 FrequencyDockPanel.Visibility = Visibility.Collapsed;
                 PeriodDockPanel.Visibility = isNoise ? Visibility.Collapsed : Visibility.Visible;
+
+                // Update the period label
+                if (PeriodDockPanel != null && PeriodDockPanel.Children.Count > 0)
+                {
+                    var label = PeriodDockPanel.Children[0] as Label;
+                    if (label != null) label.Content = "Period:";
+                }
             }
         }
 
@@ -2306,47 +2195,93 @@ namespace DG2072_USB_Control
 
             try
             {
-                string currentWaveform = ((ComboBoxItem)ChannelWaveformComboBox.SelectedItem).Content.ToString().ToUpper();
-
                 if (_frequencyModeActive)
                 {
-                    // Calculate period from frequency
+                    // We're showing frequency, so calculate and store the period value
                     if (double.TryParse(ChannelFrequencyTextBox.Text, out double frequency))
                     {
-                        string freqUnit = Services.UnitConversionUtility.GetFrequencyUnit(ChannelFrequencyUnitComboBox);
-                        double freqInHz = frequency * Services.UnitConversionUtility.GetFrequencyMultiplier(freqUnit);
+                        string freqUnit = UnitConversionUtility.GetFrequencyUnit(ChannelFrequencyUnitComboBox);
+                        double freqInHz = frequency * UnitConversionUtility.GetFrequencyMultiplier(freqUnit);
 
                         if (freqInHz > 0)
                         {
                             double periodInSeconds = 1.0 / freqInHz;
 
-                            // Choose appropriate unit for displaying the period
-                            string periodUnit = Services.UnitConversionUtility.GetPeriodUnit(PulsePeriodUnitComboBox);
-                            double displayValue = Services.UnitConversionUtility.ConvertFromPicoSeconds(periodInSeconds * 1e12, periodUnit);
+                            // Auto-select appropriate time unit
+                            string[] timeUnits = { "ps", "ns", "µs", "ms", "s" };
+                            string bestUnit = "s";
+                            double bestValue = periodInSeconds;
 
-                            // Update the period TextBox with the calculated value
-                            PulsePeriod.Text = UnitConversionUtility.FormatWithMinimumDecimals(displayValue);
+                            // Find the best unit for display
+                            foreach (string unit in timeUnits)
+                            {
+                                double testValue = UnitConversionUtility.ConvertFromPicoSeconds(periodInSeconds * 1e12, unit);
+                                if (testValue >= 0.1 && testValue < 1000)
+                                {
+                                    bestUnit = unit;
+                                    bestValue = testValue;
+                                    break;
+                                }
+                            }
+
+                            // Update the period textbox and unit
+                            PulsePeriod.Text = UnitConversionUtility.FormatWithMinimumDecimals(bestValue);
+
+                            // Update the unit combo box
+                            for (int i = 0; i < PulsePeriodUnitComboBox.Items.Count; i++)
+                            {
+                                ComboBoxItem item = PulsePeriodUnitComboBox.Items[i] as ComboBoxItem;
+                                if (item != null && item.Content.ToString() == bestUnit)
+                                {
+                                    PulsePeriodUnitComboBox.SelectedIndex = i;
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
                 else
                 {
-                    // Calculate frequency from period
+                    // We're showing period, so calculate and store the frequency value
                     if (double.TryParse(PulsePeriod.Text, out double period))
                     {
-                        string periodUnit = Services.UnitConversionUtility.GetPeriodUnit(PulsePeriodUnitComboBox);
-                        double periodInSeconds = period * Services.UnitConversionUtility.GetPeriodMultiplier(periodUnit);
+                        string periodUnit = UnitConversionUtility.GetPeriodUnit(PulsePeriodUnitComboBox);
+                        double periodInSeconds = period * UnitConversionUtility.GetPeriodMultiplier(periodUnit);
 
                         if (periodInSeconds > 0)
                         {
                             double freqInHz = 1.0 / periodInSeconds;
 
-                            // Choose appropriate unit for displaying the frequency
-                            string freqUnit = Services.UnitConversionUtility.GetFrequencyUnit(ChannelFrequencyUnitComboBox);
-                            double displayValue = Services.UnitConversionUtility.ConvertFromMicroHz(freqInHz * 1e6, freqUnit);
+                            // Auto-select appropriate frequency unit
+                            string[] freqUnits = { "µHz", "mHz", "Hz", "kHz", "MHz" };
+                            string bestUnit = "Hz";
+                            double bestValue = freqInHz;
 
-                            // Update the frequency TextBox with the calculated value
-                            ChannelFrequencyTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(displayValue);
+                            // Find the best unit for display
+                            foreach (string unit in freqUnits)
+                            {
+                                double testValue = UnitConversionUtility.ConvertFromMicroHz(freqInHz * 1e6, unit);
+                                if (testValue >= 0.1 && testValue < 1000)
+                                {
+                                    bestUnit = unit;
+                                    bestValue = testValue;
+                                    break;
+                                }
+                            }
+
+                            // Update the frequency textbox and unit
+                            ChannelFrequencyTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(bestValue);
+
+                            // Update the unit combo box
+                            for (int i = 0; i < ChannelFrequencyUnitComboBox.Items.Count; i++)
+                            {
+                                ComboBoxItem item = ChannelFrequencyUnitComboBox.Items[i] as ComboBoxItem;
+                                if (item != null && item.Content.ToString() == bestUnit)
+                                {
+                                    ChannelFrequencyUnitComboBox.SelectedIndex = i;
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -2356,6 +2291,41 @@ namespace DG2072_USB_Control
                 LogMessage($"Error updating calculated rate value: {ex.Message}");
             }
         }
+
+
+        private void PulsePeriod_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!isConnected || _frequencyModeActive) return;
+
+            // When in period mode and user changes period, update the frequency
+            UpdateCalculatedRateValue();
+        }
+
+
+        private void PulsePeriod_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (double.TryParse(PulsePeriod.Text, out double period))
+            {
+                PulsePeriod.Text = UnitConversionUtility.FormatWithMinimumDecimals(period);
+
+                // Apply the period to the device if in period mode
+                if (!_frequencyModeActive)
+                {
+                    string periodUnit = UnitConversionUtility.GetPeriodUnit(PulsePeriodUnitComboBox);
+                    double periodInSeconds = period * UnitConversionUtility.GetPeriodMultiplier(periodUnit);
+
+                    // Convert to frequency for the device
+                    if (periodInSeconds > 0)
+                    {
+                        double freqInHz = 1.0 / periodInSeconds;
+                        rigolDG2072.SetFrequency(activeChannel, freqInHz);
+                        LogMessage($"Set frequency via period: {freqInHz} Hz (Period: {period} {periodUnit})");
+                    }
+                }
+            }
+        }
+
+
 
         private void AdjustFrequencyAndUnit(TextBox textBox, ComboBox unitComboBox)
         {
@@ -2596,128 +2566,6 @@ namespace DG2072_USB_Control
         #endregion
 
         #region Harmonics Event Handlers
-
-        private void AmplitudeModeChanged(object sender, RoutedEventArgs e)
-        {
-            // The event is defined in the XAML file to be handled by MainWindow
-            // Forward it to the HarmonicsUIController
-            if (_harmonicsUIController != null)
-            {
-                // Use reflection to call the method since it's private in HarmonicsUIController
-                typeof(HarmonicsUIController).GetMethod("AmplitudeModeChanged",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                    .Invoke(_harmonicsUIController, new object[] { sender, e });
-            }
-        }
-
-        private void HarmonicAmplitudeUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (_harmonicsUIController != null)
-            {
-                ComboBox comboBox = sender as ComboBox;
-                if (comboBox != null && int.TryParse(comboBox.Tag.ToString(), out int harmonicNumber))
-                {
-                    // Forward the event to the harmonics controller
-                    _harmonicsUIController.GetType().GetMethod("HarmonicAmplitudeUnitComboBox_SelectionChanged",
-                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                        ?.Invoke(_harmonicsUIController, new object[] { sender, e, harmonicNumber });
-                }
-            }
-        }
-
-        private void HarmonicCheckBox_Changed(object sender, RoutedEventArgs e)
-        {
-            if (_harmonicsUIController != null)
-            {
-                // Extract the harmonic number from the Tag property
-                CheckBox checkBox = sender as CheckBox;
-                if (checkBox != null && int.TryParse(checkBox.Tag.ToString(), out int harmonicNumber))
-                {
-                    // Use reflection to call the method
-                    typeof(HarmonicsUIController).GetMethod("HarmonicCheckBox_Changed",
-                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                        .Invoke(_harmonicsUIController, new object[] { sender, e, harmonicNumber });
-                }
-            }
-        }
-
-        private void HarmonicAmplitudeTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (_harmonicsUIController != null)
-            {
-                // Extract the harmonic number from the Tag property
-                TextBox textBox = sender as TextBox;
-                if (textBox != null && int.TryParse(textBox.Tag.ToString(), out int harmonicNumber))
-                {
-                    // Use reflection to call the method
-                    typeof(HarmonicsUIController).GetMethod("HarmonicAmplitudeTextBox_LostFocus",
-                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                        .Invoke(_harmonicsUIController, new object[] { sender, e, harmonicNumber });
-                }
-            }
-        }
-
-        private void HarmonicPhaseTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (_harmonicsUIController != null)
-            {
-                // Extract the harmonic number from the Tag property
-                TextBox textBox = sender as TextBox;
-                if (textBox != null && int.TryParse(textBox.Tag.ToString(), out int harmonicNumber))
-                {
-                    // Use reflection to call the method
-                    typeof(HarmonicsUIController).GetMethod("HarmonicPhaseTextBox_LostFocus",
-                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                        .Invoke(_harmonicsUIController, new object[] { sender, e, harmonicNumber });
-                }
-            }
-        }
-
-        private void RefreshHarmonicSettings()
-        {
-            if (_harmonicsUIController != null)
-            {
-                _harmonicsUIController.RefreshHarmonicSettings();
-            }
-        }
-
-        private void ResetHarmonicValues()
-        {
-            _harmonicsUIController?.ResetHarmonicValues();
-        }
-
-        private void SetHarmonicUIElementsState(bool enabled)
-        {
-            _harmonicsUIController?.SetHarmonicUIElementsState(enabled);
-        }
-
-        private void HarmonicsToggle_Click(object sender, RoutedEventArgs e)
-        {
-            if (!isConnected) return;
-
-            bool isEnabled = HarmonicsToggle.IsChecked == true;
-            HarmonicsToggle.Content = isEnabled ? "ENABLED" : "DISABLED";
-
-            try
-            {
-                if (isEnabled)
-                {
-                    // Enable harmonics on the device
-                    rigolDG2072.SetHarmonicState(activeChannel, true);
-                    LogMessage($"Harmonics enabled for Channel {activeChannel}");
-                }
-                else
-                {
-                    // Disable harmonics on the device
-                    rigolDG2072.SetHarmonicState(activeChannel, false);
-                    LogMessage($"Harmonics disabled for Channel {activeChannel}");
-                }
-            }
-            catch (Exception ex)
-            {
-                LogMessage($"Error toggling harmonics: {ex.Message}");
-            }
-        }
 
         #endregion
 

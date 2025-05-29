@@ -532,7 +532,7 @@ namespace DG2072_USB_Control.Modulation
             try
             {
                 // Get AM frequency
-                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:FREQUENCY?");
+                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:FREQ?");
                 if (double.TryParse(freqResponse, out double freq))
                 {
                     UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, freq);

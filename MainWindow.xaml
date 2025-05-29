@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <Window x:Class="DG2072_USB_Control.MainWindow"
+<Window x:Class="DG2072_USB_Control.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -866,22 +866,22 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                 <!-- Move your existing waveform controls here -->
                             </TabItem>
 
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
                             <TabItem Header="Modulation" x:Name="ModulationTab">
                                 <Grid Margin="10">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto" MinHeight="358"/>
+                                        <RowDefinition/>
                                     </Grid.RowDefinitions>
 
                                     <!-- Existing GroupBox stays in Row 0 -->
-                                    <GroupBox Header="Modulation Settings" Margin="10" Padding="10" Grid.Row="0">
+                                    <GroupBox Header="Modulation Settings" Margin="10,10,10,26" Padding="10" Grid.Row="0">
                                         <StackPanel Orientation="Vertical" Margin="5">
                                             <!-- Carrier Section -->
                                             <GroupBox Header="Carrier Settings" Margin="0,5">
@@ -904,8 +904,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                     <!-- Carrier waveform selector -->
                                                     <ComboBox x:Name="CarrierWaveformComboBox"
                                                                   Grid.Row="0" Grid.Column="1"
-                                                                  Grid.ColumnSpan="2"
-                                                                  Margin="0,5"
+                                                                  Margin="0,5,0,5"
                                                                   ToolTip="Select the waveform type used as the carrier signal. Recommended: Sine for standard modulation."
                                                                   SelectionChanged="CarrierWaveformComboBox_SelectionChanged">
                                                         <ComboBoxItem Content="Sine" IsSelected="True"/>
@@ -913,25 +912,15 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                         <ComboBoxItem Content="Ramp"/>
                                                         <ComboBoxItem Content="Pulse"/>
                                                         <ComboBoxItem Content="Arbitrary"/>
-                                                     </ComboBox>
-
-                                                    <!-- Modulating waveform selector -->
-                                                    <ComboBox x:Name="ModulatingWaveformComboBox"
-                                                                Loaded="ModulatingWaveformComboBox_Loaded"
-                                                                SelectionChanged="ModulatingWaveformComboBox_SelectionChanged">
-                                                        <ComboBoxItem>SINE</ComboBoxItem>
-                                                        <ComboBoxItem>TRIANGLE</ComboBoxItem>
-                                                        <ComboBoxItem>GAUSSIAN</ComboBoxItem>
-                                                        <!-- etcâ€¦ -->
                                                     </ComboBox>
 
 
                                                     <!-- Carrier Frequency -->
                                                     <TextBlock Text="Carrier Frequency:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
                                                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="0,5"
-                                                                ToolTip="Enter the carrier frequency. Typical range: 100 kHz â€“ 10 MHz. Default: 1 MHz.">
+                                                                ToolTip="Enter the carrier frequency. Typical range: 100 kHz to 10 MHz. Default: 1 MHz.">
                                                         <TextBox Width="100"
-                                                              Text="100"  x:Name="CarrierFrequencyTextBox"/>
+                                                              Text="100"  x:Name="CarrierFrequencyTextBox" TextAlignment="Right"/>
 
                                                         <ComboBox x:Name="CarrierFrequencyUnitComboBox" Width="70" 
                                                      Margin="5,0,0,0" 
@@ -984,7 +973,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
 
                                                     <!-- Modulation Depth -->
                                                     <TextBlock Text="Modulation Depth (%):" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
-                                                    <TextBox x:Name="ModulationDepthTextBox" Grid.Row="2" Grid.Column="1" Margin="0,5" Text="0.0"
+                                                    <TextBox x:Name="carrier" Grid.Row="2" Grid.Column="1" Margin="0,5,244,5" Text="25.0"
                                                             HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
                                                 </Grid>
                                             </GroupBox>
@@ -992,7 +981,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                     </GroupBox>
 
                                     <!-- Add inside the ModulationTab, after the Modulation Settings GroupBox -->
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="166,282,0,32" Width="260" RenderTransformOrigin="0.498,0.595">
                                         <Button x:Name="ApplyModulationButton" 
             Content="Apply Modulation" 
             Width="120" 

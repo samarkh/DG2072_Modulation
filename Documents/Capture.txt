@@ -1,275 +1,32 @@
-1.  viOpenDefaultRM (0x00001001)
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.4926      Call Duration 00:00:00.0180
-Status: 0 (VI_SUCCESS)
-
-2.  viOpen (0x00001001, "USB0::0x1AB1::0x0644::DG2P224100508::INSTR", 0 (0x0), 0 (0x0), 0x00000001)
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5116      Call Duration 00:00:00.0030
-Status: 0 (VI_SUCCESS)
-
-3.  viParseRsrcEx (0x00001001, "USB0::0x1AB1::0x0644::DG2P224100508::INSTR", 7 (0x7), 0 (0x0), "INSTR", NULL, NULL)
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5146      Call Duration 00:00:00.0009
-Status: 0 (VI_SUCCESS)
-
-4.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), ":SOUR1:FUNC?.", 13 (0xD), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5236      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-5.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SIN.", 1024 (0x400), 4 (0x4))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5236      Call Duration 00:00:00.0039
-Status: 0 (VI_SUCCESS)
-
-6.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FREQuency?.", 19 (0x13), 19 (0x13))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5606      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-7.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "1.000000E+03.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5606      Call Duration 00:00:00.0010
-Status: 0 (VI_SUCCESS)
-
-8.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:VOLTAGE?.", 17 (0x11), 17 (0x11))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5676      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-9.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "1.000000E+00.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5676      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-10.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:VOLTAGE:OFFSET?.", 24 (0x18), 24 (0x18))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5706      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-11.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "0.000000E+00.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5706      Call Duration 00:00:00.0010
-Status: 0 (VI_SUCCESS)
-
-12.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PHASE?.", 15 (0xF), 15 (0xF))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5736      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-13.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "0.000000E+00.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5736      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-14.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OUTPUT1?.", 9 (0x9), 9 (0x9))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5756      Call Duration 00:00:00.0010
-Status: 0 (VI_SUCCESS)
-
-15.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5766      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-16.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), ":SOUR1:FUNC?.", 13 (0xD), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5956      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-17.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SIN.", 1024 (0x400), 4 (0x4))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.5956      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-18.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FREQuency?.", 19 (0x13), 19 (0x13))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.6036      Call Duration 00:00:00.0009
-Status: 0 (VI_SUCCESS)
-
-19.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "1.000000E+03.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.6046      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-20.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:VOLTAGE?.", 17 (0x11), 17 (0x11))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.6076      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-21.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "1.000000E+00.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.6076      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-22.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:VOLTAGE:OFFSET?.", 24 (0x18), 24 (0x18))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.6086      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-23.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "0.000000E+00.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.6086      Call Duration 00:00:00.0010
-Status: 0 (VI_SUCCESS)
-
-24.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PHASE?.", 15 (0xF), 15 (0xF))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.6107      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-25.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "0.000000E+00.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.6107      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-26.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OUTPUT1?.", 9 (0x9), 9 (0x9))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.6136      Call Duration 00:00:00.0010
-Status: 0 (VI_SUCCESS)
-
-27.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:35.6146      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-28.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FREQuency 1000.", 23 (0x17), 23 (0x17))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:36.0786      Call Duration 00:00:00.0009
-Status: 0 (VI_SUCCESS)
-
-29.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:VOLTAGE 1.", 18 (0x12), 18 (0x12))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:36.1046      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-30.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:VOLTAGE:OFFSET 0.", 25 (0x19), 25 (0x19))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:36.1136      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-31.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PHASE 0.", 16 (0x10), 16 (0x10))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:36.1186      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-32.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:STATE?.", 18 (0x12), 18 (0x12))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:40.5169      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-33.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:40.5169      Call Duration 00:00:00.0008
-Status: 0 (VI_SUCCESS)
-
-34.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:FREQUENCY?.", 22 (0x16), 22 (0x16))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:40.6159      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-> 35.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), 0x000001B173404078, 1024 (0x400), 0 (0x0))
-> Process ID: 0x00004E94         Thread ID: 0x00002AE8
-> Start Time: 19:22:40.6159      Call Duration 00:00:02.0008
-> Status: 0xBFFF0015 (VI_ERROR_TMO)
-
-36.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DEPTH?.", 18 (0x12), 18 (0x12))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:42.6397      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-37.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "5.000000E+01.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:42.6397      Call Duration 00:00:00.0009
-Status: 0 (VI_SUCCESS)
-
-38.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:FUNCTION?.", 21 (0x15), 21 (0x15))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:42.6437      Call Duration 00:00:00.0008
-Status: 0 (VI_SUCCESS)
-
-> 39.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), 0x000001B1734409F8, 1024 (0x400), 0 (0x0))
-> Process ID: 0x00004E94         Thread ID: 0x00002AE8
-> Start Time: 19:22:42.6446      Call Duration 00:00:02.0005
-> Status: 0xBFFF0015 (VI_ERROR_TMO)
-
-40.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:STATE?.", 18 (0x12), 18 (0x12))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:44.6660      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-41.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:44.6660      Call Duration 00:00:00.0009
-Status: 0 (VI_SUCCESS)
-
-42.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:FREQUENCY?.", 22 (0x16), 22 (0x16))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:44.6689      Call Duration 00:00:00.0009
-Status: 0 (VI_SUCCESS)
-
-> 43.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), 0x000001B173490328, 1024 (0x400), 0 (0x0))
-> Process ID: 0x00004E94         Thread ID: 0x00002AE8
-> Start Time: 19:22:44.6699      Call Duration 00:00:02.0006
-> Status: 0xBFFF0015 (VI_ERROR_TMO)
-
-44.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DEPTH?.", 18 (0x12), 18 (0x12))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:46.6746      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-45.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "5.000000E+01.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:46.6746      Call Duration 00:00:00.0009
-Status: 0 (VI_SUCCESS)
-
-46.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:FUNCTION?.", 21 (0x15), 21 (0x15))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:46.6776      Call Duration 00:00:00.0009
-Status: 0 (VI_SUCCESS)
-
-> 47.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), 0x000001B1734C4270, 1024 (0x400), 0 (0x0))
-> Process ID: 0x00004E94         Thread ID: 0x00002AE8
-> Start Time: 19:22:46.6786      Call Duration 00:00:02.0006
-> Status: 0xBFFF0015 (VI_ERROR_TMO)
-
-48.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:STATE?.", 18 (0x12), 18 (0x12))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:48.6853      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-49.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:48.6853      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-50.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:FREQUENCY?.", 22 (0x16), 22 (0x16))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:48.6903      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-> 51.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), 0x000001B17350C1C8, 1024 (0x400), 0 (0x0))
-> Process ID: 0x00004E94         Thread ID: 0x00002AE8
-> Start Time: 19:22:48.6903      Call Duration 00:00:02.0017
-> Status: 0xBFFF0015 (VI_ERROR_TMO)
-
-52.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DEPTH?.", 18 (0x12), 18 (0x12))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:50.6951      Call Duration 00:00:00.0009
-Status: 0 (VI_SUCCESS)
-
-53.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "5.000000E+01.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:50.6961      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-54.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:FUNCTION?.", 21 (0x15), 21 (0x15))
-Process ID: 0x00004E94         Thread ID: 0x00002AE8
-Start Time: 19:22:50.6991      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-> 55.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), 0x000001B17353FD98, 1024 (0x400), 0 (0x0))
-> Process ID: 0x00004E94         Thread ID: 0x00002AE8
-> Start Time: 19:22:50.6991      Call Duration 00:00:02.0018
-> Status: 0xBFFF0015 (VI_ERROR_TMO)
-
+[13:33:02] Query: SOURCE1:AM:STATE?, Response: ON
+[13:33:02] Query: SOURCE1:AM:INT:FREQ?, Response: 5.000000E+02
+[13:33:02] Query: SOURCE1:AM:DEPTH?, Response: 0.000000E+00
+[13:33:02] Query: SOURCE1:AM:INT:FUNC?, Response: SIN
+[13:33:02] Query: SOURCE1:AM:STATE?, Response: ON
+[13:33:02] Query: SOURCE1:AM:INT:FREQ?, Response: 5.000000E+02
+[13:33:02] Query: SOURCE1:AM:DEPTH?, Response: 0.000000E+00
+[13:33:02] Query: SOURCE1:AM:INT:FUNC?, Response: SIN
+[13:33:02] Query: SOURCE1:AM:STATE?, Response: ON
+[13:33:02] Query: SOURCE1:AM:INT:FREQ?, Response: 5.000000E+02
+[13:33:02] Query: SOURCE1:AM:DEPTH?, Response: 0.000000E+00
+[13:33:02] Query: SOURCE1:AM:INT:FUNC?, Response: SIN
+[13:33:02] Modulation type changed to: AM
+[13:33:05] Query: SOURCE1:FREQuency?, Response: 2.000000E+03
+[13:33:05] Query: SOURCE1:VOLTAGE?, Response: 3.000000E+00
+[13:33:05] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
+[13:33:05] Query: SOURCE1:PHASE?, Response: 0.000000E+00
+[13:33:05] Command sent: SOURCE1:APPLY:SIN 2000,3,0,0
+[13:33:05] Command sent: SOURCE1:APPLY:SIN 2000,3,0,0
+[13:33:05] Command sent: SOURCE1:AM:STATE ON
+[13:33:05] Command sent: SOURCE1:AM:STATE ON
+[13:33:05] Command sent: SOURCE1:AM:SOURCE INT
+[13:33:05] Command sent: SOURCE1:AM:SOURCE INT
+[13:33:05] Command sent: SOURCE1:AM:INT:FUNC SINE
+[13:33:05] Command sent: SOURCE1:AM:INT:FUNC SINE
+[13:33:05] Command sent: SOURCE1:AM 0
+[13:33:05] Command sent: SOURCE1:AM 0
+[13:33:05] Command sent: SOURCE1:AM:INT:FREQ 500
+[13:33:05] Command sent: SOURCE1:AM:INT:FREQ 500
+[13:33:05] Command sent: SOURCE1:AM:DSSC OFF
+[13:33:05] Command sent: SOURCE1:AM:DSSC OFF
+[13:33:05] Applied AM modulation: Waveform=SINE, Freq=500Hz, Depth=0%

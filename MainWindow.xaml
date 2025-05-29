@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <Window x:Class="DG2072_USB_Control.MainWindow"
+<Window x:Class="DG2072_USB_Control.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -34,7 +34,7 @@
             <TabItem Header="Channel Controls">
                 <Grid Margin="10">
                     <!-- Channel Panel with Channel Toggle Button -->
-                    <Grid>
+                    <Grid Margin="0,11,0,-11">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" MinHeight="478"/>
                             <RowDefinition/>
@@ -94,7 +94,7 @@
                                                      Margin="5,0,0,0" 
                                                      SelectionChanged="ChannelFrequencyUnitComboBox_SelectionChanged" 
                                                      HorizontalAlignment="Left">
-                                                    <ComboBoxItem Content="ÂµHz"/>
+                                                    <ComboBoxItem Content="µHz"/>
                                                     <ComboBoxItem Content="mHz"/>
                                                     <ComboBoxItem Content="Hz" IsSelected="True"/>
                                                     <ComboBoxItem Content="kHz"/>
@@ -123,7 +123,7 @@
                                                     HorizontalAlignment="Left">
                                                     <ComboBoxItem Content="s"/>
                                                     <ComboBoxItem Content="ms" IsSelected="True"/>
-                                                    <ComboBoxItem Content="Âµs"/>
+                                                    <ComboBoxItem Content="µs"/>
                                                     <ComboBoxItem Content="ns"/>
                                                     <ComboBoxItem Content="ps"/>
                                                 </ComboBox>
@@ -479,7 +479,7 @@
                                                     </ComboBox>
                                                     <TextBox x:Name="Harmonic7PhaseTextBox" Grid.Column="4" Text="0.0" Margin="5,0" 
                                                          LostFocus="HarmonicPhaseTextBox_LostFocus" Tag="7"
-                                                         ToolTip="Set phase for 7th harmonic (0-360Â°)"/>
+                                                         ToolTip="Set phase for 7th harmonic (0-360°)"/>
                                                 </Grid>
 
 
@@ -866,22 +866,22 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                 <!-- Move your existing waveform controls here -->
                             </TabItem>
 
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
-<!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
+                            <!-- Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation Moodulation -->
                             <TabItem Header="Modulation" x:Name="ModulationTab">
                                 <Grid Margin="10">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto" MinHeight="386"/>
+                                        <RowDefinition/>
                                     </Grid.RowDefinitions>
 
                                     <!-- Existing GroupBox stays in Row 0 -->
-                                    <GroupBox Header="Modulation Settings" Margin="10" Padding="10" Grid.Row="0">
+                                    <GroupBox Header="Modulation Settings" Margin="10,10,10,26" Padding="10" Grid.Row="0" Grid.RowSpan="2">
                                         <StackPanel Orientation="Vertical" Margin="5">
                                             <!-- Carrier Section -->
                                             <GroupBox Header="Carrier Settings" Margin="0,5">
@@ -913,25 +913,14 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                         <ComboBoxItem Content="Ramp"/>
                                                         <ComboBoxItem Content="Pulse"/>
                                                         <ComboBoxItem Content="Arbitrary"/>
-                                                     </ComboBox>
-
-                                                    <!-- Modulating waveform selector -->
-                                                    <ComboBox x:Name="ModulatingWaveformComboBox"
-                                                                Loaded="ModulatingWaveformComboBox_Loaded"
-                                                                SelectionChanged="ModulatingWaveformComboBox_SelectionChanged">
-                                                        <ComboBoxItem>SINE</ComboBoxItem>
-                                                        <ComboBoxItem>TRIANGLE</ComboBoxItem>
-                                                        <ComboBoxItem>GAUSSIAN</ComboBoxItem>
-                                                        <!-- etcâ€¦ -->
                                                     </ComboBox>
-
 
                                                     <!-- Carrier Frequency -->
                                                     <TextBlock Text="Carrier Frequency:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
                                                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="0,5"
-                                                                ToolTip="Enter the carrier frequency. Typical range: 100 kHz â€“ 10 MHz. Default: 1 MHz.">
+                                                                ToolTip="Enter the carrier frequency. Typical range: 100 kHz to“ 10 MHz. Default: 1 MHz.">
                                                         <TextBox Width="100"
-                                                              Text="100"  x:Name="CarrierFrequencyTextBox"/>
+                                                              Text="100"  x:Name="CarrierFrequencyTextBox" TextAlignment="Right"/>
 
                                                         <ComboBox x:Name="CarrierFrequencyUnitComboBox" Width="70" 
                                                      Margin="5,0,0,0" 
@@ -958,58 +947,68 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                         <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
 
                                                     <!-- Modulation Type -->
                                                     <TextBlock Text="Modulation Type:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
                                                     <ComboBox x:Name="ModulationTypeComboBox" Grid.Row="0" Grid.Column="1" Margin="0,5"
-                                                              ToolTip="Choose the modulation method to apply to the carrier signal. Recommended: AM or FM for basic applications."
-                                                              SelectionChanged="ComboBox_SelectionChanged">
+																  ToolTip="Choose the modulation method to apply to the carrier signal. Recommended: AM or FM for basic applications."
+																  SelectionChanged="ComboBox_SelectionChanged">
+                                                    </ComboBox>
+
+                                                    <!-- Modulating Waveform -->
+                                                    <TextBlock Text="Modulating Waveform:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+                                                    <ComboBox x:Name="ModulatingWaveformComboBox" Grid.Row="1" Grid.Column="1" Margin="0,5"
+																  ToolTip="Select the waveform shape for the modulating signal"
+																  Loaded="ModulatingWaveformComboBox_Loaded"
+																  SelectionChanged="ModulatingWaveformComboBox_SelectionChanged">
                                                     </ComboBox>
 
                                                     <!-- Modulation Frequency -->
-                                                    <TextBlock Text="Frequency:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
-                                                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="0,5">
+                                                    <TextBlock Text="Frequency:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+                                                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Margin="0,5">
                                                         <TextBox x:Name="ModulationFrequencyTextBox" Width="100" Text="0.0" HorizontalContentAlignment="Right"
-                                                                VerticalContentAlignment="Center"/>
-
+																	VerticalContentAlignment="Center"/>
                                                         <ComboBox x:Name="ModulationFrequencyUnitComboBox"
-                                                                     Width="70"
-                                                                     Margin="5,0,0,0"
-                                                                     Loaded="ModulationFrequencyUnitComboBox_Loaded"
-                                                                     SelectionChanged="ModulationFrequencyUnitComboBox_SelectionChanged">
+																	 Width="70"
+																	 Margin="5,0,0,0"
+																	 Loaded="ModulationFrequencyUnitComboBox_Loaded"
+																	 SelectionChanged="ModulationFrequencyUnitComboBox_SelectionChanged">
                                                         </ComboBox>
-
                                                     </StackPanel>
 
                                                     <!-- Modulation Depth -->
-                                                    <TextBlock Text="Modulation Depth (%):" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
-                                                    <TextBox x:Name="ModulationDepthTextBox" Grid.Row="2" Grid.Column="1" Margin="0,5" Text="0.0"
-                                                            HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                                                    <TextBlock Text="Modulation Depth (%):" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+                                                    <TextBox x:Name="ModulationDepthTextBox" Grid.Row="3" Grid.Column="1" Margin="0,5,245,5" Text="25.0"
+																HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
                                                 </Grid>
                                             </GroupBox>
+
+
+
                                         </StackPanel>
                                     </GroupBox>
 
-                                    <!-- Add inside the ModulationTab, after the Modulation Settings GroupBox -->
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+                                    <!-- Modulation Buttons -->
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,331,0,17" Width="260">
                                         <Button x:Name="ApplyModulationButton" 
-            Content="Apply Modulation" 
-            Width="120" 
-            Height="30" 
-            Margin="5"
-            Click="ApplyModulationButton_Click"
-            Background="#FF4CAF50"
-            Foreground="White"/>
+											Content="Apply Modulation" 
+											Width="120" 
+											Height="30" 
+											Margin="5"
+											Click="ApplyModulationButton_Click"
+											Background="#FF4CAF50"
+											Foreground="White"/>
 
                                         <Button x:Name="DisableModulationButton" 
-            Content="Disable Modulation" 
-            Width="120" 
-            Height="30" 
-            Margin="5"
-            Click="DisableModulationButton_Click"
-            Background="#FFF44336"
-            Foreground="White"/>
+											Content="Disable Modulation" 
+											Width="120" 
+											Height="30" 
+											Margin="5"
+											Click="DisableModulationButton_Click"
+											Background="#FFF44336"
+											Foreground="White"/>
                                     </StackPanel>
 
 

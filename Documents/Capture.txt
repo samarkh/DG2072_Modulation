@@ -1,105 +1,174 @@
-[14:28:08] Auto-connecting to instrument...
-[14:28:08] Connected to USB0::0x1AB1::0x0644::DG2P224100508::INSTR
-[14:28:08] Connected to Rigol DG2072
-[14:28:08] Refreshing all instrument settings...
-[14:28:08] Query: :SOUR1:FUNC?, Response: SIN
-[14:28:09] Updating waveform selection - Device reports: SIN
-[14:28:09] Selected waveform: Sine
-[14:28:09] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
-[14:28:09] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
-[14:28:09] Setting PhaseDockPanel visibility to Visible for waveform SINE
-[14:28:09] Setting toggle buttons visibility to Visible because at least one panel is visible
-[14:28:09] Refreshed Sine parameters for CH1
-[14:28:09] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
-[14:28:09] Query: SOURCE1:VOLTAGE?, Response: 3.000000E+00
-[14:28:09] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
-[14:28:09] Query: SOURCE1:PHASE?, Response: 0.000000E+00
-[14:28:09] Query: OUTPUT1?, Response: ON
-[14:28:09] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
-[14:28:09] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
-[14:28:09] Setting PhaseDockPanel visibility to Visible for waveform SINE
-[14:28:09] Setting toggle buttons visibility to Visible because at least one panel is visible
-[14:28:09] Refreshed Channel 1 settings
-[14:28:09] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
-[14:28:09] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
-[14:28:09] Setting PhaseDockPanel visibility to Visible for waveform SINE
-[14:28:09] Setting toggle buttons visibility to Visible because at least one panel is visible
-[14:28:09] Instrument settings refreshed successfully
-[14:28:09] Refreshing all instrument settings...
-[14:28:09] Query: :SOUR1:FUNC?, Response: SIN
-[14:28:09] Updating waveform selection - Device reports: SIN
-[14:28:09] Selected waveform: Sine
-[14:28:09] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
-[14:28:09] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
-[14:28:09] Setting PhaseDockPanel visibility to Visible for waveform SINE
-[14:28:09] Setting toggle buttons visibility to Visible because at least one panel is visible
-[14:28:09] Refreshed Sine parameters for CH1
-[14:28:09] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
-[14:28:09] Query: SOURCE1:VOLTAGE?, Response: 3.000000E+00
-[14:28:09] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
-[14:28:09] Query: SOURCE1:PHASE?, Response: 0.000000E+00
-[14:28:09] Query: OUTPUT1?, Response: ON
-[14:28:09] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
-[14:28:09] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
-[14:28:09] Setting PhaseDockPanel visibility to Visible for waveform SINE
-[14:28:09] Setting toggle buttons visibility to Visible because at least one panel is visible
-[14:28:09] Refreshed Channel 1 settings
-[14:28:09] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
-[14:28:09] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
-[14:28:09] Setting PhaseDockPanel visibility to Visible for waveform SINE
-[14:28:09] Setting toggle buttons visibility to Visible because at least one panel is visible
-[14:28:09] Instrument settings refreshed successfully
-[14:28:09] Auto-connection successful
-[14:28:09] Command sent: SOURCE1:FREQuency 1000
-[14:28:09] Command sent: SOURCE1:FREQuency 1000
-[14:28:09] Set CH1 frequency to 1000 Hz using SOURCE:FREQuency command directly
-[14:28:09] Set CH1 frequency to 1000 Hz (1000 Hz)
-[14:28:09] Command sent: SOURCE1:VOLTAGE 3
-[14:28:09] Set CH1 amplitude to 3 Vpp (3 Vpp)
-[14:28:09] Command sent: SOURCE1:VOLTAGE:OFFSET 0
-[14:28:09] Set CH1 offset to 0 V (0 V)
-[14:28:09] Command sent: SOURCE1:PHASE 0
-[14:28:14] Query: SOURCE1:AM:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:FM:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:PM:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:PWM:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:ASK:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:FSK:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:PSK:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:AM:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:FM:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:PM:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:PWM:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:ASK:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:FSK:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:PSK:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:AM:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:FM:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:PM:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:PWM:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:ASK:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:FSK:STATE?, Response: OFF
-[14:28:15] Query: SOURCE1:PSK:STATE?, Response: OFF
-[14:28:15] Modulation type changed to: AM
-[14:28:24] Applying AM modulation:
-[14:28:24]   Carrier: SINE at 100000 Hz from UI
-[14:28:24]   Modulating: SINE at 500 Hz
-[14:28:24]   Depth: 25%
-[14:28:24] Query: SOURCE1:VOLTAGE?, Response: 3.000000E+00
-[14:28:24] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
-[14:28:24] Query: SOURCE1:PHASE?, Response: 0.000000E+00
-[14:28:24] Command sent: SOURCE1:APPLY:SIN 100000,3,0,0
-[14:28:24] Command sent: SOURCE1:APPLY:SIN 100000,3,0,0
-[14:28:24] Command sent: SOURCE1:AM:STATE ON
-[14:28:24] Command sent: SOURCE1:AM:STATE ON
-[14:28:24] Command sent: SOURCE1:AM:SOURCE INT
-[14:28:24] Command sent: SOURCE1:AM:SOURCE INT
-[14:28:24] Command sent: SOURCE1:AM:INT:FUNC SINE
-[14:28:24] Command sent: SOURCE1:AM:INT:FUNC SINE
-[14:28:24] Command sent: SOURCE1:AM 25
-[14:28:24] Command sent: SOURCE1:AM 25
-[14:28:24] Command sent: SOURCE1:AM:INT:FREQ 500
-[14:28:24] Command sent: SOURCE1:AM:INT:FREQ 500
-[14:28:24] Command sent: SOURCE1:AM:DSSC OFF
-[14:28:24] Command sent: SOURCE1:AM:DSSC OFF
-[14:28:24] Modulation applied successfully
+[16:38:16] Connected to USB0::0x1AB1::0x0644::DG2P224100508::INSTR
+[16:38:16] Connected to Rigol DG2072
+[16:38:16] Refreshing all instrument settings...
+[16:38:16] Query: :SOUR1:FUNC?, Response: SIN
+[16:38:16] Updating waveform selection - Device reports: SIN
+[16:38:16] Selected waveform: Sine
+[16:38:16] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:38:16] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:38:16] Setting PhaseDockPanel visibility to Visible for waveform SINE
+[16:38:16] Setting toggle buttons visibility to Visible because at least one panel is visible
+[16:38:16] Refreshed Sine parameters for CH1
+[16:38:16] Query: SOURCE1:FREQuency?, Response: 1.000000E+05
+[16:38:16] Command sent: SOURCE1:FREQuency 1000000
+[16:38:16] Command sent: SOURCE1:FREQuency 1000000
+[16:38:16] Set CH1 frequency to 1000000 Hz using SOURCE:FREQuency command directly
+[16:38:16] Set CH1 frequency to 1000 kHz (1000000 Hz)
+[16:38:16] Query: SOURCE1:VOLTAGE?, Response: 5.000000E+00
+[16:38:16] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
+[16:38:16] Query: SOURCE1:PHASE?, Response: 0.000000E+00
+[16:38:16] Query: OUTPUT1?, Response: ON
+[16:38:16] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:38:16] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:38:16] Setting PhaseDockPanel visibility to Visible for waveform SINE
+[16:38:16] Setting toggle buttons visibility to Visible because at least one panel is visible
+[16:38:16] Refreshed Channel 1 settings
+[16:38:16] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:38:16] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:38:16] Setting PhaseDockPanel visibility to Visible for waveform SINE
+[16:38:16] Setting toggle buttons visibility to Visible because at least one panel is visible
+[16:38:16] Instrument settings refreshed successfully
+[16:38:16] Refreshing all instrument settings...
+[16:38:16] Query: :SOUR1:FUNC?, Response: SIN
+[16:38:16] Updating waveform selection - Device reports: SIN
+[16:38:16] Selected waveform: Sine
+[16:38:16] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:38:16] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:38:16] Setting PhaseDockPanel visibility to Visible for waveform SINE
+[16:38:16] Setting toggle buttons visibility to Visible because at least one panel is visible
+[16:38:16] Refreshed Sine parameters for CH1
+[16:38:16] Query: SOURCE1:FREQuency?, Response: 1.000000E+06
+[16:38:16] Query: SOURCE1:VOLTAGE?, Response: 5.000000E+00
+[16:38:16] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
+[16:38:16] Query: SOURCE1:PHASE?, Response: 0.000000E+00
+[16:38:16] Query: OUTPUT1?, Response: ON
+[16:38:16] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:38:16] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:38:16] Setting PhaseDockPanel visibility to Visible for waveform SINE
+[16:38:16] Setting toggle buttons visibility to Visible because at least one panel is visible
+[16:38:16] Refreshed Channel 1 settings
+[16:38:16] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:38:16] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:38:16] Setting PhaseDockPanel visibility to Visible for waveform SINE
+[16:38:16] Setting toggle buttons visibility to Visible because at least one panel is visible
+[16:38:16] Instrument settings refreshed successfully
+[16:38:16] Auto-connection successful
+[16:38:16] Command sent: SOURCE1:VOLTAGE 5
+[16:38:16] Set CH1 amplitude to 5 Vpp (5 Vpp)
+[16:38:16] Command sent: SOURCE1:VOLTAGE:OFFSET 0
+[16:38:16] Set CH1 offset to 0 V (0 V)
+[16:38:16] Command sent: SOURCE1:PHASE 0
+[16:38:16] Command sent: SOURCE1:FREQuency 1000000
+[16:38:16] Command sent: SOURCE1:FREQuency 1000000
+[16:38:16] Set CH1 frequency to 1000000 Hz using SOURCE:FREQuency command directly
+[16:38:16] Set CH1 frequency to 1000 kHz (1000000 Hz)
+[16:39:11] Disconnected from the instrument
+[16:39:11] Disconnected from Rigol DG2072
+[16:39:14] Connected to USB0::0x1AB1::0x0644::DG2P224100508::INSTR
+[16:39:14] Connected to Rigol DG2072
+[16:39:14] Refreshing all instrument settings...
+[16:39:14] Query: :SOUR1:FUNC?, Response: SIN
+[16:39:14] Updating waveform selection - Device reports: SIN
+[16:39:14] Selected waveform: Sine
+[16:39:14] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:39:14] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:39:14] Setting PhaseDockPanel visibility to Visible for waveform SINE
+[16:39:14] Setting toggle buttons visibility to Visible because at least one panel is visible
+[16:39:14] Refreshed Sine parameters for CH1
+[16:39:14] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
+[16:39:14] Query: SOURCE1:VOLTAGE?, Response: 5.000000E+00
+[16:39:14] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
+[16:39:14] Query: SOURCE1:PHASE?, Response: 0.000000E+00
+[16:39:14] Query: OUTPUT1?, Response: OFF
+[16:39:14] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:39:14] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:39:14] Setting PhaseDockPanel visibility to Visible for waveform SINE
+[16:39:14] Setting toggle buttons visibility to Visible because at least one panel is visible
+[16:39:14] Refreshed Channel 1 settings
+[16:39:14] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:39:14] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:39:14] Setting PhaseDockPanel visibility to Visible for waveform SINE
+[16:39:14] Setting toggle buttons visibility to Visible because at least one panel is visible
+[16:39:14] Instrument settings refreshed successfully
+[16:39:14] Refreshing all instrument settings...
+[16:39:14] Query: :SOUR1:FUNC?, Response: SIN
+[16:39:14] Updating waveform selection - Device reports: SIN
+[16:39:14] Selected waveform: Sine
+[16:39:14] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:39:14] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:39:14] Setting PhaseDockPanel visibility to Visible for waveform SINE
+[16:39:14] Setting toggle buttons visibility to Visible because at least one panel is visible
+[16:39:14] Refreshed Sine parameters for CH1
+[16:39:14] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
+[16:39:14] Query: SOURCE1:VOLTAGE?, Response: 5.000000E+00
+[16:39:14] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
+[16:39:14] Query: SOURCE1:PHASE?, Response: 0.000000E+00
+[16:39:14] Query: OUTPUT1?, Response: OFF
+[16:39:14] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:39:14] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:39:14] Setting PhaseDockPanel visibility to Visible for waveform SINE
+[16:39:14] Setting toggle buttons visibility to Visible because at least one panel is visible
+[16:39:14] Refreshed Channel 1 settings
+[16:39:14] Setting FrequencyPeriodModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:39:14] Setting PulseRateModeToggle visibility to Visible and IsEnabled to True for waveform SINE
+[16:39:14] Setting PhaseDockPanel visibility to Visible for waveform SINE
+[16:39:14] Setting toggle buttons visibility to Visible because at least one panel is visible
+[16:39:14] Instrument settings refreshed successfully
+[16:39:14] Command sent: SOURCE1:FREQuency 1000
+[16:39:14] Command sent: SOURCE1:FREQuency 1000
+[16:39:14] Set CH1 frequency to 1000 Hz using SOURCE:FREQuency command directly
+[16:39:14] Set CH1 frequency to 1 kHz (1000 Hz)
+[16:39:19] Command sent: SOURCE1:VOLTAGE 3
+[16:39:19] Set CH1 amplitude to 3 Vpp (3 Vpp)
+[16:39:22] Command sent: OUTPUT1 ON
+[16:39:25] Query: SOURCE1:AM:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:FM:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:PM:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:PWM:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:ASK:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:FSK:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:PSK:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:AM:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:FM:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:PM:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:PWM:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:ASK:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:FSK:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:PSK:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:AM:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:FM:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:PM:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:PWM:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:ASK:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:FSK:STATE?, Response: OFF
+[16:39:25] Query: SOURCE1:PSK:STATE?, Response: OFF
+[16:39:25] Modulation type changed to: AM
+[16:39:34] Query: SOURCE1:AM:STATE?, Response: OFF
+[16:39:34] Query: SOURCE1:FM:STATE?, Response: OFF
+[16:39:34] Query: SOURCE1:PM:STATE?, Response: OFF
+[16:39:34] Query: SOURCE1:PWM:STATE?, Response: OFF
+[16:39:34] Query: SOURCE1:ASK:STATE?, Response: OFF
+[16:39:34] Query: SOURCE1:FSK:STATE?, Response: OFF
+[16:39:34] Query: SOURCE1:PSK:STATE?, Response: OFF
+[16:39:39] Applying AM modulation:
+[16:39:39]   Carrier: SINE at 100000 Hz from UI
+[16:39:39]   Modulating: UPRAMP at 500 Hz
+[16:39:39]   Depth: 25%
+[16:39:39] Query: SOURCE1:VOLTAGE?, Response: 3.000000E+00
+[16:39:39] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
+[16:39:39] Query: SOURCE1:PHASE?, Response: 0.000000E+00
+[16:39:39] Command sent: SOURCE1:APPLY:SIN 100000,3,0,0
+[16:39:39] Command sent: SOURCE1:APPLY:SIN 100000,3,0,0
+[16:39:39] Command sent: SOURCE1:AM:STATE ON
+[16:39:39] Command sent: SOURCE1:AM:STATE ON
+[16:39:39] Command sent: SOURCE1:AM:SOURCE INT
+[16:39:39] Command sent: SOURCE1:AM:SOURCE INT
+[16:39:39] Command sent: SOURCE1:AM:INT:FUNC UPRAMP
+[16:39:39] Command sent: SOURCE1:AM:INT:FUNC UPRAMP
+[16:39:39] Command sent: SOURCE1:AM 25
+[16:39:39] Command sent: SOURCE1:AM 25
+[16:39:39] Command sent: SOURCE1:AM:INT:FREQ 500
+[16:39:39] Command sent: SOURCE1:AM:INT:FREQ 500
+[16:39:39] Command sent: SOURCE1:AM:DSSC OFF
+[16:39:39] Command sent: SOURCE1:AM:DSSC OFF
+[16:39:39] Modulation applied successfully

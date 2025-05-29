@@ -162,7 +162,7 @@
 
                                         <!-- Phase DockPanel -->
                                         <DockPanel Margin="0,5">
-                                            <Label Content="Phase (Â°):" Width="100"/>
+                                            <Label Content="Phase (°):" Width="100"/>
                                             <TextBox x:Name="ChannelPhaseTextBox" Width="80" TextChanged="ChannelPhaseTextBox_TextChanged" LostFocus="ChannelPhaseTextBox_LostFocus" Text="0.0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left"/>
                                         </DockPanel>
 
@@ -211,7 +211,7 @@
                                                   HorizontalAlignment="Left">
                                                 <ComboBoxItem Content="s"/>
                                                 <ComboBoxItem Content="ms"/>
-                                                <ComboBoxItem Content="Âµs"/>
+                                                <ComboBoxItem Content="µs"/>
                                                 <ComboBoxItem Content="ns" IsSelected="True"/>
                                                 <ComboBoxItem Content="ps"/>
                                             </ComboBox>
@@ -231,7 +231,7 @@
                                                   HorizontalAlignment="Left">
                                                 <ComboBoxItem Content="s"/>
                                                 <ComboBoxItem Content="ms"/>
-                                                <ComboBoxItem Content="Âµs" IsSelected="True"/>
+                                                <ComboBoxItem Content="µs" IsSelected="True"/>
                                                 <ComboBoxItem Content="ns"/>
                                                 <ComboBoxItem Content="ps"/>
                                             </ComboBox>
@@ -253,7 +253,7 @@
                                               HorizontalAlignment="Left">
                                                 <ComboBoxItem Content="s"/>
                                                 <ComboBoxItem Content="ms"/>
-                                                <ComboBoxItem Content="Âµs"/>
+                                                <ComboBoxItem Content="µs"/>
                                                 <ComboBoxItem Content="ns" IsSelected="True"/>
                                                 <ComboBoxItem Content="ps"/>
                                             </ComboBox>
@@ -301,7 +301,7 @@
                                                     <TextBlock Text="Harmonic" Grid.Column="0" FontWeight="Bold"/>
                                                     <TextBlock Text="Enable" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Center"/>
                                                     <TextBlock x:Name="AmplitudeHeader" Text="Amplitude (%)" Grid.Column="2" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                                    <TextBlock Text="Phase (Â°)" Grid.Column="3" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                    <TextBlock Text="Phase (°)" Grid.Column="3" FontWeight="Bold" HorizontalAlignment="Center"/>
                                                 </Grid>
                                                 <!-- Individual Harmonics Start -->
                                                 <!-- Individual Harmonics Start -->
@@ -329,11 +329,11 @@
                                                               Tag="2" Visibility="{Binding ElementName=AmplitudeAbsoluteMode, Path=IsChecked, Converter={StaticResource BoolToVisConverter}}">
                                                         <ComboBoxItem Content="V" IsSelected="True"/>
                                                         <ComboBoxItem Content="mV"/>
-                                                        <ComboBoxItem Content="ÂµV"/>
+                                                        <ComboBoxItem Content="µV"/>
                                                     </ComboBox>
                                                     <TextBox x:Name="Harmonic2PhaseTextBox" Grid.Column="4" Text="0.0" Margin="5,0" 
                                                              LostFocus="HarmonicPhaseTextBox_LostFocus" Tag="2"
-                                                             ToolTip="Set phase for 2nd harmonic (0-360Â°)"/>
+                                                             ToolTip="Set phase for 2nd harmonic (0-360°)"/>
                                                 </Grid>
 
                                                 <!-- Harmonic 3 -->
@@ -358,11 +358,11 @@
                                                               Tag="3" Visibility="{Binding ElementName=AmplitudeAbsoluteMode, Path=IsChecked, Converter={StaticResource BoolToVisConverter}}">
                                                         <ComboBoxItem Content="V" IsSelected="True"/>
                                                         <ComboBoxItem Content="mV"/>
-                                                        <ComboBoxItem Content="ÂµV"/>
+                                                        <ComboBoxItem Content="µV"/>
                                                     </ComboBox>
                                                     <TextBox x:Name="Harmonic3PhaseTextBox" Grid.Column="4" Text="0.0" Margin="5,0" 
                                                              LostFocus="HarmonicPhaseTextBox_LostFocus" Tag="3"
-                                                             ToolTip="Set phase for 3rd harmonic (0-360Â°)"/>
+                                                             ToolTip="Set phase for 3rd harmonic (0-360°)"/>
                                                 </Grid>
 
                                                 <!-- Harmonic 4 -->
@@ -387,11 +387,11 @@
                                                               Tag="4" Visibility="{Binding ElementName=AmplitudeAbsoluteMode, Path=IsChecked, Converter={StaticResource BoolToVisConverter}}">
                                                         <ComboBoxItem Content="V" IsSelected="True"/>
                                                         <ComboBoxItem Content="mV"/>
-                                                        <ComboBoxItem Content="ÂµV"/>
+                                                        <ComboBoxItem Content="µV"/>
                                                     </ComboBox>
                                                     <TextBox x:Name="Harmonic4PhaseTextBox" Grid.Column="4" Text="0.0" Margin="5,0" 
                                                              LostFocus="HarmonicPhaseTextBox_LostFocus" Tag="4"
-                                                             ToolTip="Set phase for 4th harmonic (0-360Â°)"/>
+                                                             ToolTip="Set phase for 4th harmonic (0-360°)"/>
                                                 </Grid>
 
                                                 <!-- Repeat the same pattern for harmonics 5-8 -->
@@ -417,11 +417,11 @@
                                                           Tag="5" Visibility="{Binding ElementName=AmplitudeAbsoluteMode, Path=IsChecked, Converter={StaticResource BoolToVisConverter}}">
                                                         <ComboBoxItem Content="V" IsSelected="True"/>
                                                         <ComboBoxItem Content="mV"/>
-                                                        <ComboBoxItem Content="ÂµV"/>
+                                                        <ComboBoxItem Content="µV"/>
                                                     </ComboBox>
                                                     <TextBox x:Name="Harmonic5PhaseTextBox" Grid.Column="4" Text="0.0" Margin="5,0" 
                                                              LostFocus="HarmonicPhaseTextBox_LostFocus" Tag="5"
-                                                             ToolTip="Set phase for 5th harmonic (0-360Â°)"/>
+                                                             ToolTip="Set phase for 5th harmonic (0-360°)"/>
                                                 </Grid>
 
                                                 <!-- Harmonic 6 -->
@@ -446,11 +446,11 @@
                                                               Tag="6" Visibility="{Binding ElementName=AmplitudeAbsoluteMode, Path=IsChecked, Converter={StaticResource BoolToVisConverter}}">
                                                         <ComboBoxItem Content="V" IsSelected="True"/>
                                                         <ComboBoxItem Content="mV"/>
-                                                        <ComboBoxItem Content="ÂµV"/>
+                                                        <ComboBoxItem Content="µV"/>
                                                     </ComboBox>
                                                     <TextBox x:Name="Harmonic6PhaseTextBox" Grid.Column="4" Text="0.0" Margin="5,0" 
                                                              LostFocus="HarmonicPhaseTextBox_LostFocus" Tag="6"
-                                                             ToolTip="Set phase for 6th harmonic (0-360Â°)"/>
+                                                             ToolTip="Set phase for 6th harmonic (0-360°)"/>
                                                 </Grid>
 
                                                 <!-- Harmonic 7 -->
@@ -475,7 +475,7 @@
                                                               Tag="7" Visibility="{Binding ElementName=AmplitudeAbsoluteMode, Path=IsChecked, Converter={StaticResource BoolToVisConverter}}">
                                                         <ComboBoxItem Content="V" IsSelected="True"/>
                                                         <ComboBoxItem Content="mV"/>
-                                                        <ComboBoxItem Content="ÂµV"/>
+                                                        <ComboBoxItem Content="µV"/>
                                                     </ComboBox>
                                                     <TextBox x:Name="Harmonic7PhaseTextBox" Grid.Column="4" Text="0.0" Margin="5,0" 
                                                          LostFocus="HarmonicPhaseTextBox_LostFocus" Tag="7"
@@ -505,11 +505,11 @@
                                                           Tag="8" Visibility="{Binding ElementName=AmplitudeAbsoluteMode, Path=IsChecked, Converter={StaticResource BoolToVisConverter}}">
                                                         <ComboBoxItem Content="V" IsSelected="True"/>
                                                         <ComboBoxItem Content="mV"/>
-                                                        <ComboBoxItem Content="ÂµV"/>
+                                                        <ComboBoxItem Content="µV"/>
                                                     </ComboBox>
                                                     <TextBox x:Name="Harmonic8PhaseTextBox" Grid.Column="4" Text="0.0" Margin="5,0" 
                                                          LostFocus="HarmonicPhaseTextBox_LostFocus" Tag="8"
-                                                         ToolTip="Set phase for 8th harmonic (0-360Â°)"/>
+                                                         ToolTip="Set phase for 8th harmonic (0-360°)"/>
                                                 </Grid>
 
 
@@ -570,7 +570,7 @@
                                                       HorizontalAlignment="Left"
                                                       SelectionChanged="PrimaryFrequencyUnitComboBox_SelectionChanged"
                                                       ToolTip="Select the unit for the primary frequency">
-                                                            <ComboBoxItem Content="ÂµHz" ToolTip="Microhertz (10^-6 Hz)"/>
+                                                            <ComboBoxItem Content="µHz" ToolTip="Microhertz (10^-6 Hz)"/>
                                                             <ComboBoxItem Content="mHz" ToolTip="Millihertz (10^-3 Hz)"/>
                                                             <ComboBoxItem Content="Hz" IsSelected="True" ToolTip="Hertz (cycles per second)"/>
                                                             <ComboBoxItem Content="kHz" ToolTip="Kilohertz (10^3 Hz)"/>
@@ -615,7 +615,7 @@
                                                       HorizontalAlignment="Left"
                                                       SelectionChanged="SecondaryFrequencyUnitComboBox_SelectionChanged"
                                                       ToolTip="Select the unit for the secondary frequency">
-                                                            <ComboBoxItem Content="ÂµHz" ToolTip="Microhertz (10^-6 Hz)"/>
+                                                            <ComboBoxItem Content="µHz" ToolTip="Microhertz (10^-6 Hz)"/>
                                                             <ComboBoxItem Content="mHz" ToolTip="Millihertz (10^-3 Hz)"/>
                                                             <ComboBoxItem Content="Hz" IsSelected="True" ToolTip="Hertz (cycles per second)"/>
                                                             <ComboBoxItem Content="kHz" ToolTip="Kilohertz (10^3 Hz)"/>
@@ -641,7 +641,7 @@
                                                           HorizontalAlignment="Left"
                                                           SelectionChanged="CenterFrequencyUnitComboBox_SelectionChanged"
                                                           ToolTip="Select the unit for the center frequency">
-                                                            <ComboBoxItem Content="ÂµHz" ToolTip="Microhertz (10^-6 Hz)"/>
+                                                            <ComboBoxItem Content="µHz" ToolTip="Microhertz (10^-6 Hz)"/>
                                                             <ComboBoxItem Content="mHz" ToolTip="Millihertz (10^-3 Hz)"/>
                                                             <ComboBoxItem Content="Hz" IsSelected="True" ToolTip="Hertz (cycles per second)"/>
                                                             <ComboBoxItem Content="kHz" ToolTip="Kilohertz (10^3 Hz)"/>
@@ -664,7 +664,7 @@
                                                 HorizontalAlignment="Left"
                                                 SelectionChanged="OffsetFrequencyUnitComboBox_SelectionChanged"
                                                     ToolTip="Select the unit for the frequency offset">
-                                                            <ComboBoxItem Content="ÂµHz" ToolTip="Microhertz (10^-6 Hz)"/>
+                                                            <ComboBoxItem Content="µHz" ToolTip="Microhertz (10^-6 Hz)"/>
                                                             <ComboBoxItem Content="mHz" ToolTip="Millihertz (10^-3 Hz)"/>
                                                             <ComboBoxItem Content="Hz" IsSelected="True" ToolTip="Hertz (cycles per second)"/>
                                                             <ComboBoxItem Content="kHz" ToolTip="Kilohertz (10^3 Hz)"/>

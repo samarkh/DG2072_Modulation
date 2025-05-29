@@ -353,6 +353,25 @@ namespace DG2072_USB_Control.Modulation
                     modulationType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
                 }
 
+                // Get CARRIER frequency from the carrier frequency textbox (NOT from device)
+                double carrierFrequency = 100000; // Default 100kHz
+                if (_carrierFrequencyTextBox != null && double.TryParse(_carrierFrequencyTextBox.Text, out double carrierFreq))
+                {
+                    string unit = "Hz";
+                    if (_carrierFrequencyUnitComboBox?.SelectedItem != null)
+                    {
+                        unit = ((ComboBoxItem)_carrierFrequencyUnitComboBox.SelectedItem).Content.ToString();
+                    }
+                    carrierFrequency = carrierFreq * UnitConversionUtility.GetFrequencyMultiplier(unit);
+                }
+
+                // Get carrier waveform
+                string carrierWaveform = "SINE";
+                if (_carrierWaveformComboBox?.SelectedItem != null)
+                {
+                    carrierWaveform = ((ComboBoxItem)_carrierWaveformComboBox.SelectedItem).Content.ToString().ToUpper();
+                }
+
                 // Get modulating waveform
                 string modulatingWaveform = "SINE";
                 if (_modulatingWaveformComboBox?.SelectedItem != null)
@@ -361,15 +380,15 @@ namespace DG2072_USB_Control.Modulation
                 }
 
                 // Get modulation frequency
-                double modFrequency = 1000; // Default 1kHz
-                if (_modulationFrequencyTextBox != null && double.TryParse(_modulationFrequencyTextBox.Text, out double freq))
+                double modFrequency = 500; // Default 500Hz
+                if (_modulationFrequencyTextBox != null && double.TryParse(_modulationFrequencyTextBox.Text, out double modFreq))
                 {
                     string unit = "Hz";
                     if (_modulationFrequencyUnitComboBox?.SelectedItem != null)
                     {
                         unit = ((ComboBoxItem)_modulationFrequencyUnitComboBox.SelectedItem).Content.ToString();
                     }
-                    modFrequency = freq * UnitConversionUtility.GetFrequencyMultiplier(unit);
+                    modFrequency = modFreq * UnitConversionUtility.GetFrequencyMultiplier(unit);
                 }
 
                 // Get modulation depth
@@ -379,10 +398,17 @@ namespace DG2072_USB_Control.Modulation
                     modDepth = depth;
                 }
 
-                // Apply modulation based on type
-                ApplyModulationByType(modulationType, modulatingWaveform, modFrequency, modDepth);
+                // Log what we're applying
+                Log($"Applying {modulationType} modulation:");
+                Log($"  Carrier: {carrierWaveform} at {carrierFrequency} Hz from UI");
+                Log($"  Modulating: {modulatingWaveform} at {modFrequency} Hz");
+                Log($"  Depth: {modDepth}%");
 
-                Log($"Applied {modulationType} modulation: Waveform={modulatingWaveform}, Freq={modFrequency}Hz, Depth={modDepth}%");
+                // Apply modulation based on type - pass carrier frequency explicitly
+                ApplyModulationByType(modulationType, carrierWaveform, carrierFrequency,
+                                    modulatingWaveform, modFrequency, modDepth);
+
+                Log($"Modulation applied successfully");
             }
             catch (Exception ex)
             {
@@ -393,99 +419,114 @@ namespace DG2072_USB_Control.Modulation
         /// <summary>
         /// Apply specific modulation type to the device
         /// </summary>
-        private void ApplyModulationByType(string modulationType, string waveform, double frequency, double depth)
+        private void ApplyModulationByType(string modulationType, string carrierWaveform,
+                                    double carrierFrequency, string modulatingWaveform,
+                                    double modFrequency, double modDepth)
         {
-            // First, ensure carrier is set properly for all modulation types
-            double carrierFreq = _device.GetFrequency(_activeChannel);
+            // Get current amplitude, offset, and phase from device
             double carrierAmp = _device.GetAmplitude(_activeChannel);
             double carrierOffset = _device.GetOffset(_activeChannel);
             double carrierPhase = _device.GetPhase(_activeChannel);
+
+            // Map carrier waveform to SCPI command
+            string scpiCarrierWaveform = "SIN"; // Default
+            switch (carrierWaveform)
+            {
+                case "SINE": scpiCarrierWaveform = "SIN"; break;
+                case "SQUARE": scpiCarrierWaveform = "SQU"; break;
+                case "RAMP": scpiCarrierWaveform = "RAMP"; break;
+                case "PULSE": scpiCarrierWaveform = "PULS"; break;
+            }
 
             // Send SCPI commands based on modulation type
             switch (modulationType)
             {
                 case "AM":
-                    // Set carrier waveform first
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:SIN {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    // Set carrier waveform with the SPECIFIED frequency, not device frequency
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FUNC {waveform}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:AM {depth}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FREQ {frequency}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FUNC {modulatingWaveform}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:AM {modDepth}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FREQ {modFrequency}");
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:DSSC OFF");
                     break;
 
                 case "FM":
-                    // Set carrier waveform first
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:SIN {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FUNC {waveform}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FREQ {frequency}");
-                    // FM uses deviation instead of depth
-                    double deviation = carrierFreq * (depth / 100.0); // Simple calculation
+                    _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FUNC {modulatingWaveform}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FREQ {modFrequency}");
+                    double deviation = carrierFrequency * (modDepth / 100.0);
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:DEVIATION {deviation}");
                     break;
 
                 case "PM":
-                    // Set carrier waveform first
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:SIN {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FUNC {waveform}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FREQ {frequency}");
-                    double phaseDeviation = 180 * (depth / 100.0); // Convert to degrees
+                    _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FUNC {modulatingWaveform}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FREQ {modFrequency}");
+                    double phaseDeviation = 180 * (modDepth / 100.0); // Convert to degrees
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:DEVIATION {phaseDeviation}");
                     break;
 
                 case "PWM":
-                    // Ensure pulse waveform is set first
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:PULS {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    // PWM requires a pulse carrier
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:PULS {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:PWM:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:PWM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FUNC {waveform}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FREQ {frequency}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:DEVIATION {depth}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FUNC {modulatingWaveform}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FREQ {modFrequency}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:DEVIATION {modDepth}");
                     break;
 
                 case "ASK":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:SIN {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:ASK:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:ASK:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:ASK:RATE {frequency}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:ASK:AMPLITUDE {depth / 100.0}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:ASK:RATE {modFrequency}");
+                    // ASK amplitude is typically a factor (0-1) not percentage
+                    double askAmplitude = modDepth / 100.0;
+                    _device.SendCommand($"SOURCE{_activeChannel}:ASK:AMPLITUDE {askAmplitude}");
                     break;
 
                 case "FSK":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:SIN {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:FSK:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:FSK:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:FSK:RATE {frequency}");
-                    // FSK uses hop frequency
-                    double hopFreq = carrierFreq * 1.1; // 10% higher
+                    _device.SendCommand($"SOURCE{_activeChannel}:FSK:RATE {modFrequency}");
+                    // FSK uses hop frequency - calculate based on depth percentage
+                    double hopFreq = carrierFrequency * (1 + modDepth / 100.0); // e.g., 10% depth = 1.1x carrier
                     _device.SendCommand($"SOURCE{_activeChannel}:FSK:FREQUENCY {hopFreq}");
                     break;
 
                 case "PSK":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:SIN {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:PSK:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:PSK:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PSK:RATE {frequency}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PSK:PHASE {depth}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:PSK:RATE {modFrequency}");
+                    // PSK phase is in degrees - use depth directly as degrees
+                    _device.SendCommand($"SOURCE{_activeChannel}:PSK:PHASE {modDepth}");
+                    break;
+
+                default:
+                    Log($"Unknown modulation type: {modulationType}");
                     break;
             }
         }

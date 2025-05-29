@@ -829,7 +829,7 @@
                                                         <ComboBoxItem Content="mV"/>
                                                     </ComboBox>
                                                 </DockPanel>
-
+                                                <!-- to get Ohms press & hold ALT 234 on numeric keypad -->
                                                 <!-- Impedance Control -->
                                                 <DockPanel Margin="0,5">
                                                     <Label Content="Load Impedance:" Width="120" ToolTip="Set the output load impedance"/>
@@ -837,19 +837,19 @@
                                                       SelectionChanged="DCImpedanceComboBox_SelectionChanged"
                                                       HorizontalAlignment="Left">
                                                         <ComboBoxItem Content="High-Z"/>
-                                                        <ComboBoxItem Content="50Î©" IsSelected="True"/>
-                                                        <ComboBoxItem Content="75Î©"/>
-                                                        <ComboBoxItem Content="100Î©"/>
-                                                        <ComboBoxItem Content="150Î©"/>
-                                                        <ComboBoxItem Content="200Î©"/>
-                                                        <ComboBoxItem Content="300Î©"/>
-                                                        <ComboBoxItem Content="400Î©"/>
-                                                        <ComboBoxItem Content="500Î©"/>
-                                                        <ComboBoxItem Content="1kÎ©"/>
-                                                        <ComboBoxItem Content="2kÎ©"/>
-                                                        <ComboBoxItem Content="4kÎ©"/>
-                                                        <ComboBoxItem Content="8kÎ©"/>
-                                                        <ComboBoxItem Content="10kÎ©"/>
+                                                        <ComboBoxItem Content="50Ω" IsSelected="True"/>
+                                                        <ComboBoxItem Content="75Ω"/>
+                                                        <ComboBoxItem Content="100Ω"/>
+                                                        <ComboBoxItem Content="150Ω"/>
+                                                        <ComboBoxItem Content="200Ω"/>
+                                                        <ComboBoxItem Content="300Ω"/>
+                                                        <ComboBoxItem Content="400Ω"/>
+                                                        <ComboBoxItem Content="500Ω"/>
+                                                        <ComboBoxItem Content="1kΩ"/>
+                                                        <ComboBoxItem Content="2kΩ"/>
+                                                        <ComboBoxItem Content="4kΩ"/>
+                                                        <ComboBoxItem Content="8kΩ"/>
+                                                        <ComboBoxItem Content="10kΩ"/>
                                                     </ComboBox>
                                                 </DockPanel>
 

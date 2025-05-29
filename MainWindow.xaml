@@ -904,8 +904,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                     <!-- Carrier waveform selector -->
                                                     <ComboBox x:Name="CarrierWaveformComboBox"
                                                                   Grid.Row="0" Grid.Column="1"
-                                                                  Grid.ColumnSpan="2"
-                                                                  Margin="0,5"
+                                                                  Margin="0,5,0,5"
                                                                   ToolTip="Select the waveform type used as the carrier signal. Recommended: Sine for standard modulation."
                                                                   SelectionChanged="CarrierWaveformComboBox_SelectionChanged">
                                                         <ComboBoxItem Content="Sine" IsSelected="True"/>

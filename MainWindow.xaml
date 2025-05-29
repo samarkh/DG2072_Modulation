@@ -931,13 +931,13 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="0,5"
                                                                 ToolTip="Enter the carrier frequency. Typical range: 100 kHz â€“ 10 MHz. Default: 1 MHz.">
                                                         <TextBox Width="100"
-                                                              Text="{Binding CarrierFrequency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                       
-                                                <ComboBox x:Name="CarrierFrequencyUnitComboBox" Width="70" 
+                                                              Text="100"  x:Name="CarrierFrequencyTextBox"/>
+
+                                                        <ComboBox x:Name="CarrierFrequencyUnitComboBox" Width="70" 
                                                      Margin="5,0,0,0" 
                                                      SelectionChanged="CarrierFrequencyUnitComboBox_SelectionChanged" 
                                                      HorizontalAlignment="Left">
-                                                            <ComboBoxItem Content="ÂµHz"/>
+                                                            <ComboBoxItem Content="µHz"/>
                                                             <ComboBoxItem Content="mHz"/>
                                                             <ComboBoxItem Content="Hz" />
                                                             <ComboBoxItem Content="kHz" IsSelected="True"/>

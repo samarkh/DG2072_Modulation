@@ -92,6 +92,30 @@ namespace DG2072_USB_Control.Modulation
                     _modulationTypeComboBox.SelectedIndex = 0;
             }
 
+
+
+            if (_modulationFrequencyTextBox != null)
+            {
+                _modulationFrequencyTextBox.Text = "500";  // Default 500 Hz for modulating
+            }
+
+            if (_modulationFrequencyUnitComboBox != null)
+            {
+                // Select Hz as default unit
+                for (int i = 0; i < _modulationFrequencyUnitComboBox.Items.Count; i++)
+                {
+                    var item = _modulationFrequencyUnitComboBox.Items[i] as ComboBoxItem;
+                    if (item?.Content.ToString() == "Hz")
+                    {
+                        _modulationFrequencyUnitComboBox.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
+
+
+
             // Initialize frequency unit combo boxes
             InitializeFrequencyUnitComboBox(_modulationFrequencyUnitComboBox);
         }
@@ -122,8 +146,8 @@ namespace DG2072_USB_Control.Modulation
             // Update modulating waveform based on carrier
             UpdateModulatingWaveformFromCarrier(carrierWaveform);
 
-            // Copy carrier frequency to modulating frequency
-            CopyCarrierFrequencyToModulating();
+            // REMOVE OR COMMENT OUT THIS LINE:
+            // CopyCarrierFrequencyToModulating();  // Don't copy carrier freq to modulating!
 
             // Calculate and set modulating amplitude
             UpdateModulatingAmplitude();
@@ -371,45 +395,71 @@ namespace DG2072_USB_Control.Modulation
         /// </summary>
         private void ApplyModulationByType(string modulationType, string waveform, double frequency, double depth)
         {
+            // First, ensure carrier is set properly for all modulation types
+            double carrierFreq = _device.GetFrequency(_activeChannel);
+            double carrierAmp = _device.GetAmplitude(_activeChannel);
+            double carrierOffset = _device.GetOffset(_activeChannel);
+            double carrierPhase = _device.GetPhase(_activeChannel);
+
             // Send SCPI commands based on modulation type
             switch (modulationType)
             {
                 case "AM":
+                    // Set carrier waveform first
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:SIN {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    System.Threading.Thread.Sleep(100);
+
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:AM:FUNCTION {waveform}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:AM:FREQUENCY {frequency}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:AM:DEPTH {depth}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FUNC {waveform}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:AM {depth}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FREQ {frequency}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:AM:DSSC OFF");
                     break;
 
                 case "FM":
+                    // Set carrier waveform first
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:SIN {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    System.Threading.Thread.Sleep(100);
+
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:FM:FUNCTION {waveform}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:FM:FREQUENCY {frequency}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FUNC {waveform}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FREQ {frequency}");
                     // FM uses deviation instead of depth
-                    double deviation = frequency * (depth / 100.0); // Simple calculation
+                    double deviation = carrierFreq * (depth / 100.0); // Simple calculation
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:DEVIATION {deviation}");
                     break;
 
                 case "PM":
+                    // Set carrier waveform first
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:SIN {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    System.Threading.Thread.Sleep(100);
+
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PM:FUNCTION {waveform}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PM:FREQUENCY {frequency}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FUNC {waveform}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FREQ {frequency}");
                     double phaseDeviation = 180 * (depth / 100.0); // Convert to degrees
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:DEVIATION {phaseDeviation}");
                     break;
 
                 case "PWM":
+                    // Ensure pulse waveform is set first
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:PULS {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    System.Threading.Thread.Sleep(100);
+
                     _device.SendCommand($"SOURCE{_activeChannel}:PWM:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:PWM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:FUNCTION {waveform}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:FREQUENCY {frequency}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FUNC {waveform}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FREQ {frequency}");
                     _device.SendCommand($"SOURCE{_activeChannel}:PWM:DEVIATION {depth}");
                     break;
 
                 case "ASK":
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:SIN {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    System.Threading.Thread.Sleep(100);
+
                     _device.SendCommand($"SOURCE{_activeChannel}:ASK:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:ASK:SOURCE INT");
                     _device.SendCommand($"SOURCE{_activeChannel}:ASK:RATE {frequency}");
@@ -417,15 +467,21 @@ namespace DG2072_USB_Control.Modulation
                     break;
 
                 case "FSK":
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:SIN {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    System.Threading.Thread.Sleep(100);
+
                     _device.SendCommand($"SOURCE{_activeChannel}:FSK:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:FSK:SOURCE INT");
                     _device.SendCommand($"SOURCE{_activeChannel}:FSK:RATE {frequency}");
                     // FSK uses hop frequency
-                    double hopFreq = _device.GetFrequency(_activeChannel) * 1.1; // 10% higher
+                    double hopFreq = carrierFreq * 1.1; // 10% higher
                     _device.SendCommand($"SOURCE{_activeChannel}:FSK:FREQUENCY {hopFreq}");
                     break;
 
                 case "PSK":
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:SIN {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    System.Threading.Thread.Sleep(100);
+
                     _device.SendCommand($"SOURCE{_activeChannel}:PSK:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:PSK:SOURCE INT");
                     _device.SendCommand($"SOURCE{_activeChannel}:PSK:RATE {frequency}");
@@ -532,7 +588,7 @@ namespace DG2072_USB_Control.Modulation
             try
             {
                 // Get AM frequency
-                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:FREQ?");
+                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:INT:FREQ?");
                 if (double.TryParse(freqResponse, out double freq))
                 {
                     UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, freq);
@@ -547,7 +603,7 @@ namespace DG2072_USB_Control.Modulation
                 }
 
                 // Get AM function
-                string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:FUNCTION?");
+                string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:INT:FUNC?");
                 UpdateModulatingWaveformSelection(funcResponse.Trim());
             }
             catch (Exception ex)
@@ -564,7 +620,7 @@ namespace DG2072_USB_Control.Modulation
             try
             {
                 // Get FM frequency
-                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:FM:FREQUENCY?");
+                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:FM:INT:FREQ?");
                 if (double.TryParse(freqResponse, out double freq))
                 {
                     UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, freq);
@@ -582,7 +638,7 @@ namespace DG2072_USB_Control.Modulation
                 }
 
                 // Get FM function
-                string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:FM:FUNCTION?");
+                string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:FM:INT:FUNC?");
                 UpdateModulatingWaveformSelection(funcResponse.Trim());
             }
             catch (Exception ex)
@@ -599,7 +655,7 @@ namespace DG2072_USB_Control.Modulation
             try
             {
                 // Get PM frequency
-                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:PM:FREQUENCY?");
+                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:PM:INT:FREQ?");
                 if (double.TryParse(freqResponse, out double freq))
                 {
                     UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, freq);
@@ -616,7 +672,7 @@ namespace DG2072_USB_Control.Modulation
                 }
 
                 // Get PM function
-                string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:PM:FUNCTION?");
+                string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:PM:INT:FUNC?");
                 UpdateModulatingWaveformSelection(funcResponse.Trim());
             }
             catch (Exception ex)

@@ -21,10 +21,10 @@ namespace DG2072_USB_Control.Continuous.PulseGenerator
         private readonly ToggleButton _pulseRateModeToggle;
 
         // Update timers for debouncing
-        private DispatcherTimer _pulseWidthUpdateTimer;
+        //private DispatcherTimer _pulseWidthUpdateTimer;
         private DispatcherTimer _pulsePeriodUpdateTimer;
-        private DispatcherTimer _pulseRiseTimeUpdateTimer;
-        private DispatcherTimer _pulseFallTimeUpdateTimer;
+        //private DispatcherTimer _pulseRiseTimeUpdateTimer;
+        //private DispatcherTimer _pulseFallTimeUpdateTimer;
 
         // Mode flag
         private bool _frequencyModeActive = true;
@@ -453,28 +453,39 @@ namespace DG2072_USB_Control.Continuous.PulseGenerator
         /// <summary>
         /// Update the UI based on the selected pulse rate mode
         /// </summary>
+        /// 
         public void UpdatePulseRateMode()
         {
             if (!IsDeviceConnected()) return;
 
-            // Toggle visibility of panels based on selected mode
-            if (_frequencyModeActive)
-            {
-                // In Frequency mode, show frequency controls, hide period controls
-                if (_pulseWidthDockPanel != null)
-                    _pulseWidthDockPanel.Visibility = Visibility.Visible;
-                if (_pulsePeriodDockPanel != null)
-                    _pulsePeriodDockPanel.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                // In Period mode, show period controls, hide frequency controls
-                if (_pulseWidthDockPanel != null)
-                    _pulseWidthDockPanel.Visibility = Visibility.Collapsed;
-                if (_pulsePeriodDockPanel != null)
-                    _pulsePeriodDockPanel.Visibility = Visibility.Visible;
-            }
+            // Use the shared _frequencyModeActive from MainWindow
+            // The visibility is already handled by MainWindow.UpdateWaveformSpecificControls
         }
+
+        //public void UpdatePulseRateMode()
+        //{
+        //    if (!IsDeviceConnected()) return;
+
+        //    // Toggle visibility of panels based on selected mode
+        //    if (_frequencyModeActive)
+        //    {
+        //        // In Frequency mode, show frequency controls, hide period controls
+        //        if (_pulseWidthDockPanel != null)
+        //            _pulseWidthDockPanel.Visibility = Visibility.Visible;
+        //        if (_pulsePeriodDockPanel != null)
+        //            _pulsePeriodDockPanel.Visibility = Visibility.Collapsed;
+        //    }
+        //    else
+        //    {
+        //        // In Period mode, show period controls, hide frequency controls
+        //        if (_pulseWidthDockPanel != null)
+        //            _pulseWidthDockPanel.Visibility = Visibility.Collapsed;
+        //        if (_pulsePeriodDockPanel != null)
+        //            _pulsePeriodDockPanel.Visibility = Visibility.Visible;
+        //    }
+        //}
+
+
 
         /// <summary>
         /// Update visibilities for pulse-specific UI elements

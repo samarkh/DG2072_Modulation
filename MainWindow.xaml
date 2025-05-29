@@ -75,25 +75,25 @@
                                         <!-- Combined Mode/Frequency/Period Controls in a single row with Mode toggle at the end -->
                                         <Grid Margin="0,5" Width="580" HorizontalAlignment="Left">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="*"/>
                                                 <!-- For Frequency/Period controls -->
-                                                <ColumnDefinition Width="Auto" MinWidth="289"/>
+                                                <ColumnDefinition Width="Auto" MinWidth="110"/>
                                                 <!-- For Mode toggle -->
                                             </Grid.ColumnDefinitions>
 
-                                            <!-- Frequency Controls in first column -->
+                                            <!-- Frequency Controls in first column (visible by default) -->
                                             <DockPanel x:Name="FrequencyDockPanel" Grid.Column="0" HorizontalAlignment="Left" Width="275">
                                                 <Label Content="Frequency:" Width="100"/>
                                                 <TextBox x:Name="ChannelFrequencyTextBox" Width="100" 
-                                                    TextChanged="ChannelFrequencyTextBox_TextChanged" 
-                                                    LostFocus="ChannelFrequencyTextBox_LostFocus" 
-                                                    Text="1000.0" 
-                                                    HorizontalContentAlignment="Right" 
-                                                    VerticalContentAlignment="Center"/>
+                TextChanged="ChannelFrequencyTextBox_TextChanged" 
+                LostFocus="ChannelFrequencyTextBox_LostFocus" 
+                Text="1000.0" 
+                HorizontalContentAlignment="Right" 
+                VerticalContentAlignment="Center"/>
                                                 <ComboBox x:Name="ChannelFrequencyUnitComboBox" Width="70" 
-                                                     Margin="5,0,0,0" 
-                                                     SelectionChanged="ChannelFrequencyUnitComboBox_SelectionChanged" 
-                                                     HorizontalAlignment="Left">
+                 Margin="5,0,0,0" 
+                 SelectionChanged="ChannelFrequencyUnitComboBox_SelectionChanged" 
+                 HorizontalAlignment="Left">
                                                     <ComboBoxItem Content="µHz"/>
                                                     <ComboBoxItem Content="mHz"/>
                                                     <ComboBoxItem Content="Hz" IsSelected="True"/>
@@ -102,25 +102,19 @@
                                                 </ComboBox>
                                             </DockPanel>
 
-                                            <!-- Mode Toggle in second column -->
-                                            <DockPanel x:Name="PulseRateModeDockPanel" Grid.Column="1" Visibility="Visible">
-                                                <ToggleButton x:Name="FrequencyPeriodModeToggle" Content="To Period" Width="100" 
-                                                 Click="FrequencyPeriodModeToggle_Click" IsChecked="True" HorizontalAlignment="Left"/>
-                                            </DockPanel>
-
-                                            <!-- Period Controls in first column (shares column with Frequency) -->
-                                            <DockPanel x:Name="PeriodDockPanel" Grid.Column="0" Margin="0,0,10,0" Visibility="Collapsed">
+                                            <!-- Period Controls in first column (hidden by default, shares space with Frequency) -->
+                                            <DockPanel x:Name="PeriodDockPanel" Grid.Column="0" HorizontalAlignment="Left" Width="275" Visibility="Collapsed">
                                                 <Label Content="Period:" Width="100"/>
                                                 <TextBox x:Name="PulsePeriod" Width="100" 
-                                                    TextChanged="ChannelPulsePeriodTextBox_TextChanged" 
-                                                    LostFocus="ChannelPulsePeriodTextBox_LostFocus" 
-                                                    Text="1" 
-                                                    VerticalContentAlignment="Center" 
-                                                    HorizontalContentAlignment="Right"/>
+                TextChanged="ChannelPulsePeriodTextBox_TextChanged" 
+                LostFocus="ChannelPulsePeriodTextBox_LostFocus" 
+                Text="1" 
+                VerticalContentAlignment="Center" 
+                HorizontalContentAlignment="Right"/>
                                                 <ComboBox x:Name="PulsePeriodUnitComboBox" Width="70" 
-                                                    Margin="5,0,0,0" 
-                                                    SelectionChanged="PulsePeriodUnitComboBox_SelectionChanged" 
-                                                    HorizontalAlignment="Left">
+                Margin="5,0,0,0" 
+                SelectionChanged="PulsePeriodUnitComboBox_SelectionChanged" 
+                HorizontalAlignment="Left">
                                                     <ComboBoxItem Content="s"/>
                                                     <ComboBoxItem Content="ms" IsSelected="True"/>
                                                     <ComboBoxItem Content="µs"/>
@@ -129,11 +123,15 @@
                                                 </ComboBox>
                                             </DockPanel>
 
-                                            <!-- Mode Toggle in second column -->
-                                            <DockPanel x:Name="PulseRateModeDockPanel_" Grid.Column="1" Visibility="Visible">
-
-                                                <ToggleButton x:Name="PulseRateModeToggle" Content="To Period" Width="100" 
-                                             Click="PulseRateModeToggle_Click" IsChecked="True" HorizontalAlignment="Left"/>
+                                            <!-- Mode Toggle Button in second column -->
+                                            <DockPanel x:Name="FrequencyPeriodToggleDockPanel" Grid.Column="1" HorizontalAlignment="Left">
+                                                <ToggleButton x:Name="FrequencyPeriodModeToggle" 
+                     Content="To Period" 
+                     Width="100" 
+                     Click="FrequencyPeriodModeToggle_Click" 
+                     IsChecked="True" 
+                     HorizontalAlignment="Left"
+                     ToolTip="Toggle between frequency and period display modes"/>
                                             </DockPanel>
                                         </Grid>
 
@@ -258,6 +256,7 @@
                                                 <ComboBoxItem Content="ps"/>
                                             </ComboBox>
                                         </DockPanel>
+                                        
                                         <Button x:Name="ChannelApplyButton" Content="Apply Settings" Click="ChannelApplyButton_Click" Height="24" Width="120"/>
 
 

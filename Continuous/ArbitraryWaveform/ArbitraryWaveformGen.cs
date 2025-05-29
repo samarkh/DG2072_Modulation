@@ -130,7 +130,7 @@ namespace DG2072_USB_Control.Continuous.ArbitraryWaveform
             if (textBox == null || !double.TryParse(textBox.Text, out double value)) return;
 
             // Determine which parameter is being changed
-            DispatcherTimer timer = null;
+            //DispatcherTimer timer = null;
 
             if (textBox == _param1TextBox)
             {

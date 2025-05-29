@@ -32,9 +32,9 @@ namespace DG2072_USB_Control.Modulation
         // Available modulation types
         private readonly Dictionary<string, string[]> _modulationTypes = new Dictionary<string, string[]>
         {
-            { "AM", new[] { "Amplitude Modulation" } },
-            { "FM", new[] { "Frequency Modulation" } },
-            { "PM", new[] { "Phase Modulation" } },
+            { "AM",  new[] { "Amplitude Modulation" } },
+            { "FM",  new[] { "Frequency Modulation" } },
+            { "PM",  new[] { "Phase Modulation" } },
             { "PWM", new[] { "Pulse Width Modulation" } },
             { "ASK", new[] { "Amplitude Shift Keying" } },
             { "FSK", new[] { "Frequency Shift Keying" } },
@@ -44,13 +44,13 @@ namespace DG2072_USB_Control.Modulation
         // Modulating waveforms for different modulation types
         private readonly Dictionary<string, string[]> _modulatingWaveforms = new Dictionary<string, string[]>
         {
-            { "AM", new[] { "SINE", "SQUARE", "TRIANGLE", "UPRAMP", "DNRAMP", "NOISE", "ARB" } },
-            { "FM", new[] { "SINE", "SQUARE", "TRIANGLE", "UPRAMP", "DNRAMP", "NOISE", "ARB" } },
-            { "PM", new[] { "SINE", "SQUARE", "TRIANGLE", "UPRAMP", "DNRAMP", "NOISE", "ARB" } },
-            { "PWM", new[] { "SINE", "SQUARE", "TRIANGLE", "UPRAMP", "DNRAMP", "NOISE", "ARB" } },
-            { "ASK", new[] { "SQUARE" } },
-            { "FSK", new[] { "SQUARE" } },
-            { "PSK", new[] { "SQUARE" } }
+            { "AM",  new[] { "Sine", "Square", "Triangle", "Up Ramp", "Down Ramp", "Noise", "Arbitrary Waveform" } },
+            { "FM",  new[] { "Sine", "Square", "Triangle", "Up Ramp", "Down Ramp", "Noise", "Arbitrary Waveform" } },
+            { "PM",  new[] { "Sine", "Square", "Triangle", "Up Ramp", "Down Ramp", "Noise", "Arbitrary Waveform" } },
+            { "PWM", new[] { "Sine", "Square", "Triangle", "Up Ramp", "Down Ramp", "Noise", "Arbitrary Waveform" } },
+            { "ASK", new[] { "Square" } },
+            { "FSK", new[] { "Square" } },
+            { "PSK", new[] { "Square" } }
         };
 
         public ModulationManager(RigolDG2072 device, int channel, Window mainWindow)
@@ -206,7 +206,7 @@ namespace DG2072_USB_Control.Modulation
 
                     // Select the matching waveform
                     if (waveform == modulatingWaveform ||
-                        (modulatingWaveform == "RAMP" && (waveform == "TRIANGLE" || waveform == "UPRAMP")))
+                        (modulatingWaveform == "RAMP" && (waveform == "TRIANGLE" || waveform == "Up Ramp")))
                     {
                         _modulatingWaveformComboBox.SelectedItem = item;
                     }
@@ -417,6 +417,24 @@ namespace DG2072_USB_Control.Modulation
         }
 
         /// <summary>
+        /// Map modulating waveform UI name to SCPI command
+        /// </summary>
+        private string MapModulatingWaveformToScpi(string uiWaveform)
+        {
+            switch (uiWaveform.ToUpper())
+            {
+                case "SINE": return "SIN";
+                case "SQUARE": return "SQU";
+                case "TRIANGLE": return "TRI";
+                case "UP RAMP": return "RAMP";
+                case "DOWN RAMP": return "NRAM";
+                case "NOISE": return "NOIS";
+                case "ARB": return "ARB";
+                default: return uiWaveform;
+            }
+        }
+
+        /// <summary>
         /// Apply specific modulation type to the device
         /// </summary>
         private void ApplyModulationByType(string modulationType, string carrierWaveform,
@@ -438,6 +456,9 @@ namespace DG2072_USB_Control.Modulation
                 case "PULSE": scpiCarrierWaveform = "PULS"; break;
             }
 
+            // Map modulating waveform to SCPI command
+            string scpiModulatingWaveform = MapModulatingWaveformToScpi(modulatingWaveform);
+
             // Send SCPI commands based on modulation type
             switch (modulationType)
             {
@@ -448,7 +469,7 @@ namespace DG2072_USB_Control.Modulation
 
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FUNC {modulatingWaveform}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FUNC {scpiModulatingWaveform}");
                     _device.SendCommand($"SOURCE{_activeChannel}:AM {modDepth}");
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FREQ {modFrequency}");
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:DSSC OFF");
@@ -460,7 +481,7 @@ namespace DG2072_USB_Control.Modulation
 
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FUNC {modulatingWaveform}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FUNC {scpiModulatingWaveform}");
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FREQ {modFrequency}");
                     double deviation = carrierFrequency * (modDepth / 100.0);
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:DEVIATION {deviation}");
@@ -472,7 +493,7 @@ namespace DG2072_USB_Control.Modulation
 
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FUNC {modulatingWaveform}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FUNC {scpiModulatingWaveform}");
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FREQ {modFrequency}");
                     double phaseDeviation = 180 * (modDepth / 100.0); // Convert to degrees
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:DEVIATION {phaseDeviation}");
@@ -485,7 +506,7 @@ namespace DG2072_USB_Control.Modulation
 
                     _device.SendCommand($"SOURCE{_activeChannel}:PWM:STATE ON");
                     _device.SendCommand($"SOURCE{_activeChannel}:PWM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FUNC {modulatingWaveform}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FUNC {scpiModulatingWaveform}");
                     _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FREQ {modFrequency}");
                     _device.SendCommand($"SOURCE{_activeChannel}:PWM:DEVIATION {modDepth}");
                     break;

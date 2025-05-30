@@ -73,6 +73,7 @@ namespace DG2072_USB_Control
         //private HarmonicsManager _harmonicsManager;
         //private HarmonicsUIController _harmonicsUIController;
 
+
         // Dual Tone management
         private DualToneGen dualToneGen;
 
@@ -938,6 +939,9 @@ namespace DG2072_USB_Control
             FrequencyPeriodModeToggle.IsChecked = true;
             FrequencyPeriodModeToggle.Content = "To Period";
 
+            // Initialize the frequency/period converter
+            InitializeFrequencyPeriodConverter();
+
             // Initialize the pulse generator after UI references are set up
             pulseGenerator = new PulseGen(rigolDG2072, activeChannel, this);
             pulseGenerator.LogEvent += (s, message) => LogMessage(message);
@@ -1026,10 +1030,10 @@ namespace DG2072_USB_Control
         }
 
         // Rename the event handler to reflect its more general purpose
-        private void FrequencyPeriodModeToggle_Click(object sender, RoutedEventArgs e)
-        {
-            frequencyPeriodConverter?.ToggleMode();
-        }
+        //private void FrequencyPeriodModeToggle_Click(object sender, RoutedEventArgs e)
+        //{
+        //    frequencyPeriodConverter?.ToggleMode();
+        //}
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -1859,7 +1863,35 @@ namespace DG2072_USB_Control
         #endregion
 
 
-    #region To Period - To Frequency Toggle Handlers
+        #region To Period - To Frequency Toggle Handlers
+
+
+        private void FrequencyPeriodModeToggle_Click(object sender, RoutedEventArgs e)
+        {
+            if (frequencyPeriodConverter != null)
+            {
+                frequencyPeriodConverter.ToggleMode();
+
+                // Synchronize with local state
+                _frequencyModeActive = frequencyPeriodConverter.IsFrequencyMode;
+
+                // Update dependent components
+                if (pulseGenerator != null)
+                {
+                    pulseGenerator.SetFrequencyMode(_frequencyModeActive);
+                }
+
+                // Update UI based on current waveform
+                string currentWaveform = ((ComboBoxItem)ChannelWaveformComboBox.SelectedItem)?.Content.ToString().ToUpper();
+                UpdateWaveformSpecificControls(currentWaveform);
+            }
+            else
+            {
+                // Fallback if converter not initialized
+                LogMessage("Warning: FrequencyPeriodConverter not initialized");
+            }
+        }
+
 
 
         private void ChannelPulsePeriodTextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -1906,11 +1938,14 @@ namespace DG2072_USB_Control
             }
         }
 
+
+
+
         #endregion
 
 
 
-    #region Unit Selection Handlers
+        #region Unit Selection Handlers
 
 
         private void ChannelFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -42,6 +42,7 @@ namespace DG2072_USB_Control
         private DispatcherTimer _autoRefreshTimer;
         private bool _autoRefreshEnabled = false;
         private CheckBox AutoRefreshCheckBox;
+        private FrequencyPeriodConverter frequencyPeriodConverter;
 
         // Update timers
         private DispatcherTimer _frequencyUpdateTimer;
@@ -114,12 +115,29 @@ namespace DG2072_USB_Control
             InitializeAutoRefresh();
         }
 
-    //**************** Regions
-    //**************** Regions
-    //**************** Regions
+        private void InitializeFrequencyPeriodConverter()
+        {
+            frequencyPeriodConverter = new FrequencyPeriodConverter(
+                FrequencyDockPanel,
+                PeriodDockPanel,
+                ChannelFrequencyTextBox,
+                PulsePeriod, // Should be renamed to ChannelPeriodTextBox
+                ChannelFrequencyUnitComboBox,
+                PulsePeriodUnitComboBox, // Should be renamed to ChannelPeriodUnitComboBox
+                FrequencyPeriodModeToggle
+            );
+
+            frequencyPeriodConverter.LogEvent += (s, msg) => LogMessage(msg);
+        }
 
 
-    #region Channel Toggle Methods
+
+        //**************** Regions
+        //**************** Regions
+        //**************** Regions
+
+
+        #region Channel Toggle Methods
 
         // Update the channel toggle method to update the pulse generator's active channel
         // Alternative approach with helper method
@@ -1010,17 +1028,7 @@ namespace DG2072_USB_Control
         // Rename the event handler to reflect its more general purpose
         private void FrequencyPeriodModeToggle_Click(object sender, RoutedEventArgs e)
         {
-            _frequencyModeActive = FrequencyPeriodModeToggle.IsChecked == true;
-            FrequencyPeriodModeToggle.Content = _frequencyModeActive ? "To Period" : "To Frequency";
-
-            // First calculate the reciprocal value before switching views
-            UpdateCalculatedRateValue();
-
-            // Then update the UI to show the appropriate controls
-            UpdateFrequencyPeriodMode();
-
-            // Log the change
-            LogMessage($"Switched to {(_frequencyModeActive ? "Frequency" : "Period")} mode");
+            frequencyPeriodConverter?.ToggleMode();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -1577,6 +1585,11 @@ namespace DG2072_USB_Control
 
         private void ChannelFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (frequencyPeriodConverter?.IsFrequencyMode == true)
+            {
+                frequencyPeriodConverter.UpdateCalculatedValue();
+            }
+
             if (!isConnected) return;
             if (!double.TryParse(ChannelFrequencyTextBox.Text, out double frequency)) return;
 

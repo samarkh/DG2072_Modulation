@@ -138,7 +138,7 @@ namespace DG2072_USB_Control
         //**************** Regions
 
 
-        #region Channel Toggle Methods
+    #region Channel Toggle Methods
 
         // Update the channel toggle method to update the pulse generator's active channel
         // Alternative approach with helper method
@@ -919,7 +919,10 @@ namespace DG2072_USB_Control
             DutyCycleDockPanel = FindVisualParent<DockPanel>(DutyCycle);
 
             // Find and store references to pulse panels
+            
             PulseWidthDockPanel = FindVisualParent<DockPanel>(PulseWidth);
+            // Initialize the frequency/period converter
+            InitializeFrequencyPeriodConverter();
 
             // Since PulsePeriod is now inside FrequencyDockPanel, we set this to FrequencyDockPanel
             // This maintains compatibility with existing code that references PulsePeriodDockPanel
@@ -938,9 +941,6 @@ namespace DG2072_USB_Control
             _frequencyModeActive = true;
             FrequencyPeriodModeToggle.IsChecked = true;
             FrequencyPeriodModeToggle.Content = "To Period";
-
-            // Initialize the frequency/period converter
-            InitializeFrequencyPeriodConverter();
 
             // Initialize the pulse generator after UI references are set up
             pulseGenerator = new PulseGen(rigolDG2072, activeChannel, this);
@@ -973,6 +973,17 @@ namespace DG2072_USB_Control
             // Initialize the arbitrary waveform generator
             arbitraryWaveformGen = new ArbitraryWaveformGen(rigolDG2072, activeChannel, this);
             arbitraryWaveformGen.LogEvent += (s, message) => LogMessage(message);
+            // In Window_Loaded method, add this to find and store the DC panel
+            DCVoltageDockPanel = FindVisualParent<DockPanel>(DCVoltageTextBox);
+
+            // Initialize harmonics management
+            _harmonicsManager = new HarmonicsManager(rigolDG2072, activeChannel);
+            _harmonicsManager.LogEvent += (s, message) => LogMessage(message);
+
+            _harmonicsUIController = new HarmonicsUIController(_harmonicsManager, this);
+            _harmonicsUIController.LogEvent += (s, message) => LogMessage(message);
+
+
 
             // After window initialization, use a small delay before auto-connecting
             // This gives the UI time to fully render before connecting
@@ -1016,15 +1027,7 @@ namespace DG2072_USB_Control
                 }
             };
 
-            // In Window_Loaded method, add this to find and store the DC panel
-            DCVoltageDockPanel = FindVisualParent<DockPanel>(DCVoltageTextBox);
 
-            // Initialize harmonics management
-            _harmonicsManager = new HarmonicsManager(rigolDG2072, activeChannel);
-            _harmonicsManager.LogEvent += (s, message) => LogMessage(message);
-
-            _harmonicsUIController = new HarmonicsUIController(_harmonicsManager, this);
-            _harmonicsUIController.LogEvent += (s, message) => LogMessage(message);
 
             startupTimer.Start();
         }
@@ -1862,8 +1865,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-
-        #region To Period - To Frequency Toggle Handlers
+    #region To Period - To Frequency Toggle Handlers
 
 
         private void FrequencyPeriodModeToggle_Click(object sender, RoutedEventArgs e)
@@ -1943,9 +1945,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-
-
-        #region Unit Selection Handlers
+    #region Unit Selection Handlers
 
 
         private void ChannelFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

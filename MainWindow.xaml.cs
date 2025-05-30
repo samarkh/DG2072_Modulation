@@ -860,13 +860,18 @@ namespace DG2072_USB_Control
         {
             try
             {
+                LogMessage("Starting connection process...");
+                var sw = System.Diagnostics.Stopwatch.StartNew();
+
+                LogMessage("Creating VISA connection...");
                 bool result = rigolDG2072.Connect();
+
+                LogMessage($"VISA Connect returned in {sw.ElapsedMilliseconds}ms");
+
                 if (result)
                 {
                     isConnected = true;
                     LogMessage("Connected to Rigol DG2072");
-
-                    // Refresh all settings from the instrument
                     RefreshInstrumentSettings();
                 }
                 return result;
@@ -877,6 +882,28 @@ namespace DG2072_USB_Control
                 return false;
             }
         }
+
+        //private bool Connect()
+        //{
+        //    try
+        //    {
+        //        bool result = rigolDG2072.Connect();
+        //        if (result)
+        //        {
+        //            isConnected = true;
+        //            LogMessage("Connected to Rigol DG2072");
+
+        //            // Refresh all settings from the instrument
+        //            RefreshInstrumentSettings();
+        //        }
+        //        return result;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogMessage($"Connection error: {ex.Message}");
+        //        return false;
+        //    }
+        //}
 
         private bool Disconnect()
         {

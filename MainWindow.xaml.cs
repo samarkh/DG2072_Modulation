@@ -92,9 +92,13 @@ namespace DG2072_USB_Control
 
         // Arbitrary Waveform Generator Management
         private ArbitraryWaveformGen arbitraryWaveformGen;
+        
+        private DispatcherTimer _pulsePeriodUpdateTimer;
 
-
-        // Line 99: Constructor starts here
+        // Constructor starts here
+        // Constructor starts here
+        // Constructor starts here
+        // Constructor starts here
         public MainWindow()
         {
             InitializeComponent();
@@ -110,9 +114,12 @@ namespace DG2072_USB_Control
             InitializeAutoRefresh();
         }
 
-        //**************** Regions
+    //**************** Regions
+    //**************** Regions
+    //**************** Regions
 
-        #region Channel Toggle Methods
+
+    #region Channel Toggle Methods
 
         // Update the channel toggle method to update the pulse generator's active channel
         // Alternative approach with helper method
@@ -288,9 +295,9 @@ namespace DG2072_USB_Control
             }
         }
 
-        #endregion
+    #endregion
 
-        #region Auto-Refresh Methods
+    #region Auto-Refresh Methods
 
         private void SetupAutoRefresh()
         {
@@ -428,9 +435,9 @@ namespace DG2072_USB_Control
             }
         }
 
-        #endregion
+     #endregion
 
-        #region Instrument Settings Update Methods
+    #region Instrument Settings Update Methods
 
         private void UpdatePeriodValue(TextBox periodTextBox, ComboBox unitComboBox, int channel)
         {
@@ -648,6 +655,7 @@ namespace DG2072_USB_Control
                 LogMessage($"Error updating waveform selection for channel {channel}: {ex.Message}");
             }
         }
+
         private void UpdateFrequencyValue(TextBox freqTextBox, ComboBox unitComboBox, int channel)
         {
             try
@@ -814,7 +822,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region Connection Methods
+    #region Connection Methods
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
@@ -881,7 +889,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region Event Handlers - Window and Connection
+    #region Event Handlers - Window and Connection
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -1214,7 +1222,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region Channel Basic Controls Event Handlers
+    #region Channel Basic Controls Event Handlers
 
         private void ChannelOutputToggle_Click(object sender, RoutedEventArgs e)
         {
@@ -1837,7 +1845,55 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region Unit Selection Handlers
+    #region To Period - To Frequency Toggle Handlers
+
+        private void ChannelPulsePeriodTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (double.TryParse(PulsePeriod.Text, out double period))
+            {
+                PulsePeriod.Text = UnitConversionUtility.FormatWithMinimumDecimals(period);
+
+                // Apply the period to the device if in period mode
+                if (!_frequencyModeActive)
+                {
+                    string periodUnit = UnitConversionUtility.GetPeriodUnit(PulsePeriodUnitComboBox);
+                    double periodInSeconds = period * UnitConversionUtility.GetPeriodMultiplier(periodUnit);
+
+                    // Convert to frequency for the device
+                    if (periodInSeconds > 0)
+                    {
+                        double freqInHz = 1.0 / periodInSeconds;
+                        rigolDG2072.SetFrequency(activeChannel, freqInHz);
+                        LogMessage($"Set frequency via period: {freqInHz} Hz (Period: {period} {periodUnit})");
+                    }
+                }
+            }
+        }
+
+        private void PulsePeriodUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!isConnected || _frequencyModeActive) return;
+
+            if (double.TryParse(PulsePeriod.Text, out double period))
+            {
+                string periodUnit = UnitConversionUtility.GetPeriodUnit(PulsePeriodUnitComboBox);
+                double periodInSeconds = period * UnitConversionUtility.GetPeriodMultiplier(periodUnit);
+
+                if (periodInSeconds > 0)
+                {
+                    double freqInHz = 1.0 / periodInSeconds;
+                    rigolDG2072.SetFrequency(activeChannel, freqInHz);
+                    LogMessage($"Set frequency via period: {freqInHz} Hz (Period: {period} {periodUnit})");
+
+                    // Update frequency display
+                    UpdateCalculatedRateValue();
+                }
+            }
+        }
+
+        #endregion
+
+    #region Unit Selection Handlers
 
         private void ChannelFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1863,7 +1919,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region Apply Value Methods
+    #region Apply Value Methods
 
         // Make sure frequency changes use the direct frequency command
         private void ApplyFrequency(double frequency)
@@ -1914,7 +1970,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region UI Formatting and Adjustment Methods
+    #region UI Formatting and Adjustment Methods
 
         // Update the UpdateWaveformSpecificControls method to use the pulse generator
         private void UpdateWaveformSpecificControls(string waveformType)
@@ -2465,7 +2521,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region TextBox LostFocus Handlers
+    #region TextBox LostFocus Handlers
 
         private void ChannelFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -2504,7 +2560,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region DualTone Event Handlers
+    #region DualTone Event Handlers
 
         private void DualToneModeChanged(object sender, RoutedEventArgs e)
         {
@@ -2597,11 +2653,11 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region Harmonics Event Handlers
+    #region Harmonics Event Handlers
 
         #endregion
 
-        #region Arbitrary Waveform Handlers
+    #region Arbitrary Waveform Handlers
 
         // Event handler for parameter text changes
         private void ArbitraryParamTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -2648,7 +2704,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region DC Mode Controls
+    #region DC Mode Controls
 
         // All DC mode-specific methods and handlers
         // Add this method to handle DC voltage changes
@@ -2683,7 +2739,7 @@ namespace DG2072_USB_Control
 
 
         // Add this new region for Modulation Event Handlers:
-        #region Modulation Event Handlers
+    #region Modulation Event Handlers
 
         private void CarrierWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

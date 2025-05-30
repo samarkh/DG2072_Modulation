@@ -1,165 +1,47 @@
-1.  viOpenDefaultRM (0x00001001)
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:37:33.5668      Call Duration 00:00:00.6279
-Status: 0 (VI_SUCCESS)
-
-2.  viOpen (0x00001001, "USB0::0x1AB1::0x0644::DG2P224100508::INSTR", 0 (0x0), 0 (0x0), 0x00000001)
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:37:34.1958      Call Duration 00:02:00.0074
-Status: 0 (VI_SUCCESS)
-
-3.  viParseRsrcEx (0x00001001, "USB0::0x1AB1::0x0644::DG2P224100508::INSTR", 7 (0x7), 0 (0x0), "INSTR", NULL, NULL)
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.2032      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-4.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), ":SOUR1:FUNC?.", 13 (0xD), 13 (0xD))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.2372      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-5.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SIN.", 1024 (0x400), 4 (0x4))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.2382      Call Duration 00:00:00.0030
-Status: 0 (VI_SUCCESS)
-
-6.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FREQuency?.", 19 (0x13), 19 (0x13))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.2863      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-7.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "1.000000E+03.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.2863      Call Duration 00:00:00.0010
-Status: 0 (VI_SUCCESS)
-
-8.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:VOLTAGE?.", 17 (0x11), 17 (0x11))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.2943      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-9.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "1.000000E+00.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.2943      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-10.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:VOLTAGE:OFFSET?.", 24 (0x18), 24 (0x18))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.2974      Call Duration 00:00:00.0009
-Status: 0 (VI_SUCCESS)
-
-11.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "0.000000E+00.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.2984      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-12.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PHASE?.", 15 (0xF), 15 (0xF))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3002      Call Duration 00:00:00.0010
-Status: 0 (VI_SUCCESS)
-
-13.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "0.000000E+00.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3013      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-14.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OUTPUT1?.", 9 (0x9), 9 (0x9))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3033      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-15.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OFF.", 1024 (0x400), 4 (0x4))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3033      Call Duration 00:00:00.0010
-Status: 0 (VI_SUCCESS)
-
-16.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), ":SOUR1:FUNC?.", 13 (0xD), 13 (0xD))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3142      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-17.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SIN.", 1024 (0x400), 4 (0x4))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3142      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-18.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FREQuency?.", 19 (0x13), 19 (0x13))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3202      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-19.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "1.000000E+03.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3202      Call Duration 00:00:00.0010
-Status: 0 (VI_SUCCESS)
-
-20.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:VOLTAGE?.", 17 (0x11), 17 (0x11))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3223      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-21.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "1.000000E+00.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3223      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-22.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:VOLTAGE:OFFSET?.", 24 (0x18), 24 (0x18))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3233      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-23.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "0.000000E+00.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3233      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-24.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PHASE?.", 15 (0xF), 15 (0xF))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3253      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-25.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "0.000000E+00.", 1024 (0x400), 13 (0xD))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3253      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-26.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OUTPUT1?.", 9 (0x9), 9 (0x9))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3263      Call Duration 00:00:00.0009
-Status: 0 (VI_SUCCESS)
-
-27.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OFF.", 1024 (0x400), 4 (0x4))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.3273      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-28.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FREQuency 1000.", 23 (0x17), 23 (0x17))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.8365      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-29.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:VOLTAGE 1.", 18 (0x12), 18 (0x12))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.8936      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-30.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:VOLTAGE:OFFSET 0.", 25 (0x19), 25 (0x19))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.9056      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-31.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PHASE 0.", 16 (0x10), 16 (0x10))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:39:34.9176      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-32.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OUTPUT1 ON.", 11 (0xB), 11 (0xB))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:40:37.8376      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
-33.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OUTPUT1 OFF.", 12 (0xC), 12 (0xC))
-Process ID: 0x00005E2C         Thread ID: 0x00003FAC
-Start Time: 20:40:39.7104      Call Duration 00:00:00.0000
-Status: 0 (VI_SUCCESS)
-
+[21:36:17] Modulation type changed to: AM
+[21:36:17] Auto-connecting to instrument...
+[21:36:17] Starting connection process...
+[21:36:17] Creating VISA connection...
+[21:38:17] Connected to USB0::0x1AB1::0x0644::DG2P224100508::INSTR
+[21:38:17] VISA Connect returned in 120048ms
+[21:38:17] Connected to Rigol DG2072
+[21:38:17] Refreshing all instrument settings...
+[21:38:17] Query: :SOUR1:FUNC?, Response: SIN
+[21:38:17] Updating waveform selection - Device reports: SIN
+[21:38:17] Selected waveform: Sine
+[21:38:17] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
+[21:38:17] Refreshed Sine parameters for CH1
+[21:38:17] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
+[21:38:17] Query: SOURCE1:VOLTAGE?, Response: 1.000000E+00
+[21:38:17] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
+[21:38:17] Query: SOURCE1:PHASE?, Response: 0.000000E+00
+[21:38:17] Query: OUTPUT1?, Response: OFF
+[21:38:17] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
+[21:38:17] Refreshed Channel 1 settings
+[21:38:17] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
+[21:38:17] Instrument settings refreshed successfully
+[21:38:17] Refreshing all instrument settings...
+[21:38:17] Query: :SOUR1:FUNC?, Response: SIN
+[21:38:17] Updating waveform selection - Device reports: SIN
+[21:38:17] Selected waveform: Sine
+[21:38:17] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
+[21:38:17] Refreshed Sine parameters for CH1
+[21:38:17] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
+[21:38:17] Query: SOURCE1:VOLTAGE?, Response: 1.000000E+00
+[21:38:17] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
+[21:38:17] Query: SOURCE1:PHASE?, Response: 0.000000E+00
+[21:38:17] Query: OUTPUT1?, Response: OFF
+[21:38:17] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
+[21:38:17] Refreshed Channel 1 settings
+[21:38:17] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
+[21:38:17] Instrument settings refreshed successfully
+[21:38:17] Auto-connection successful
+[21:38:18] Command sent: SOURCE1:FREQuency 1000
+[21:38:18] Command sent: SOURCE1:FREQuency 1000
+[21:38:18] Set CH1 frequency to 1000 Hz using SOURCE:FREQuency command directly
+[21:38:18] Set CH1 frequency to 1000 Hz (1000 Hz)
+[21:38:18] Command sent: SOURCE1:VOLTAGE 1
+[21:38:18] Set CH1 amplitude to 1 Vpp (1 Vpp)
+[21:38:18] Command sent: SOURCE1:VOLTAGE:OFFSET 0
+[21:38:18] Set CH1 offset to 0 V (0 V)
+[21:38:18] Command sent: SOURCE1:PHASE 0

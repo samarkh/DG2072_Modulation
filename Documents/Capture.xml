@@ -1,0 +1,428 @@
+This XML file does not appear to have any style information associated with it. The document tree is shown below.
+<iotracelog>
+<call type="NI-VISA" description="viOpenDefaultRM" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:05:52.0071">
+<parameter name="&rmSesn">0x00000165C82868F0</parameter>
+</input>
+<output time="20:05:52.0311">
+<parameter name="*rmSesn">0x00001001</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viOpen" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:05:52.0311">
+<parameter name="rmSesn">0x00001001</parameter>
+<parameter name="rsrcName">USB0::0x1AB1::0x0644::DG2P224100508::INSTR</parameter>
+<parameter name="accessMode">0 (0x0)</parameter>
+<parameter name="openTimeout">0 (0x0)</parameter>
+<parameter name="&vi">0x00000165C82868F8</parameter>
+</input>
+<output time="20:07:52.0374">
+<parameter name="*vi">0x00000001</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viParseRsrcEx" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.0374">
+<parameter name="rmSesn">0x00001001</parameter>
+<parameter name="rsrcName">USB0::0x1AB1::0x0644::DG2P224100508::INSTR</parameter>
+<parameter name="&intfType">0x0000000826D7D4F8</parameter>
+<parameter name="&intfNum">0x0000000826D7D4F4</parameter>
+<parameter name="&rsrcClass">0x0000000826D7D560</parameter>
+<parameter name="expandedUnaliasedName">NULL</parameter>
+<parameter name="aliasIfExists">NULL</parameter>
+</input>
+<output time="20:07:52.0384">
+<parameter name="*intfType">7 (0x7)</parameter>
+<parameter name="*intfNum">0 (0x0)</parameter>
+<parameter name="rsrcClass">INSTR</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.0715">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAB403C8</parameter>
+<parameter name="cnt">13 (0xD)</parameter>
+<parameter name="&retCnt">0x0000000826D7D390</parameter>
+<buffer size="13" name="buf">3A 53 4F 55 52 31 3A 46 55 4E 43 3F 0A</buffer>
+</input>
+<output time="20:07:52.0715">
+<parameter name="*retCnt">13 (0xD)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viRead" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.0724">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAB40420</parameter>
+<parameter name="cnt">1024 (0x400)</parameter>
+<parameter name="&retCnt">0x0000000826D7D378</parameter>
+</input>
+<output time="20:07:52.0755">
+<parameter name="*retCnt">4 (0x4)</parameter>
+<buffer size="4" name="buf">53 49 4E 0A</buffer>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1379">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CABED370</parameter>
+<parameter name="cnt">19 (0x13)</parameter>
+<parameter name="&retCnt">0x0000000826D7D4C0</parameter>
+<buffer size="19" name="buf">53 4F 55 52 43 45 31 3A 46 52 45 51 75 65 6E 63 79 3F 0A</buffer>
+</input>
+<output time="20:07:52.1389">
+<parameter name="*retCnt">19 (0x13)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viRead" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1389">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CABED3A0</parameter>
+<parameter name="cnt">1024 (0x400)</parameter>
+<parameter name="&retCnt">0x0000000826D7D4A8</parameter>
+</input>
+<output time="20:07:52.1389">
+<parameter name="*retCnt">13 (0xD)</parameter>
+<buffer size="13" name="buf">31 2E 30 30 30 30 30 30 45 2B 30 33 0A</buffer>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1460">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CABFC5D8</parameter>
+<parameter name="cnt">17 (0x11)</parameter>
+<parameter name="&retCnt">0x0000000826D7D540</parameter>
+<buffer size="17" name="buf">53 4F 55 52 43 45 31 3A 56 4F 4C 54 41 47 45 3F 0A</buffer>
+</input>
+<output time="20:07:52.1460">
+<parameter name="*retCnt">17 (0x11)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viRead" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1460">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CABFC608</parameter>
+<parameter name="cnt">1024 (0x400)</parameter>
+<parameter name="&retCnt">0x0000000826D7D528</parameter>
+</input>
+<output time="20:07:52.1460">
+<parameter name="*retCnt">13 (0xD)</parameter>
+<buffer size="13" name="buf">35 2E 30 30 30 30 30 30 45 2B 30 30 0A</buffer>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1500">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAC11910</parameter>
+<parameter name="cnt">24 (0x18)</parameter>
+<parameter name="&retCnt">0x0000000826D7D540</parameter>
+<buffer size="24" name="buf">53 4F 55 52 43 45 31 3A 56 4F 4C 54 41 47 45 3A 4F 46 46 53 45 54 3F 0A</buffer>
+</input>
+<output time="20:07:52.1500">
+<parameter name="*retCnt">24 (0x18)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viRead" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1500">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAC11940</parameter>
+<parameter name="cnt">1024 (0x400)</parameter>
+<parameter name="&retCnt">0x0000000826D7D528</parameter>
+</input>
+<output time="20:07:52.1500">
+<parameter name="*retCnt">13 (0xD)</parameter>
+<buffer size="13" name="buf">30 2E 30 30 30 30 30 30 45 2B 30 30 0A</buffer>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1531">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAC267B0</parameter>
+<parameter name="cnt">15 (0xF)</parameter>
+<parameter name="&retCnt">0x0000000826D7D540</parameter>
+<buffer size="15" name="buf">53 4F 55 52 43 45 31 3A 50 48 41 53 45 3F 0A</buffer>
+</input>
+<output time="20:07:52.1531">
+<parameter name="*retCnt">15 (0xF)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viRead" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1531">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAC267D8</parameter>
+<parameter name="cnt">1024 (0x400)</parameter>
+<parameter name="&retCnt">0x0000000826D7D528</parameter>
+</input>
+<output time="20:07:52.1539">
+<parameter name="*retCnt">13 (0xD)</parameter>
+<buffer size="13" name="buf">30 2E 30 30 30 30 30 30 45 2B 30 30 0A</buffer>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1560">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAC3B6C0</parameter>
+<parameter name="cnt">9 (0x9)</parameter>
+<parameter name="&retCnt">0x0000000826D7D5B0</parameter>
+<buffer size="9" name="buf">4F 55 54 50 55 54 31 3F 0A</buffer>
+</input>
+<output time="20:07:52.1560">
+<parameter name="*retCnt">9 (0x9)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viRead" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1560">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAC3B6E8</parameter>
+<parameter name="cnt">1024 (0x400)</parameter>
+<parameter name="&retCnt">0x0000000826D7D598</parameter>
+</input>
+<output time="20:07:52.1560">
+<parameter name="*retCnt">4 (0x4)</parameter>
+<buffer size="4" name="buf">4F 46 46 0A</buffer>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1670">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CACA69C8</parameter>
+<parameter name="cnt">13 (0xD)</parameter>
+<parameter name="&retCnt">0x0000000826D7D420</parameter>
+<buffer size="13" name="buf">3A 53 4F 55 52 31 3A 46 55 4E 43 3F 0A</buffer>
+</input>
+<output time="20:07:52.1670">
+<parameter name="*retCnt">13 (0xD)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viRead" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1670">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CACA6A08</parameter>
+<parameter name="cnt">1024 (0x400)</parameter>
+<parameter name="&retCnt">0x0000000826D7D408</parameter>
+</input>
+<output time="20:07:52.1680">
+<parameter name="*retCnt">4 (0x4)</parameter>
+<buffer size="4" name="buf">53 49 4E 0A</buffer>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1730">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CACF1880</parameter>
+<parameter name="cnt">19 (0x13)</parameter>
+<parameter name="&retCnt">0x0000000826D7D550</parameter>
+<buffer size="19" name="buf">53 4F 55 52 43 45 31 3A 46 52 45 51 75 65 6E 63 79 3F 0A</buffer>
+</input>
+<output time="20:07:52.1740">
+<parameter name="*retCnt">19 (0x13)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viRead" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1740">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CACF18B0</parameter>
+<parameter name="cnt">1024 (0x400)</parameter>
+<parameter name="&retCnt">0x0000000826D7D538</parameter>
+</input>
+<output time="20:07:52.1740">
+<parameter name="*retCnt">13 (0xD)</parameter>
+<buffer size="13" name="buf">31 2E 30 30 30 30 30 30 45 2B 30 33 0A</buffer>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1750">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAD015A0</parameter>
+<parameter name="cnt">17 (0x11)</parameter>
+<parameter name="&retCnt">0x0000000826D7D5D0</parameter>
+<buffer size="17" name="buf">53 4F 55 52 43 45 31 3A 56 4F 4C 54 41 47 45 3F 0A</buffer>
+</input>
+<output time="20:07:52.1750">
+<parameter name="*retCnt">17 (0x11)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viRead" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1750">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAD015D0</parameter>
+<parameter name="cnt">1024 (0x400)</parameter>
+<parameter name="&retCnt">0x0000000826D7D5B8</parameter>
+</input>
+<output time="20:07:52.1750">
+<parameter name="*retCnt">13 (0xD)</parameter>
+<buffer size="13" name="buf">35 2E 30 30 30 30 30 30 45 2B 30 30 0A</buffer>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1770">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAD11678</parameter>
+<parameter name="cnt">24 (0x18)</parameter>
+<parameter name="&retCnt">0x0000000826D7D5D0</parameter>
+<buffer size="24" name="buf">53 4F 55 52 43 45 31 3A 56 4F 4C 54 41 47 45 3A 4F 46 46 53 45 54 3F 0A</buffer>
+</input>
+<output time="20:07:52.1770">
+<parameter name="*retCnt">24 (0x18)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viRead" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1770">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAD116A8</parameter>
+<parameter name="cnt">1024 (0x400)</parameter>
+<parameter name="&retCnt">0x0000000826D7D5B8</parameter>
+</input>
+<output time="20:07:52.1770">
+<parameter name="*retCnt">13 (0xD)</parameter>
+<buffer size="13" name="buf">30 2E 30 30 30 30 30 30 45 2B 30 30 0A</buffer>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1780">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAD228A0</parameter>
+<parameter name="cnt">15 (0xF)</parameter>
+<parameter name="&retCnt">0x0000000826D7D5D0</parameter>
+<buffer size="15" name="buf">53 4F 55 52 43 45 31 3A 50 48 41 53 45 3F 0A</buffer>
+</input>
+<output time="20:07:52.1780">
+<parameter name="*retCnt">15 (0xF)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viRead" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1780">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAD228C8</parameter>
+<parameter name="cnt">1024 (0x400)</parameter>
+<parameter name="&retCnt">0x0000000826D7D5B8</parameter>
+</input>
+<output time="20:07:52.1790">
+<parameter name="*retCnt">13 (0xD)</parameter>
+<buffer size="13" name="buf">30 2E 30 30 30 30 30 30 45 2B 30 30 0A</buffer>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1800">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAD33B10</parameter>
+<parameter name="cnt">9 (0x9)</parameter>
+<parameter name="&retCnt">0x0000000826D7D640</parameter>
+<buffer size="9" name="buf">4F 55 54 50 55 54 31 3F 0A</buffer>
+</input>
+<output time="20:07:52.1800">
+<parameter name="*retCnt">9 (0x9)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viRead" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.1800">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAD33B38</parameter>
+<parameter name="cnt">1024 (0x400)</parameter>
+<parameter name="&retCnt">0x0000000826D7D628</parameter>
+</input>
+<output time="20:07:52.1800">
+<parameter name="*retCnt">4 (0x4)</parameter>
+<buffer size="4" name="buf">4F 46 46 0A</buffer>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.6936">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CADC6748</parameter>
+<parameter name="cnt">23 (0x17)</parameter>
+<parameter name="&retCnt">0x0000000826D7D778</parameter>
+<buffer size="23" name="buf">53 4F 55 52 43 45 31 3A 46 52 45 51 75 65 6E 63 79 20 31 30 30 30 0A</buffer>
+</input>
+<output time="20:07:52.6936">
+<parameter name="*retCnt">23 (0x17)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.7366">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAE68280</parameter>
+<parameter name="cnt">18 (0x12)</parameter>
+<parameter name="&retCnt">0x0000000826D7D898</parameter>
+<buffer size="18" name="buf">53 4F 55 52 43 45 31 3A 56 4F 4C 54 41 47 45 20 35 0A</buffer>
+</input>
+<output time="20:07:52.7373">
+<parameter name="*retCnt">18 (0x12)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.7414">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAE8FB80</parameter>
+<parameter name="cnt">25 (0x19)</parameter>
+<parameter name="&retCnt">0x0000000826D7D868</parameter>
+<buffer size="25" name="buf">53 4F 55 52 43 45 31 3A 56 4F 4C 54 41 47 45 3A 4F 46 46 53 45 54 20 30 0A</buffer>
+</input>
+<output time="20:07:52.7424">
+<parameter name="*retCnt">25 (0x19)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viWrite" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:07:52.7453">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="&buf">0x00000165CAEB7A08</parameter>
+<parameter name="cnt">16 (0x10)</parameter>
+<parameter name="&retCnt">0x0000000826D7D978</parameter>
+<buffer size="16" name="buf">53 4F 55 52 43 45 31 3A 50 48 41 53 45 20 30 0A</buffer>
+</input>
+<output time="20:07:52.7463">
+<parameter name="*retCnt">16 (0x10)</parameter>
+</output>
+</call>
+<call type="NI-VISA" description="viGpibControlREN" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:21:08.9476">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+<parameter name="mode">2 (0x2)</parameter>
+</input>
+<output time="20:21:08.9485"/>
+</call>
+<call type="NI-VISA" description="viClose" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:21:08.9485">
+<parameter name="vi">USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001)</parameter>
+</input>
+<output time="20:21:08.9485"/>
+</call>
+<call type="NI-VISA" description="viClose" process="0x00004264" thread="0x00000C64">
+<status type="success" code="0x00000000" name="VI_SUCCESS">Operation completed successfully.</status>
+<input time="20:21:08.9485">
+<parameter name="vi">0x00001001</parameter>
+</input>
+<output time="20:21:08.9526"/>
+</call>
+</iotracelog>

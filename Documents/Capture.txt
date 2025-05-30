@@ -1,48 +1,44 @@
-[19:22:21] Modulation type changed to: AM
-[19:22:22] Auto-connecting to instrument...
-[19:24:22] Connected to USB0::0x1AB1::0x0644::DG2P224100508::INSTR
-[19:24:22] Connected to Rigol DG2072
-[19:24:22] Refreshing all instrument settings...
-[19:24:22] Query: :SOUR1:FUNC?, Response: SIN
-[19:24:22] Updating waveform selection - Device reports: SIN
-[19:24:22] Selected waveform: Sine
-[19:24:22] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
-[19:24:22] Refreshed Sine parameters for CH1
-[19:24:22] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
-[19:24:22] Query: SOURCE1:VOLTAGE?, Response: 5.000000E+00
-[19:24:22] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
-[19:24:22] Query: SOURCE1:PHASE?, Response: 0.000000E+00
-[19:24:22] Query: OUTPUT1?, Response: OFF
-[19:24:22] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
-[19:24:22] Refreshed Channel 1 settings
-[19:24:22] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
-[19:24:22] Instrument settings refreshed successfully
-[19:24:22] Refreshing all instrument settings...
-[19:24:22] Query: :SOUR1:FUNC?, Response: SIN
-[19:24:22] Updating waveform selection - Device reports: SIN
-[19:24:22] Selected waveform: Sine
-[19:24:22] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
-[19:24:22] Refreshed Sine parameters for CH1
-[19:24:22] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
-[19:24:22] Query: SOURCE1:VOLTAGE?, Response: 5.000000E+00
-[19:24:22] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
-[19:24:22] Query: SOURCE1:PHASE?, Response: 0.000000E+00
-[19:24:22] Query: OUTPUT1?, Response: OFF
-[19:24:22] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
-[19:24:22] Refreshed Channel 1 settings
-[19:24:22] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
-[19:24:22] Instrument settings refreshed successfully
-[19:24:22] Auto-connection successful
-[19:24:23] Command sent: SOURCE1:FREQuency 1000
-[19:24:23] Command sent: SOURCE1:FREQuency 1000
-[19:24:23] Set CH1 frequency to 1000 Hz using SOURCE:FREQuency command directly
-[19:24:23] Set CH1 frequency to 1000 Hz (1000 Hz)
-[19:24:23] Command sent: SOURCE1:VOLTAGE 5
-[19:24:23] Set CH1 amplitude to 5 Vpp (5 Vpp)
-[19:24:23] Command sent: SOURCE1:VOLTAGE:OFFSET 0
-[19:24:23] Set CH1 offset to 0 V (0 V)
-[19:24:23] Command sent: SOURCE1:PHASE 0
-[19:24:34] Command sent: OUTPUT1 ON
-[19:24:37] Command sent: OUTPUT1 OFF
-[19:26:22] Disconnected from the instrument
-[19:26:22] Disconnected from Rigol DG2072
+[20:05:51] Modulation type changed to: AM
+[20:05:51] Auto-connecting to instrument...
+[20:07:52] Connected to USB0::0x1AB1::0x0644::DG2P224100508::INSTR
+[20:07:52] Connected to Rigol DG2072
+[20:07:52] Refreshing all instrument settings...
+[20:07:52] Query: :SOUR1:FUNC?, Response: SIN
+[20:07:52] Updating waveform selection - Device reports: SIN
+[20:07:52] Selected waveform: Sine
+[20:07:52] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
+[20:07:52] Refreshed Sine parameters for CH1
+[20:07:52] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
+[20:07:52] Query: SOURCE1:VOLTAGE?, Response: 5.000000E+00
+[20:07:52] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
+[20:07:52] Query: SOURCE1:PHASE?, Response: 0.000000E+00
+[20:07:52] Query: OUTPUT1?, Response: OFF
+[20:07:52] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
+[20:07:52] Refreshed Channel 1 settings
+[20:07:52] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
+[20:07:52] Instrument settings refreshed successfully
+[20:07:52] Refreshing all instrument settings...
+[20:07:52] Query: :SOUR1:FUNC?, Response: SIN
+[20:07:52] Updating waveform selection - Device reports: SIN
+[20:07:52] Selected waveform: Sine
+[20:07:52] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
+[20:07:52] Refreshed Sine parameters for CH1
+[20:07:52] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
+[20:07:52] Query: SOURCE1:VOLTAGE?, Response: 5.000000E+00
+[20:07:52] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
+[20:07:52] Query: SOURCE1:PHASE?, Response: 0.000000E+00
+[20:07:52] Query: OUTPUT1?, Response: OFF
+[20:07:52] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
+[20:07:52] Refreshed Channel 1 settings
+[20:07:52] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
+[20:07:52] Instrument settings refreshed successfully
+[20:07:52] Auto-connection successful
+[20:07:52] Command sent: SOURCE1:FREQuency 1000
+[20:07:52] Command sent: SOURCE1:FREQuency 1000
+[20:07:52] Set CH1 frequency to 1000 Hz using SOURCE:FREQuency command directly
+[20:07:52] Set CH1 frequency to 1000 Hz (1000 Hz)
+[20:07:52] Command sent: SOURCE1:VOLTAGE 5
+[20:07:52] Set CH1 amplitude to 5 Vpp (5 Vpp)
+[20:07:52] Command sent: SOURCE1:VOLTAGE:OFFSET 0
+[20:07:52] Set CH1 offset to 0 V (0 V)
+[20:07:52] Command sent: SOURCE1:PHASE 0

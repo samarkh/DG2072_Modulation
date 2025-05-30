@@ -922,7 +922,8 @@ namespace DG2072_USB_Control
             
             PulseWidthDockPanel = FindVisualParent<DockPanel>(PulseWidth);
             // Initialize the frequency/period converter
-            InitializeFrequencyPeriodConverter();
+            // TEMPORARILY COMMENT THIS OUT
+            // InitializeFrequencyPeriodConverter();
 
             // Since PulsePeriod is now inside FrequencyDockPanel, we set this to FrequencyDockPanel
             // This maintains compatibility with existing code that references PulsePeriodDockPanel
@@ -1008,14 +1009,18 @@ namespace DG2072_USB_Control
                     // Call the connection method to establish connection
                     if (Connect())
                     {
-                        // Update UI to reflect connected state
-                        ConnectionStatusTextBlock.Text = "Connected";
-                        ConnectionStatusTextBlock.Foreground = System.Windows.Media.Brushes.Green;
-                        ConnectionToggleButton.Content = "Disconnect";
-                        IdentifyButton.IsEnabled = true;
-                        RefreshButton.IsEnabled = true;
-                        UpdateAutoRefreshState(true);
+                        {
+                            // Initialize AFTER connection
+                            InitializeFrequencyPeriodConverter();
+                            // Update UI to reflect connected state
+                            ConnectionStatusTextBlock.Text = "Connected";
 
+                            ConnectionStatusTextBlock.Foreground = System.Windows.Media.Brushes.Green;
+                            ConnectionToggleButton.Content = "Disconnect";
+                            IdentifyButton.IsEnabled = true;
+                            RefreshButton.IsEnabled = true;
+                            UpdateAutoRefreshState(true);
+                        }
                         // Refresh the UI with current device settings
                         RefreshInstrumentSettings();
                         LogMessage("Auto-connection successful");

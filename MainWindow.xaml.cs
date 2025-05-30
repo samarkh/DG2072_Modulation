@@ -92,9 +92,13 @@ namespace DG2072_USB_Control
 
         // Arbitrary Waveform Generator Management
         private ArbitraryWaveformGen arbitraryWaveformGen;
+        
+        private DispatcherTimer _pulsePeriodUpdateTimer;
 
-
-        // Line 99: Constructor starts here
+        // Constructor starts here
+        // Constructor starts here
+        // Constructor starts here
+        // Constructor starts here
         public MainWindow()
         {
             InitializeComponent();
@@ -1834,6 +1838,54 @@ namespace DG2072_USB_Control
         }
 
 
+
+        #endregion
+
+        #region To Period - To Frequency Toggle Handlers
+
+        private void ChannelPulsePeriodTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (double.TryParse(PulsePeriod.Text, out double period))
+            {
+                PulsePeriod.Text = UnitConversionUtility.FormatWithMinimumDecimals(period);
+
+                // Apply the period to the device if in period mode
+                if (!_frequencyModeActive)
+                {
+                    string periodUnit = UnitConversionUtility.GetPeriodUnit(PulsePeriodUnitComboBox);
+                    double periodInSeconds = period * UnitConversionUtility.GetPeriodMultiplier(periodUnit);
+
+                    // Convert to frequency for the device
+                    if (periodInSeconds > 0)
+                    {
+                        double freqInHz = 1.0 / periodInSeconds;
+                        rigolDG2072.SetFrequency(activeChannel, freqInHz);
+                        LogMessage($"Set frequency via period: {freqInHz} Hz (Period: {period} {periodUnit})");
+                    }
+                }
+            }
+        }
+
+        private void PulsePeriodUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!isConnected || _frequencyModeActive) return;
+
+            if (double.TryParse(PulsePeriod.Text, out double period))
+            {
+                string periodUnit = UnitConversionUtility.GetPeriodUnit(PulsePeriodUnitComboBox);
+                double periodInSeconds = period * UnitConversionUtility.GetPeriodMultiplier(periodUnit);
+
+                if (periodInSeconds > 0)
+                {
+                    double freqInHz = 1.0 / periodInSeconds;
+                    rigolDG2072.SetFrequency(activeChannel, freqInHz);
+                    LogMessage($"Set frequency via period: {freqInHz} Hz (Period: {period} {periodUnit})");
+
+                    // Update frequency display
+                    UpdateCalculatedRateValue();
+                }
+            }
+        }
 
         #endregion
 

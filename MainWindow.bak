@@ -34,23 +34,19 @@
             <TabItem Header="Channel Controls">
                 <Grid Margin="10">
                     <!-- Channel Panel with Channel Toggle Button -->
-                    <Grid Margin="0,110,0,-11">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                    <Grid Margin="0,11,0,-11">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" MinHeight="478"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
                         <!-- Channel Selector -->
-                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="-10,-118,10,601" Grid.ColumnSpan="2">
-                            <ToggleButton x:Name="ChannelToggleButton" Content="Channel 1" Width="100" Click="ChannelToggleButton_Click" IsChecked="True" Height="24"/>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                            <ToggleButton x:Name="ChannelToggleButton" Content="Channel 1" Width="100" Click="ChannelToggleButton_Click" IsChecked="True"/>
                             <TextBlock x:Name="ActiveChannelTextBlock" Text="Channel 1" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0"/>
                         </StackPanel>
-                        <TabControl SelectionChanged="TabControl_SelectionChanged" Margin="-8,-90,0,0" Grid.ColumnSpan="2">
-                            <TabItem Header="Waveform Controls" Margin="-2,-1,-1,0">
+                        <TabControl SelectionChanged="TabControl_SelectionChanged">
+                            <TabItem Header="Waveform Controls">
                                 <!-- Channel Controls -->
                                 <GroupBox x:Name="ChannelControlsGroupBox" Header="Channel 1 Controls" Grid.Row="1" Margin="5">
                                     <StackPanel>
@@ -135,7 +131,7 @@
                      Click="FrequencyPeriodModeToggle_Click" 
                      IsChecked="True" 
                      HorizontalAlignment="Left"
-                     ToolTip="Toggle between frequency and period display modes" Margin="0,0,180,0"/>
+                     ToolTip="Toggle between frequency and period display modes"/>
                                             </DockPanel>
                                         </Grid>
 

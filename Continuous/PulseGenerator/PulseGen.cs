@@ -22,7 +22,7 @@ namespace DG2072_USB_Control.Continuous.PulseGenerator
 
         // Update timers for debouncing
         //private DispatcherTimer _pulseWidthUpdateTimer;
-        private DispatcherTimer _pulsePeriodUpdateTimer;
+        //private DispatcherTimer _pulsePeriodUpdateTimer;
         //private DispatcherTimer _pulseRiseTimeUpdateTimer;
         //private DispatcherTimer _pulseFallTimeUpdateTimer;
 

@@ -16,29 +16,29 @@ namespace DG2072_USB_Control
 
         #region Pulse Parameter Handling
 
-        private void ChannelPulsePeriodTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulsePeriodTextChanged(sender, e);
-        }
+        //private void ChannelPulsePeriodTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (pulseGenerator != null)
+        //        pulseGenerator.OnPulsePeriodTextChanged(sender, e);
+        //}
 
-        private void ChannelPulsePeriodTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulsePeriodLostFocus(sender, e);
-        }
+        //private void ChannelPulsePeriodTextBox_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    if (pulseGenerator != null)
+        //        pulseGenerator.OnPulsePeriodLostFocus(sender, e);
+        //}
 
-        private void PulsePeriodUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulsePeriodUnitChanged(sender, e);
-        }
+        //private void PulsePeriodUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (pulseGenerator != null)
+        //        pulseGenerator.OnPulsePeriodUnitChanged(sender, e);
+        //}
 
-        private void PulseRateModeToggle_Click(object sender, RoutedEventArgs e)
-        {
-            if (pulseGenerator != null)
-                pulseGenerator.OnPulseRateModeToggleClicked(sender, e);
-        }
+        //private void PulseRateModeToggle_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (pulseGenerator != null)
+        //        pulseGenerator.OnPulseRateModeToggleClicked(sender, e);
+        //}
 
         private void ChannelPulseRiseTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {

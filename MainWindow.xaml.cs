@@ -2297,8 +2297,40 @@ namespace DG2072_USB_Control
         {
             if (!isConnected || _frequencyModeActive) return;
 
-            // When in period mode and user changes period, update the frequency
-            UpdateCalculatedRateValue();
+            if (!double.TryParse(PulsePeriod.Text, out double period)) return;
+
+            // Debounce the update
+            if (_pulsePeriodUpdateTimer == null)
+            {
+                _pulsePeriodUpdateTimer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromMilliseconds(500)
+                };
+                _pulsePeriodUpdateTimer.Tick += (s, args) =>
+                {
+                    _pulsePeriodUpdateTimer.Stop();
+
+                    // Apply the period by converting to frequency
+                    if (double.TryParse(PulsePeriod.Text, out double p))
+                    {
+                        string periodUnit = UnitConversionUtility.GetPeriodUnit(PulsePeriodUnitComboBox);
+                        double periodInSeconds = p * UnitConversionUtility.GetPeriodMultiplier(periodUnit);
+
+                        if (periodInSeconds > 0)
+                        {
+                            double freqInHz = 1.0 / periodInSeconds;
+                            rigolDG2072.SetFrequency(activeChannel, freqInHz);
+                            LogMessage($"Set frequency via period: {freqInHz} Hz (Period: {p} {periodUnit})");
+
+                            // Update the frequency display
+                            UpdateCalculatedRateValue();
+                        }
+                    }
+                };
+            }
+
+            _pulsePeriodUpdateTimer.Stop();
+            _pulsePeriodUpdateTimer.Start();
         }
 
 

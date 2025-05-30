@@ -106,7 +106,7 @@
                                             <DockPanel x:Name="PeriodDockPanel" Grid.Column="0" HorizontalAlignment="Left" Width="275" Visibility="Collapsed">
                                                 <Label Content="Period:" Width="100"/>
                                                 <TextBox x:Name="PulsePeriod" Width="100" 
-                TextChanged="ChannelPulsePeriodTextBox_TextChanged" 
+                TextChanged="PulsePeriod_TextChanged" 
                 LostFocus="ChannelPulsePeriodTextBox_LostFocus" 
                 Text="1" 
                 VerticalContentAlignment="Center" 

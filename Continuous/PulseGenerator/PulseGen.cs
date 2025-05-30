@@ -526,30 +526,30 @@ namespace DG2072_USB_Control.Continuous.PulseGenerator
         // Implement all IPulseEventHandler methods here
         // These were already implemented in your original code
 
-        public void OnPulsePeriodTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!IsDeviceConnected()) return;
-            if (!double.TryParse(_pulsePeriodTextBox.Text, out double period)) return;
+        //public void OnPulsePeriodTextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (!IsDeviceConnected()) return;
+        //    if (!double.TryParse(_pulsePeriodTextBox.Text, out double period)) return;
 
-            // Use a timer to debounce rapid changes
-            InitializeOrResetTimer(ref _pulsePeriodUpdateTimer, () => {
-                if (double.TryParse(_pulsePeriodTextBox.Text, out double p))
-                {
-                    ApplyPulsePeriod(p);
-                    // Update calculated frequency
-                    UpdateCalculatedRateValue();
-                }
-            });
-        }
+        //    // Use a timer to debounce rapid changes
+        //    InitializeOrResetTimer(ref _pulsePeriodUpdateTimer, () => {
+        //        if (double.TryParse(_pulsePeriodTextBox.Text, out double p))
+        //        {
+        //            ApplyPulsePeriod(p);
+        //            // Update calculated frequency
+        //            UpdateCalculatedRateValue();
+        //        }
+        //    });
+        //}
 
-        public void OnPulsePeriodLostFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = sender as TextBox;
-            if (textBox == null || !double.TryParse(textBox.Text, out double _))
-                return;
+        //public void OnPulsePeriodLostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    TextBox textBox = sender as TextBox;
+        //    if (textBox == null || !double.TryParse(textBox.Text, out double _))
+        //        return;
 
-            AdjustPulseTimeAndUnit(textBox, _pulsePeriodUnitComboBox);
-        }
+        //    AdjustPulseTimeAndUnit(textBox, _pulsePeriodUnitComboBox);
+        //}
 
         // Implement remaining IPulseEventHandler methods...
         // Include your existing implementations
@@ -861,10 +861,10 @@ namespace DG2072_USB_Control.Continuous.PulseGenerator
             // Implementation
         }
 
-        public void OnPulsePeriodUnitChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Implementation
-        }
+        //public void OnPulsePeriodUnitChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    // Implementation
+        //}
 
         // For UI management
         public void SetFrequencyMode(bool frequencyMode)

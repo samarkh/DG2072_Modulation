@@ -5,13 +5,13 @@ namespace DG2072_USB_Control.Continuous.PulseGenerator
 {
     public interface IPulseEventHandler
     {
-        void OnPulsePeriodTextChanged(object sender, TextChangedEventArgs e);
+        //void OnPulsePeriodTextChanged(object sender, TextChangedEventArgs e);
 
-        void OnPulsePeriodLostFocus(object sender, RoutedEventArgs e);
+        //void OnPulsePeriodLostFocus(object sender, RoutedEventArgs e);
 
-        void OnPulsePeriodUnitChanged(object sender, SelectionChangedEventArgs e);
+        //void OnPulsePeriodUnitChanged(object sender, SelectionChangedEventArgs e);
 
-        void OnPulseRateModeToggleClicked(object sender, RoutedEventArgs e);
+        //void OnPulseRateModeToggleClicked(object sender, RoutedEventArgs e);
 
         void OnPulseRiseTimeTextChanged(object sender, TextChangedEventArgs e);
 

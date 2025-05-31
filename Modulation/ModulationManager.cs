@@ -115,7 +115,7 @@ namespace DG2072_USB_Control.Modulation
             if (_modulationDepthTextBox != null)
                 _modulationDepthTextBox.Text = "25.0";  // Default 25% depth
         }
-        private void InitializeFrequencyUnitComboBox(ComboBox comboBox)
+        private void InitializeFrequencyUnitComboBox(ComboBox comboBox, int defaultIndex = 2)
         {
             if (comboBox == null) return;
 
@@ -125,8 +125,7 @@ namespace DG2072_USB_Control.Modulation
             {
                 comboBox.Items.Add(new ComboBoxItem { Content = unit });
             }
-            // Default to Hz
-            comboBox.SelectedIndex = 2;
+            comboBox.SelectedIndex = defaultIndex;
         }
 
         /// <summary>

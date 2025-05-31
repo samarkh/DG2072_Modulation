@@ -152,4 +152,3 @@ Status: 0 (VI_SUCCESS)
 Process ID: 0x00004154         Thread ID: 0x00001864
 Start Time: 21:38:18.4454      Call Duration 00:00:00.0000
 Status: 0 (VI_SUCCESS)
-

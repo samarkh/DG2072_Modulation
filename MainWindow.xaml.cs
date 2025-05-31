@@ -3056,18 +3056,127 @@ namespace DG2072_USB_Control
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_isInitializing) return;
-            // Handle tab selection changes
-            if (sender is TabControl tabControl)
+
+            // Only process if this is the main TabControl (not nested ones)
+            if (sender is TabControl tabControl && e.Source == tabControl)
             {
-                var selectedTab = tabControl.SelectedItem as TabItem;
-                if (selectedTab != null && selectedTab.Name == "ModulationTab")
+                // Get the previously selected tab
+                TabItem previousTab = null;
+                if (e.RemovedItems.Count > 0)
+                {
+                    previousTab = e.RemovedItems[0] as TabItem;
+                }
+
+                // Get the newly selected tab
+                TabItem selectedTab = tabControl.SelectedItem as TabItem;
+
+                // Handle leaving the Modulation tab
+                if (previousTab != null && previousTab.Name == "ModulationTab" && selectedTab != null && selectedTab.Header.ToString() == "Waveform Controls")
+                {
+                    if (_modulationManager != null && isConnected)
+                    {
+                        // Store the current waveform frequency BEFORE any changes
+                        double currentWaveformFrequency = 0;
+                        if (double.TryParse(ChannelFrequencyTextBox.Text, out double freq))
+                        {
+                            string unit = UnitConversionUtility.GetFrequencyUnit(ChannelFrequencyUnitComboBox);
+                            currentWaveformFrequency = freq * UnitConversionUtility.GetFrequencyMultiplier(unit);
+                        }
+
+                        // Get the modulating waveform type to set as the new waveform
+                        string modulatingWaveform = GetModulatingWaveformType();
+
+                        // Disable all modulation
+                        _modulationManager.DisableModulation();
+                        LogMessage("Modulation disabled when switching to Waveform Controls tab");
+
+                        // Set the waveform type to the modulating waveform if valid
+                        if (!string.IsNullOrEmpty(modulatingWaveform))
+                        {
+                            SetWaveformTypeInUI(modulatingWaveform);
+                        }
+
+                        // IMPORTANT: Restore the original frequency, don't let it be overwritten
+                        if (currentWaveformFrequency > 0)
+                        {
+                            // Temporarily store the frequency
+                            System.Threading.Thread.Sleep(100); // Small delay to ensure commands are processed
+
+                            // Set the frequency back to what it was
+                            rigolDG2072.SetFrequency(activeChannel, currentWaveformFrequency);
+
+                            // Update the UI to show the correct frequency
+                            UpdateFrequencyValue(ChannelFrequencyTextBox, ChannelFrequencyUnitComboBox, activeChannel);
+                        }
+                    }
+                }
+                // Handle entering the Modulation tab
+                else if (selectedTab != null && selectedTab.Name == "ModulationTab")
                 {
                     // Refresh modulation settings when switching to modulation tab
                     if (_modulationManager != null && isConnected)
                     {
+                        // Don't copy frequencies - let modulation use its own defaults
                         _modulationManager.RefreshSettings();
+
+                        // Ensure carrier amplitude is refreshed from device
+                        _modulationManager.RefreshCarrierAmplitude();
                     }
                 }
+            }
+        }
+
+        // Helper method to get the current modulating waveform type
+        private string GetModulatingWaveformType()
+        {
+            try
+            {
+                var modulatingWaveformComboBox = _mainWindow.FindName("ModulatingWaveformComboBox") as ComboBox;
+                if (modulatingWaveformComboBox?.SelectedItem != null)
+                {
+                    string waveform = ((ComboBoxItem)modulatingWaveformComboBox.SelectedItem).Content.ToString();
+
+                    // Map modulating waveform names to main waveform names
+                    switch (waveform.ToUpper())
+                    {
+                        case "SINE": return "SINE";
+                        case "SQUARE": return "SQUARE";
+                        case "TRIANGLE":
+                        case "UP RAMP":
+                        case "DOWN RAMP": return "RAMP";
+                        case "NOISE": return "NOISE";
+                        case "ARBITRARY WAVEFORM": return "ARBITRARY WAVEFORM";
+                        default: return "SINE"; // Default fallback
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error getting modulating waveform type: {ex.Message}");
+            }
+            return "SINE"; // Default
+        }
+
+        // Helper method to set waveform type in UI
+        private void SetWaveformTypeInUI(string waveformType)
+        {
+            try
+            {
+                // Find the matching item in the waveform combo box
+                for (int i = 0; i < ChannelWaveformComboBox.Items.Count; i++)
+                {
+                    var item = ChannelWaveformComboBox.Items[i] as ComboBoxItem;
+                    if (item != null && item.Content.ToString().ToUpper() == waveformType.ToUpper())
+                    {
+                        ChannelWaveformComboBox.SelectedIndex = i;
+                        LogMessage($"Set waveform type to: {waveformType}");
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error setting waveform type: {ex.Message}");
             }
         }
 

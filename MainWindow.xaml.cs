@@ -3047,6 +3047,12 @@ namespace DG2072_USB_Control
         // Add this new region for Modulation Event Handlers:
         #region Modulation Event Handlers
 
+        // Carrier Frequency
+        private void CarrierFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Handle carrier frequency unit changes if needed
+        }
+
         private void CarrierWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_isInitializing || !isConnected) return;
@@ -3055,15 +3061,38 @@ namespace DG2072_USB_Control
                 _modulationManager.OnCarrierWaveformChanged();
         }
 
-        private void ModulatingWaveformComboBox_Loaded(object sender, RoutedEventArgs e)
+        // Carrier amplitude
+        private void CarrierAmplitudeTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // This should populate the combo box regardless of _isInitializing
-            //if (_isInitializing) return;  // Don't initialize during startup
+            if (_isInitializing || !isConnected) return;
 
             if (_modulationManager != null)
-                _modulationManager.OnModulationTypeChanged();
+                _modulationManager.OnCarrierAmplitudeTextChanged();
         }
 
+        private void CarrierAmplitudeTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (double.TryParse(CarrierAmplitudeTextBox.Text, out double amplitude))
+            {
+                CarrierAmplitudeTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(amplitude);
+            }
+        }
+
+        private void CarrierAmplitudeUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_isInitializing || !isConnected) return;
+
+            if (_modulationManager != null)
+                _modulationManager.OnCarrierAmplitudeUnitChanged();
+        }
+
+
+
+        private void ModulatingWaveformComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+           if (_modulationManager != null)
+                _modulationManager.OnModulationTypeChanged();
+        }
 
         private void ModulatingWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -3083,10 +3112,6 @@ namespace DG2072_USB_Control
         }
 
 
-        private void CarrierFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Handle carrier frequency unit changes if needed
-        }
 
         private void ModulationFrequencyUnitComboBox_Loaded(object sender, RoutedEventArgs e)
         {

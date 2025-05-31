@@ -67,8 +67,6 @@
                         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="-10,-118,10,601" Grid.ColumnSpan="2">
                             <ToggleButton x:Name="ChannelToggleButton" Content="Channel 1" Width="100" Click="ChannelToggleButton_Click" IsChecked="True" Height="24"/>
                             <TextBlock x:Name="ActiveChannelTextBlock" Text="Channel 1" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0"/>
-                            <Button x:Name="btnCH1On" Content="CH1: OFF" Width="80" Background="#FFF3E86F" Foreground="#FF0EEF65" Margin="3,0,3,0" Click="BtnCH1On_Click" FontWeight="Bold"/>
-                            <Button x:Name="btnCH2On" Content="CH2: OFF" Width="80" Background="#FFF3ABEA" Foreground="#FF0EEF65" Margin="3,0,3,0" Click="BtnCH2On_Click" FontWeight="Bold"/>
                         </StackPanel>
                         <TabControl SelectionChanged="TabControl_SelectionChanged" Margin="-8,-90,0,0" Grid.ColumnSpan="2">
                             <TabItem Header="Waveform Controls" Margin="-2,-1,-1,0">
@@ -110,15 +108,15 @@
                                             <DockPanel x:Name="FrequencyDockPanel" Grid.Column="0" HorizontalAlignment="Left" Width="275">
                                                 <Label Content="Frequency:" Width="100"/>
                                                 <TextBox x:Name="ChannelFrequencyTextBox" Width="100" 
-                TextChanged="ChannelFrequencyTextBox_TextChanged" 
-                LostFocus="ChannelFrequencyTextBox_LostFocus" 
-                Text="1000.0" 
-                HorizontalContentAlignment="Right" 
-                VerticalContentAlignment="Center"/>
+															TextChanged="ChannelFrequencyTextBox_TextChanged" 
+															LostFocus="ChannelFrequencyTextBox_LostFocus" 
+															Text="1000.0" 
+															HorizontalContentAlignment="Right" 
+															VerticalContentAlignment="Center"/>
                                                 <ComboBox x:Name="ChannelFrequencyUnitComboBox" Width="70" 
-                 Margin="5,0,0,0" 
-                 SelectionChanged="ChannelFrequencyUnitComboBox_SelectionChanged" 
-                 HorizontalAlignment="Left">
+															Margin="5,0,0,0" 
+															SelectionChanged="ChannelFrequencyUnitComboBox_SelectionChanged" 
+															HorizontalAlignment="Left">
                                                     <ComboBoxItem Content="µHz"/>
                                                     <ComboBoxItem Content="mHz"/>
                                                     <ComboBoxItem Content="Hz" IsSelected="True"/>
@@ -131,15 +129,15 @@
                                             <DockPanel x:Name="PeriodDockPanel" Grid.Column="0" HorizontalAlignment="Left" Width="275" Visibility="Collapsed">
                                                 <Label Content="Period:" Width="100"/>
                                                 <TextBox x:Name="PulsePeriod" Width="100" 
-                TextChanged="PulsePeriod_TextChanged" 
-                LostFocus="ChannelPulsePeriodTextBox_LostFocus" 
-                Text="1" 
-                VerticalContentAlignment="Center" 
-                HorizontalContentAlignment="Right"/>
+															TextChanged="PulsePeriod_TextChanged" 
+															LostFocus="ChannelPulsePeriodTextBox_LostFocus" 
+															Text="1" 
+															VerticalContentAlignment="Center" 
+															HorizontalContentAlignment="Right"/>
                                                 <ComboBox x:Name="PulsePeriodUnitComboBox" Width="70" 
-                Margin="5,0,0,0" 
-                SelectionChanged="PulsePeriodUnitComboBox_SelectionChanged" 
-                HorizontalAlignment="Left">
+															Margin="5,0,0,0" 
+															SelectionChanged="PulsePeriodUnitComboBox_SelectionChanged" 
+															HorizontalAlignment="Left">
                                                     <ComboBoxItem Content="s"/>
                                                     <ComboBoxItem Content="ms" IsSelected="True"/>
                                                     <ComboBoxItem Content="µs"/>
@@ -151,12 +149,12 @@
                                             <!-- Mode Toggle Button in second column -->
                                             <DockPanel x:Name="FrequencyPeriodToggleDockPanel" Grid.Column="1" HorizontalAlignment="Left">
                                                 <ToggleButton x:Name="FrequencyPeriodModeToggle" 
-                     Content="To Period" 
-                     Width="100" 
-                     Click="FrequencyPeriodModeToggle_Click" 
-                     IsChecked="True" 
-                     HorizontalAlignment="Left"
-                     ToolTip="Toggle between frequency and period display modes" Margin="0,0,180,0"/>
+																Content="To Period" 
+																Width="100" 
+																Click="FrequencyPeriodModeToggle_Click" 
+																IsChecked="True" 
+																HorizontalAlignment="Left"
+																ToolTip="Toggle between frequency and period display modes" Margin="0,0,180,0"/>
                                             </DockPanel>
                                         </Grid>
 
@@ -904,6 +902,8 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
 
+
+                                    <!--Carrier Wave And Modulation Group -->
                                     <!-- Existing GroupBox stays in Row 0 -->
                                     <GroupBox Header="Modulation Settings" Margin="10,10,10,26" Padding="10" Grid.Row="0" Grid.RowSpan="2">
                                         <StackPanel Orientation="Vertical" Margin="5">
@@ -917,8 +917,10 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/> <!-- Add this new row -->
                                                     </Grid.RowDefinitions>
 
+                                                    <!-- Carrier Settings GroupBox -->
                                                     <!-- Carrier Waveform -->
                                                     <TextBlock Text="Carrier Waveform:"
                                                                Grid.Row="0" Grid.Column="0"
@@ -956,6 +958,29 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                             <ComboBoxItem Content="MHz"/>
                                                         </ComboBox>
                                                     </StackPanel>
+
+                                                    <!-- Add Carrier Amplitude -->
+                                                    <TextBlock Text="Carrier Amplitude:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+                                                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Margin="0,5"
+                    ToolTip="Enter the carrier amplitude. This sets the peak-to-peak voltage of the carrier signal.">
+                                                        <TextBox Width="100"
+                     Text="1.0" x:Name="CarrierAmplitudeTextBox" TextAlignment="Right"
+                     TextChanged="CarrierAmplitudeTextBox_TextChanged"
+                     LostFocus="CarrierAmplitudeTextBox_LostFocus"/>
+                                                        <ComboBox x:Name="CarrierAmplitudeUnitComboBox" Width="70" 
+                      Margin="5,0,0,0" 
+                      SelectionChanged="CarrierAmplitudeUnitComboBox_SelectionChanged" 
+                      HorizontalAlignment="Left">
+                                                            <ComboBoxItem Content="Vpp" IsSelected="True"/>
+                                                            <ComboBoxItem Content="mVpp"/>
+                                                            <ComboBoxItem Content="Vrms"/>
+                                                            <ComboBoxItem Content="mVrms"/>
+                                                        </ComboBox>
+                                                    </StackPanel>
+
+
+
+
                                                 </Grid>
                                             </GroupBox>
 

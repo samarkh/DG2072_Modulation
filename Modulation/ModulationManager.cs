@@ -140,8 +140,9 @@ namespace DG2072_USB_Control.Modulation
             // Update modulating waveform based on carrier
             UpdateModulatingWaveformFromCarrier(carrierWaveform);
 
-            // REMOVE OR COMMENT OUT THIS LINE:
-            // CopyCarrierFrequencyToModulating();  // Don't copy carrier freq to modulating!
+            // REMOVED: Don't copy carrier frequency to modulating frequency
+            // This was causing the frequency mixing issue
+            // CopyCarrierFrequencyToModulating();  
 
             // Calculate and set modulating amplitude
             UpdateModulatingAmplitude();
@@ -587,17 +588,51 @@ namespace DG2072_USB_Control.Modulation
 
             try
             {
+                // Store current UI frequencies before refresh
+                double? storedCarrierFreq = null;
+                double? storedModFreq = null;
+
+                if (_carrierFrequencyTextBox != null && double.TryParse(_carrierFrequencyTextBox.Text, out double carrierFreq))
+                {
+                    string unit = ((ComboBoxItem)_carrierFrequencyUnitComboBox.SelectedItem)?.Content.ToString() ?? "Hz";
+                    storedCarrierFreq = carrierFreq * UnitConversionUtility.GetFrequencyMultiplier(unit);
+                }
+
+                if (_modulationFrequencyTextBox != null && double.TryParse(_modulationFrequencyTextBox.Text, out double modFreq))
+                {
+                    string unit = ((ComboBoxItem)_modulationFrequencyUnitComboBox.SelectedItem)?.Content.ToString() ?? "Hz";
+                    storedModFreq = modFreq * UnitConversionUtility.GetFrequencyMultiplier(unit);
+                }
+
                 // Check which modulation is active
                 string[] modTypes = { "AM", "FM", "PM", "PWM", "ASK", "FSK", "PSK" };
+                bool foundActiveModulation = false;
 
                 foreach (var modType in modTypes)
                 {
                     string response = _device.SendQuery($"SOURCE{_activeChannel}:{modType}:STATE?");
-                    if (response.Trim() == "ON")
+                    if (response.Trim() == "ON" || response.Trim() == "1")
                     {
                         // This modulation type is active
                         RefreshModulationSettings(modType);
+                        foundActiveModulation = true;
                         break;
+                    }
+                }
+
+                // If no modulation is active, keep the stored frequencies
+                if (!foundActiveModulation)
+                {
+                    // Restore carrier frequency if we had one
+                    if (storedCarrierFreq.HasValue && _carrierFrequencyTextBox != null)
+                    {
+                        UpdateFrequencyDisplay(_carrierFrequencyTextBox, _carrierFrequencyUnitComboBox, storedCarrierFreq.Value);
+                    }
+
+                    // Restore modulation frequency if we had one
+                    if (storedModFreq.HasValue && _modulationFrequencyTextBox != null)
+                    {
+                        UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, storedModFreq.Value);
                     }
                 }
             }

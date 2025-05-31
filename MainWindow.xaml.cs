@@ -136,7 +136,138 @@ namespace DG2072_USB_Control
         //**************** Regions
         //**************** Regions
         //**************** Regions
+    #region Channel Output Button Handlers
 
+        private void BtnCH1On_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isConnected)
+            {
+                LogMessage("Cannot control channel output: Not connected to instrument");
+                return;
+            }
+
+            try
+            {
+                // Get current state of Channel 1
+                string currentState = rigolDG2072.GetOutputState(1);
+                bool isCurrentlyOn = currentState.ToUpper().Contains("ON");
+
+                // Toggle the state
+                bool newState = !isCurrentlyOn;
+                rigolDG2072.SetOutput(1, newState);
+
+                // Update button appearance
+                UpdateChannelButtonState(btnCH1On, 1, newState);
+
+                // Log the action
+                LogMessage($"Channel 1 output {(newState ? "enabled" : "disabled")}");
+
+                // If this is the active channel, update the main output toggle too
+                if (activeChannel == 1)
+                {
+                    ChannelOutputToggle.IsChecked = newState;
+                    ChannelOutputToggle.Content = newState ? "ON" : "OFF";
+                }
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error toggling Channel 1 output: {ex.Message}");
+            }
+        }
+
+        private void BtnCH2On_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isConnected)
+            {
+                LogMessage("Cannot control channel output: Not connected to instrument");
+                return;
+            }
+
+            try
+            {
+                // Get current state of Channel 2
+                string currentState = rigolDG2072.GetOutputState(2);
+                bool isCurrentlyOn = currentState.ToUpper().Contains("ON");
+
+                // Toggle the state
+                bool newState = !isCurrentlyOn;
+                rigolDG2072.SetOutput(2, newState);
+
+                // Update button appearance
+                UpdateChannelButtonState(btnCH2On, 2, newState);
+
+                // Log the action
+                LogMessage($"Channel 2 output {(newState ? "enabled" : "disabled")}");
+
+                // If this is the active channel, update the main output toggle too
+                if (activeChannel == 2)
+                {
+                    ChannelOutputToggle.IsChecked = newState;
+                    ChannelOutputToggle.Content = newState ? "ON" : "OFF";
+                }
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error toggling Channel 2 output: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Updates the appearance of a channel button based on its state
+        /// </summary>
+        // If using XAML resources, update UpdateChannelButtonState like this:
+        private void UpdateChannelButtonState(Button button, int channel, bool isOn)
+        {
+            if (button == null) return;
+
+            Dispatcher.Invoke(() =>
+            {
+                button.Content = $"CH{channel}: {(isOn ? "ON" : "OFF")}";
+
+                if (isOn)
+                {
+                    // Get brushes from XAML resources
+                    string brushKey = channel == 1 ? "Channel1OnBrush" : "Channel2OnBrush";
+                    button.Background = (SolidColorBrush)FindResource(brushKey);
+                    button.Foreground = (SolidColorBrush)FindResource("ChannelOnForegroundBrush");
+                    button.FontWeight = FontWeights.Bold;
+                }
+                else
+                {
+                    // Get brushes from XAML resources
+                    button.Background = (SolidColorBrush)FindResource("ChannelOffBackgroundBrush");
+                    button.Foreground = (SolidColorBrush)FindResource("ChannelOffForegroundBrush");
+                    button.FontWeight = FontWeights.Normal;
+                }
+            });
+        }
+
+        /// <summary>
+        /// Refreshes the state of both channel output buttons
+        /// </summary>
+        private void RefreshChannelOutputButtons()
+        {
+            if (!isConnected) return;
+
+            try
+            {
+                // Update Channel 1 button
+                string ch1State = rigolDG2072.GetOutputState(1);
+                bool ch1IsOn = ch1State.ToUpper().Contains("ON");
+                UpdateChannelButtonState(btnCH1On, 1, ch1IsOn);
+
+                // Update Channel 2 button
+                string ch2State = rigolDG2072.GetOutputState(2);
+                bool ch2IsOn = ch2State.ToUpper().Contains("ON");
+                UpdateChannelButtonState(btnCH2On, 2, ch2IsOn);
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error refreshing channel output buttons: {ex.Message}");
+            }
+        }
+
+        #endregion
 
     #region Channel Toggle Methods
 
@@ -202,6 +333,26 @@ namespace DG2072_USB_Control
         {
             try
             {
+
+                // Check if any modulation is active and disable it first
+                // This prevents modulation settings from interfering with waveform settings
+                if (isConnected)
+                {
+                    string[] modTypes = { "AM", "FM", "PM", "PWM", "ASK", "FSK", "PSK" };
+                    foreach (var modType in modTypes)
+                    {
+                        string response = rigolDG2072.SendQuery($"SOURCE{activeChannel}:{modType}:STATE?");
+                        if (response.Trim() == "ON" || response.Trim() == "1")
+                        {
+                            LogMessage($"Disabling {modType} modulation before refreshing channel settings");
+                            rigolDG2072.SendCommand($"SOURCE{activeChannel}:{modType}:STATE OFF");
+                            System.Threading.Thread.Sleep(50); // Give device time to process
+                        }
+                    }
+                }
+
+
+
                 // First update the waveform selection - this is critical to do first
                 // since other settings depend on the waveform type
                 UpdateWaveformSelection(ChannelWaveformComboBox, activeChannel);
@@ -430,6 +581,9 @@ namespace DG2072_USB_Control
 
                 // Make sure all waveform-specific controls have proper visibility
                 UpdateWaveformSpecificControls(currentWaveform);
+
+                // ADD THIS SINGLE LINE - Refresh the channel output buttons
+                RefreshChannelOutputButtons();
 
                 LogMessage("Instrument settings refreshed successfully");
             }
@@ -855,7 +1009,7 @@ namespace DG2072_USB_Control
                 LogMessage("Cannot refresh settings: Instrument not connected");
             }
         }
-
+                
         private bool Connect()
         {
             try
@@ -872,6 +1026,25 @@ namespace DG2072_USB_Control
                 {
                     isConnected = true;
                     LogMessage("Connected to Rigol DG2072");
+
+                    // NEW: Disable any active modulation on both channels to start clean
+                    try
+                    {
+                        string[] modTypes = { "AM", "FM", "PM", "PWM", "ASK", "FSK", "PSK" };
+                        for (int channel = 1; channel <= 2; channel++)
+                        {
+                            foreach (var modType in modTypes)
+                            {
+                                rigolDG2072.SendCommand($"SOURCE{channel}:{modType}:STATE OFF");
+                            }
+                        }
+                        LogMessage("Cleared all modulation states on connection");
+                    }
+                    catch (Exception ex)
+                    {
+                        LogMessage($"Warning: Could not clear modulation states: {ex.Message}");
+                    }
+
                     RefreshInstrumentSettings();
                 }
                 return result;
@@ -887,13 +1060,18 @@ namespace DG2072_USB_Control
         //{
         //    try
         //    {
+        //        LogMessage("Starting connection process...");
+        //        var sw = System.Diagnostics.Stopwatch.StartNew();
+
+        //        LogMessage("Creating VISA connection...");
         //        bool result = rigolDG2072.Connect();
+
+        //        LogMessage($"VISA Connect returned in {sw.ElapsedMilliseconds}ms");
+
         //        if (result)
         //        {
         //            isConnected = true;
         //            LogMessage("Connected to Rigol DG2072");
-
-        //            // Refresh all settings from the instrument
         //            RefreshInstrumentSettings();
         //        }
         //        return result;
@@ -904,6 +1082,7 @@ namespace DG2072_USB_Control
         //        return false;
         //    }
         //}
+
 
         private bool Disconnect()
         {
@@ -935,7 +1114,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region Event Handlers - Window and Connection
+    #region Event Handlers - Window and Connection
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -2922,21 +3101,129 @@ namespace DG2072_USB_Control
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_isInitializing) return;
-            // Handle tab selection changes
-            if (sender is TabControl tabControl)
+
+            // Only process if this is the main TabControl (not nested ones)
+            if (sender is TabControl tabControl && e.Source == tabControl)
             {
-                var selectedTab = tabControl.SelectedItem as TabItem;
-                if (selectedTab != null && selectedTab.Name == "ModulationTab")
+                // Get the previously selected tab
+                TabItem previousTab = null;
+                if (e.RemovedItems.Count > 0)
+                {
+                    previousTab = e.RemovedItems[0] as TabItem;
+                }
+
+                // Get the newly selected tab
+                TabItem selectedTab = tabControl.SelectedItem as TabItem;
+
+                // Handle leaving the Modulation tab
+                if (previousTab != null && previousTab.Name == "ModulationTab" && selectedTab != null && selectedTab.Header.ToString() == "Waveform Controls")
+                {
+                    if (_modulationManager != null && isConnected)
+                    {
+                        // Store the current waveform frequency BEFORE any changes
+                        double currentWaveformFrequency = 0;
+                        if (double.TryParse(ChannelFrequencyTextBox.Text, out double freq))
+                        {
+                            string unit = UnitConversionUtility.GetFrequencyUnit(ChannelFrequencyUnitComboBox);
+                            currentWaveformFrequency = freq * UnitConversionUtility.GetFrequencyMultiplier(unit);
+                        }
+
+                        // Get the modulating waveform type to set as the new waveform
+                        string modulatingWaveform = GetModulatingWaveformType();
+
+                        // Disable all modulation
+                        _modulationManager.DisableModulation();
+                        LogMessage("Modulation disabled when switching to Waveform Controls tab");
+
+                        // Set the waveform type to the modulating waveform if valid
+                        if (!string.IsNullOrEmpty(modulatingWaveform))
+                        {
+                            SetWaveformTypeInUI(modulatingWaveform);
+                        }
+
+                        // IMPORTANT: Restore the original frequency, don't let it be overwritten
+                        if (currentWaveformFrequency > 0)
+                        {
+                            // Temporarily store the frequency
+                            System.Threading.Thread.Sleep(100); // Small delay to ensure commands are processed
+
+                            // Set the frequency back to what it was
+                            rigolDG2072.SetFrequency(activeChannel, currentWaveformFrequency);
+
+                            // Update the UI to show the correct frequency
+                            UpdateFrequencyValue(ChannelFrequencyTextBox, ChannelFrequencyUnitComboBox, activeChannel);
+                        }
+                    }
+                }
+                // Handle entering the Modulation tab
+                else if (selectedTab != null && selectedTab.Name == "ModulationTab")
                 {
                     // Refresh modulation settings when switching to modulation tab
                     if (_modulationManager != null && isConnected)
                     {
+                        // Don't copy frequencies - let modulation use its own defaults
                         _modulationManager.RefreshSettings();
+
+                        // Ensure carrier amplitude is refreshed from device
+                        _modulationManager.RefreshCarrierAmplitude();
                     }
                 }
             }
         }
 
+        // Helper method to get the current modulating waveform type
+        private string GetModulatingWaveformType()
+        {
+            try
+            {
+                var modulatingWaveformComboBox = _mainWindow.FindName("ModulatingWaveformComboBox") as ComboBox;
+                if (modulatingWaveformComboBox?.SelectedItem != null)
+                {
+                    string waveform = ((ComboBoxItem)modulatingWaveformComboBox.SelectedItem).Content.ToString();
+
+                    // Map modulating waveform names to main waveform names
+                    switch (waveform.ToUpper())
+                    {
+                        case "SINE": return "SINE";
+                        case "SQUARE": return "SQUARE";
+                        case "TRIANGLE":
+                        case "UP RAMP":
+                        case "DOWN RAMP": return "RAMP";
+                        case "NOISE": return "NOISE";
+                        case "ARBITRARY WAVEFORM": return "ARBITRARY WAVEFORM";
+                        default: return "SINE"; // Default fallback
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error getting modulating waveform type: {ex.Message}");
+            }
+            return "SINE"; // Default
+        }
+
+        // Helper method to set waveform type in UI
+        private void SetWaveformTypeInUI(string waveformType)
+        {
+            try
+            {
+                // Find the matching item in the waveform combo box
+                for (int i = 0; i < ChannelWaveformComboBox.Items.Count; i++)
+                {
+                    var item = ChannelWaveformComboBox.Items[i] as ComboBoxItem;
+                    if (item != null && item.Content.ToString().ToUpper() == waveformType.ToUpper())
+                    {
+                        ChannelWaveformComboBox.SelectedIndex = i;
+                        LogMessage($"Set waveform type to: {waveformType}");
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error setting waveform type: {ex.Message}");
+            }
+        }
 
         private void ApplyModulationButton_Click(object sender, RoutedEventArgs e)
         {

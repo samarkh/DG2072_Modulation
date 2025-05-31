@@ -10,6 +10,25 @@
         Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+        
+        <!-- Channel Button Color Scheme -->
+        <Color x:Key="Channel1OnColor">#90EE90</Color>
+        <!-- Light green -->
+        <Color x:Key="Channel2OnColor">#ADD8E6</Color>
+        <!-- Light blue -->
+        <Color x:Key="ChannelOffBackgroundColor">#E0E0E0</Color>
+        <!-- Light gray -->
+        <Color x:Key="ChannelOffForegroundColor">#404040</Color>
+        <!-- Dark gray -->
+        <Color x:Key="ChannelOnForegroundColor">#000000</Color>
+        <!-- Black -->
+
+        <!-- Brushes created from colors -->
+        <SolidColorBrush x:Key="Channel1OnBrush" Color="{StaticResource Channel1OnColor}"/>
+        <SolidColorBrush x:Key="Channel2OnBrush" Color="{StaticResource Channel2OnColor}"/>
+        <SolidColorBrush x:Key="ChannelOffBackgroundBrush" Color="{StaticResource ChannelOffBackgroundColor}"/>
+        <SolidColorBrush x:Key="ChannelOffForegroundBrush" Color="{StaticResource ChannelOffForegroundColor}"/>
+        <SolidColorBrush x:Key="ChannelOnForegroundBrush" Color="{StaticResource ChannelOnForegroundColor}"/>
     </Window.Resources>
 
 
@@ -48,6 +67,8 @@
                         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="-10,-118,10,601" Grid.ColumnSpan="2">
                             <ToggleButton x:Name="ChannelToggleButton" Content="Channel 1" Width="100" Click="ChannelToggleButton_Click" IsChecked="True" Height="24"/>
                             <TextBlock x:Name="ActiveChannelTextBlock" Text="Channel 1" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0"/>
+                            <Button x:Name="btnCH1On" Content="CH1: OFF" Width="80" Background="#FFF3E86F" Foreground="#FF0EEF65" Margin="3,0,3,0" Click="BtnCH1On_Click" FontWeight="Bold"/>
+                            <Button x:Name="btnCH2On" Content="CH2: OFF" Width="80" Background="#FFF3ABEA" Foreground="#FF0EEF65" Margin="3,0,3,0" Click="BtnCH2On_Click" FontWeight="Bold"/>
                         </StackPanel>
                         <TabControl SelectionChanged="TabControl_SelectionChanged" Margin="-8,-90,0,0" Grid.ColumnSpan="2">
                             <TabItem Header="Waveform Controls" Margin="-2,-1,-1,0">

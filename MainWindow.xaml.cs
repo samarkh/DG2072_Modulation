@@ -136,7 +136,138 @@ namespace DG2072_USB_Control
         //**************** Regions
         //**************** Regions
         //**************** Regions
+    #region Channel Output Button Handlers
 
+        private void BtnCH1On_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isConnected)
+            {
+                LogMessage("Cannot control channel output: Not connected to instrument");
+                return;
+            }
+
+            try
+            {
+                // Get current state of Channel 1
+                string currentState = rigolDG2072.GetOutputState(1);
+                bool isCurrentlyOn = currentState.ToUpper().Contains("ON");
+
+                // Toggle the state
+                bool newState = !isCurrentlyOn;
+                rigolDG2072.SetOutput(1, newState);
+
+                // Update button appearance
+                UpdateChannelButtonState(btnCH1On, 1, newState);
+
+                // Log the action
+                LogMessage($"Channel 1 output {(newState ? "enabled" : "disabled")}");
+
+                // If this is the active channel, update the main output toggle too
+                if (activeChannel == 1)
+                {
+                    ChannelOutputToggle.IsChecked = newState;
+                    ChannelOutputToggle.Content = newState ? "ON" : "OFF";
+                }
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error toggling Channel 1 output: {ex.Message}");
+            }
+        }
+
+        private void BtnCH2On_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isConnected)
+            {
+                LogMessage("Cannot control channel output: Not connected to instrument");
+                return;
+            }
+
+            try
+            {
+                // Get current state of Channel 2
+                string currentState = rigolDG2072.GetOutputState(2);
+                bool isCurrentlyOn = currentState.ToUpper().Contains("ON");
+
+                // Toggle the state
+                bool newState = !isCurrentlyOn;
+                rigolDG2072.SetOutput(2, newState);
+
+                // Update button appearance
+                UpdateChannelButtonState(btnCH2On, 2, newState);
+
+                // Log the action
+                LogMessage($"Channel 2 output {(newState ? "enabled" : "disabled")}");
+
+                // If this is the active channel, update the main output toggle too
+                if (activeChannel == 2)
+                {
+                    ChannelOutputToggle.IsChecked = newState;
+                    ChannelOutputToggle.Content = newState ? "ON" : "OFF";
+                }
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error toggling Channel 2 output: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Updates the appearance of a channel button based on its state
+        /// </summary>
+        // If using XAML resources, update UpdateChannelButtonState like this:
+        private void UpdateChannelButtonState(Button button, int channel, bool isOn)
+        {
+            if (button == null) return;
+
+            Dispatcher.Invoke(() =>
+            {
+                button.Content = $"CH{channel}: {(isOn ? "ON" : "OFF")}";
+
+                if (isOn)
+                {
+                    // Get brushes from XAML resources
+                    string brushKey = channel == 1 ? "Channel1OnBrush" : "Channel2OnBrush";
+                    button.Background = (SolidColorBrush)FindResource(brushKey);
+                    button.Foreground = (SolidColorBrush)FindResource("ChannelOnForegroundBrush");
+                    button.FontWeight = FontWeights.Bold;
+                }
+                else
+                {
+                    // Get brushes from XAML resources
+                    button.Background = (SolidColorBrush)FindResource("ChannelOffBackgroundBrush");
+                    button.Foreground = (SolidColorBrush)FindResource("ChannelOffForegroundBrush");
+                    button.FontWeight = FontWeights.Normal;
+                }
+            });
+        }
+
+        /// <summary>
+        /// Refreshes the state of both channel output buttons
+        /// </summary>
+        private void RefreshChannelOutputButtons()
+        {
+            if (!isConnected) return;
+
+            try
+            {
+                // Update Channel 1 button
+                string ch1State = rigolDG2072.GetOutputState(1);
+                bool ch1IsOn = ch1State.ToUpper().Contains("ON");
+                UpdateChannelButtonState(btnCH1On, 1, ch1IsOn);
+
+                // Update Channel 2 button
+                string ch2State = rigolDG2072.GetOutputState(2);
+                bool ch2IsOn = ch2State.ToUpper().Contains("ON");
+                UpdateChannelButtonState(btnCH2On, 2, ch2IsOn);
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Error refreshing channel output buttons: {ex.Message}");
+            }
+        }
+
+        #endregion
 
     #region Channel Toggle Methods
 
@@ -430,6 +561,9 @@ namespace DG2072_USB_Control
 
                 // Make sure all waveform-specific controls have proper visibility
                 UpdateWaveformSpecificControls(currentWaveform);
+
+                // ADD THIS SINGLE LINE - Refresh the channel output buttons
+                RefreshChannelOutputButtons();
 
                 LogMessage("Instrument settings refreshed successfully");
             }
@@ -935,7 +1069,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-        #region Event Handlers - Window and Connection
+    #region Event Handlers - Window and Connection
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

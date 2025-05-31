@@ -1015,6 +1015,9 @@ namespace DG2072_USB_Control
             _modulationManager = new ModulationManager(rigolDG2072, activeChannel, this);
             _modulationManager.LogEvent += (s, message) => LogMessage(message);
 
+            // Initialize the modulation UI controls NOW (before connection)
+            _modulationManager.InitializeUI();
+
             // After window initialization, use a small delay before auto-connecting
             // This gives the UI time to fully render before connecting
             DispatcherTimer startupTimer = new DispatcherTimer
@@ -2875,7 +2878,8 @@ namespace DG2072_USB_Control
 
         private void ModulatingWaveformComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            if (_isInitializing) return;  // Don't initialize during startup
+            // This should populate the combo box regardless of _isInitializing
+            //if (_isInitializing) return;  // Don't initialize during startup
 
             if (_modulationManager != null)
                 _modulationManager.OnModulationTypeChanged();

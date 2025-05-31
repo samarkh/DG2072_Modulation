@@ -68,6 +68,15 @@ namespace DG2072_USB_Control.Modulation
             set => _activeChannel = value;
         }
 
+
+        public void InitializeUI()
+        {
+            InitializeControls();
+        }
+
+
+
+
         private void InitializeControls()
         {
             // Find controls in the main window
@@ -92,34 +101,20 @@ namespace DG2072_USB_Control.Modulation
                     _modulationTypeComboBox.SelectedIndex = 0;
             }
 
+            // Initialize frequency unit combo boxes
+            InitializeFrequencyUnitComboBox(_carrierFrequencyUnitComboBox);
+            InitializeFrequencyUnitComboBox(_modulationFrequencyUnitComboBox);
 
+            // Set default values
+            if (_carrierFrequencyTextBox != null)
+                _carrierFrequencyTextBox.Text = "100";  // Default 100 kHz for carrier
 
             if (_modulationFrequencyTextBox != null)
-            {
                 _modulationFrequencyTextBox.Text = "500";  // Default 500 Hz for modulating
-            }
 
-            if (_modulationFrequencyUnitComboBox != null)
-            {
-                // Select Hz as default unit
-                for (int i = 0; i < _modulationFrequencyUnitComboBox.Items.Count; i++)
-                {
-                    var item = _modulationFrequencyUnitComboBox.Items[i] as ComboBoxItem;
-                    if (item?.Content.ToString() == "Hz")
-                    {
-                        _modulationFrequencyUnitComboBox.SelectedIndex = i;
-                        break;
-                    }
-                }
-            }
-
-
-
-
-            // Initialize frequency unit combo boxes
-            InitializeFrequencyUnitComboBox(_modulationFrequencyUnitComboBox);
+            if (_modulationDepthTextBox != null)
+                _modulationDepthTextBox.Text = "25.0";  // Default 25% depth
         }
-
         private void InitializeFrequencyUnitComboBox(ComboBox comboBox)
         {
             if (comboBox == null) return;

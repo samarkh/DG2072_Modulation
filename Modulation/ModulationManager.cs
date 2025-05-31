@@ -59,7 +59,7 @@ namespace DG2072_USB_Control.Modulation
             _activeChannel = channel;
             _mainWindow = mainWindow;
 
-            InitializeControls();
+            //InitializeControls();
         }
 
         public int ActiveChannel
@@ -160,6 +160,12 @@ namespace DG2072_USB_Control.Modulation
         /// </summary>
         public void OnModulationTypeChanged()
         {
+            if (!IsDeviceConnected())
+            {
+                Log("Skipping modulation change - device not connected");
+                return;
+            }
+
             if (_modulationTypeComboBox?.SelectedItem == null) return;
 
             string modulationType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();

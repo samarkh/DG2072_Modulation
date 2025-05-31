@@ -72,7 +72,7 @@ namespace DG2072_USB_Control
         // Harmonics management
         //private HarmonicsManager _harmonicsManager;
         //private HarmonicsUIController _harmonicsUIController;
-
+        private bool _isInitializing = true;
 
         // Dual Tone management
         private DualToneGen dualToneGen;
@@ -935,10 +935,13 @@ namespace DG2072_USB_Control
 
         #endregion
 
-    #region Event Handlers - Window and Connection
+        #region Event Handlers - Window and Connection
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // Set initialization flag at the very start
+            _isInitializing = true;
+
             // Find and store reference to symmetry dock panel
             SymmetryDockPanel = FindVisualParent<DockPanel>(Symm);
 
@@ -946,11 +949,7 @@ namespace DG2072_USB_Control
             DutyCycleDockPanel = FindVisualParent<DockPanel>(DutyCycle);
 
             // Find and store references to pulse panels
-            
             PulseWidthDockPanel = FindVisualParent<DockPanel>(PulseWidth);
-            // Initialize the frequency/period converter
-            // TEMPORARILY COMMENT THIS OUT
-            // InitializeFrequencyPeriodConverter();
 
             // Since PulsePeriod is now inside FrequencyDockPanel, we set this to FrequencyDockPanel
             // This maintains compatibility with existing code that references PulsePeriodDockPanel
@@ -964,6 +963,9 @@ namespace DG2072_USB_Control
 
             // Find and store reference to phase panel
             PhaseDockPanel = FindVisualParent<DockPanel>(ChannelPhaseTextBox);
+
+            // In Window_Loaded method, add this to find and store the DC panel
+            DCVoltageDockPanel = FindVisualParent<DockPanel>(DCVoltageTextBox);
 
             // Initialize frequency/period mode with frequency mode active by default
             _frequencyModeActive = true;
@@ -1001,8 +1003,6 @@ namespace DG2072_USB_Control
             // Initialize the arbitrary waveform generator
             arbitraryWaveformGen = new ArbitraryWaveformGen(rigolDG2072, activeChannel, this);
             arbitraryWaveformGen.LogEvent += (s, message) => LogMessage(message);
-            // In Window_Loaded method, add this to find and store the DC panel
-            DCVoltageDockPanel = FindVisualParent<DockPanel>(DCVoltageTextBox);
 
             // Initialize harmonics management
             _harmonicsManager = new HarmonicsManager(rigolDG2072, activeChannel);
@@ -1011,7 +1011,9 @@ namespace DG2072_USB_Control
             _harmonicsUIController = new HarmonicsUIController(_harmonicsManager, this);
             _harmonicsUIController.LogEvent += (s, message) => LogMessage(message);
 
-
+            // Initialize the modulation manager
+            _modulationManager = new ModulationManager(rigolDG2072, activeChannel, this);
+            _modulationManager.LogEvent += (s, message) => LogMessage(message);
 
             // After window initialization, use a small delay before auto-connecting
             // This gives the UI time to fully render before connecting
@@ -1019,11 +1021,6 @@ namespace DG2072_USB_Control
             {
                 Interval = TimeSpan.FromMilliseconds(500)  // 500ms delay
             };
-
-            // Add this in Window_Loaded method after other component initializations:
-            // Initialize the modulation manager
-            _modulationManager = new DG2072_USB_Control.Modulation.ModulationManager(rigolDG2072, activeChannel, this);
-            _modulationManager.LogEvent += (s, message) => LogMessage(message);
 
             startupTimer.Tick += (s, args) =>
             {
@@ -1036,34 +1033,40 @@ namespace DG2072_USB_Control
                     // Call the connection method to establish connection
                     if (Connect())
                     {
-                        {
-                            // Initialize AFTER connection
-                            InitializeFrequencyPeriodConverter();
-                            // Update UI to reflect connected state
-                            ConnectionStatusTextBlock.Text = "Connected";
+                        // Initialize AFTER connection
+                        InitializeFrequencyPeriodConverter();
 
-                            ConnectionStatusTextBlock.Foreground = System.Windows.Media.Brushes.Green;
-                            ConnectionToggleButton.Content = "Disconnect";
-                            IdentifyButton.IsEnabled = true;
-                            RefreshButton.IsEnabled = true;
-                            UpdateAutoRefreshState(true);
-                        }
+                        // Update UI to reflect connected state
+                        ConnectionStatusTextBlock.Text = "Connected";
+                        ConnectionStatusTextBlock.Foreground = System.Windows.Media.Brushes.Green;
+                        ConnectionToggleButton.Content = "Disconnect";
+                        IdentifyButton.IsEnabled = true;
+                        RefreshButton.IsEnabled = true;
+                        UpdateAutoRefreshState(true);
+
+                        // NOW we're ready - clear the initialization flag
+                        _isInitializing = false;
+
                         // Refresh the UI with current device settings
                         RefreshInstrumentSettings();
                         LogMessage("Auto-connection successful");
                     }
                     else
                     {
+                        // Even on failure, clear the flag so manual connection can work
+                        _isInitializing = false;
                         LogMessage("Auto-connection failed - please connect manually");
                     }
                 }
+                else
+                {
+                    // If somehow already connected, just clear the flag
+                    _isInitializing = false;
+                }
             };
-
-
 
             startupTimer.Start();
         }
-
         // Rename the event handler to reflect its more general purpose
         //private void FrequencyPeriodModeToggle_Click(object sender, RoutedEventArgs e)
         //{
@@ -1165,9 +1168,13 @@ namespace DG2072_USB_Control
         {
             if (!isConnected)
             {
+                // Set initializing flag before attempting connection
+                _isInitializing = true;
+
                 // Try to connect
                 if (Connect())
                 {
+                    // Update UI to show connected state
                     ConnectionStatusTextBlock.Text = "Connected";
                     ConnectionStatusTextBlock.Foreground = System.Windows.Media.Brushes.Green;
                     ConnectionToggleButton.Content = "Disconnect";
@@ -1175,8 +1182,29 @@ namespace DG2072_USB_Control
                     RefreshButton.IsEnabled = true;
                     UpdateAutoRefreshState(true);
 
-                    // Add this line to refresh settings on manual connection
+                    // Initialize frequency/period converter after successful connection
+                    if (frequencyPeriodConverter == null)
+                    {
+                        InitializeFrequencyPeriodConverter();
+                    }
+
+                    // Clear the initialization flag now that we're connected
+                    _isInitializing = false;
+
+                    // Refresh settings from the instrument
                     RefreshInstrumentSettings();
+                    LogMessage("Manual connection successful");
+                }
+                else
+                {
+                    // Connection failed - clear the flag and show error state
+                    _isInitializing = false;
+
+                    MessageBox.Show("Failed to connect to instrument. Please check connections and try again.",
+                                  "Connection Failed",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Error);
+                    LogMessage("Manual connection failed");
                 }
             }
             else
@@ -1184,12 +1212,23 @@ namespace DG2072_USB_Control
                 // Try to disconnect
                 if (Disconnect())
                 {
+                    // Update UI to show disconnected state
                     ConnectionStatusTextBlock.Text = "Disconnected";
                     ConnectionStatusTextBlock.Foreground = System.Windows.Media.Brushes.Red;
                     ConnectionToggleButton.Content = "Connect";
                     IdentifyButton.IsEnabled = false;
                     RefreshButton.IsEnabled = false;
                     UpdateAutoRefreshState(false);
+
+                    LogMessage("Manually disconnected from instrument");
+                }
+                else
+                {
+                    MessageBox.Show("Failed to disconnect properly. You may need to restart the application.",
+                                  "Disconnect Failed",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Warning);
+                    LogMessage("Manual disconnect failed");
                 }
             }
         }
@@ -1357,7 +1396,7 @@ namespace DG2072_USB_Control
 
         private void ChannelWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!isConnected) return;
+            if (_isInitializing || !isConnected) return;
 
             // Get previous waveform type (if available)
             string previousWaveform = string.Empty;
@@ -2824,20 +2863,24 @@ namespace DG2072_USB_Control
 
 
         // Add this new region for Modulation Event Handlers:
-    #region Modulation Event Handlers
+        #region Modulation Event Handlers
 
         private void CarrierWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_isInitializing || !isConnected) return;
+
             if (_modulationManager != null)
                 _modulationManager.OnCarrierWaveformChanged();
         }
 
         private void ModulatingWaveformComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            // Initialize modulating waveforms when loaded
+            if (_isInitializing) return;  // Don't initialize during startup
+
             if (_modulationManager != null)
                 _modulationManager.OnModulationTypeChanged();
         }
+
 
         private void ModulatingWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -2846,10 +2889,16 @@ namespace DG2072_USB_Control
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // This is for ModulationTypeComboBox
+            if (_isInitializing || !isConnected)
+            {
+                LogMessage($"Skipping modulation type change - Initializing: {_isInitializing}, Connected: {isConnected}");
+                return;
+            }
+
             if (_modulationManager != null)
                 _modulationManager.OnModulationTypeChanged();
         }
+
 
         private void CarrierFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -2868,6 +2917,7 @@ namespace DG2072_USB_Control
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_isInitializing) return;
             // Handle tab selection changes
             if (sender is TabControl tabControl)
             {

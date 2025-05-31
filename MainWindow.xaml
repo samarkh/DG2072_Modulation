@@ -48,6 +48,8 @@
                         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="-10,-118,10,601" Grid.ColumnSpan="2">
                             <ToggleButton x:Name="ChannelToggleButton" Content="Channel 1" Width="100" Click="ChannelToggleButton_Click" IsChecked="True" Height="24"/>
                             <TextBlock x:Name="ActiveChannelTextBlock" Text="Channel 1" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0"/>
+                            <Button x:Name="btnCH1On" Content="Ch1" Width="60" Background="#FFF3E86F" Foreground="#FF0EEF65" Margin="3,0,3,0"/>
+                            <Button x:Name="btnCH2On" Content="Ch1" Width="60" Background="#FFF3ABEA" Foreground="#FF0EEF65"/>
                         </StackPanel>
                         <TabControl SelectionChanged="TabControl_SelectionChanged" Margin="-8,-90,0,0" Grid.ColumnSpan="2">
                             <TabItem Header="Waveform Controls" Margin="-2,-1,-1,0">

@@ -102,8 +102,8 @@ namespace DG2072_USB_Control.Modulation
             }
 
             // Initialize frequency unit combo boxes
-            InitializeFrequencyUnitComboBox(_carrierFrequencyUnitComboBox);
-            InitializeFrequencyUnitComboBox(_modulationFrequencyUnitComboBox);
+            InitializeFrequencyUnitComboBox(_carrierFrequencyUnitComboBox, 3);
+            InitializeFrequencyUnitComboBox(_modulationFrequencyUnitComboBox, 2);
 
             // Set default values
             if (_carrierFrequencyTextBox != null)
@@ -115,7 +115,7 @@ namespace DG2072_USB_Control.Modulation
             if (_modulationDepthTextBox != null)
                 _modulationDepthTextBox.Text = "25.0";  // Default 25% depth
         }
-        private void InitializeFrequencyUnitComboBox(ComboBox comboBox, int defaultIndex = 2)
+        private void InitializeFrequencyUnitComboBox(ComboBox comboBox, int defaultIndex)
         {
             if (comboBox == null) return;
 

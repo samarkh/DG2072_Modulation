@@ -3131,7 +3131,7 @@ namespace DG2072_USB_Control
         {
             try
             {
-                var modulatingWaveformComboBox = _mainWindow.FindName("ModulatingWaveformComboBox") as ComboBox;
+                var modulatingWaveformComboBox = _mainWindow.FindName("ModulatingWaveformComboBox") as ComboBox;    // error: _mainWindow is not defined in this context, assuming it's a class member
                 if (modulatingWaveformComboBox?.SelectedItem != null)
                 {
                     string waveform = ((ComboBoxItem)modulatingWaveformComboBox.SelectedItem).Content.ToString();

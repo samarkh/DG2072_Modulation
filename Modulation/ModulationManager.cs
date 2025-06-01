@@ -20,14 +20,17 @@ namespace DG2072_USB_Control.Modulation
         public event EventHandler<string> LogEvent;
 
         // UI Controls references
-        private ComboBox _carrierWaveformComboBox;
-        private ComboBox _modulatingWaveformComboBox;
-        private TextBox _carrierFrequencyTextBox;
-        private ComboBox _carrierFrequencyUnitComboBox;
-        private ComboBox _modulationTypeComboBox;
-        private TextBox _modulationFrequencyTextBox;
-        private ComboBox _modulationFrequencyUnitComboBox;
-        private TextBox _modulationDepthTextBox;
+        private ComboBox   _carrierWaveformComboBox;
+        private TextBox   _carrierFrequencyTextBox;
+        private ComboBox  _carrierFrequencyUnitComboBox;
+        private TextBox   _carrierAmplitudeTextBox;
+        private ComboBox  _carrierAmplitudeUnitComboBox;
+        private TextBox   _modulationFrequencyTextBox;
+        private ComboBox  _modulationFrequencyUnitComboBox;
+        private ComboBox  _modulationTypeComboBox;
+        private ComboBox  _modulatingWaveformComboBox;
+        private TextBox   _modulationDepthTextBox;
+
 
         // Available modulation types
         private readonly Dictionary<string, string[]> _modulationTypes = new Dictionary<string, string[]>
@@ -68,26 +71,25 @@ namespace DG2072_USB_Control.Modulation
             set => _activeChannel = value;
         }
 
-
         public void InitializeUI()
         {
             InitializeControls();
         }
 
-
-
-
         private void InitializeControls()
         {
             // Find controls in the main window
-            _carrierWaveformComboBox = _mainWindow.FindName("CarrierWaveformComboBox") as ComboBox;
-            _modulatingWaveformComboBox = _mainWindow.FindName("ModulatingWaveformComboBox") as ComboBox;
-            _carrierFrequencyTextBox = _mainWindow.FindName("CarrierFrequencyTextBox") as TextBox;
-            _carrierFrequencyUnitComboBox = _mainWindow.FindName("CarrierFrequencyUnitComboBox") as ComboBox;
-            _modulationTypeComboBox = _mainWindow.FindName("ModulationTypeComboBox") as ComboBox;
-            _modulationFrequencyTextBox = _mainWindow.FindName("ModulationFrequencyTextBox") as TextBox;
+            _carrierWaveformComboBox =       _mainWindow.FindName("CarrierWaveformComboBox") as ComboBox;
+            _carrierFrequencyTextBox =       _mainWindow.FindName("CarrierFrequencyTextBox") as TextBox;
+            _carrierFrequencyUnitComboBox =  _mainWindow.FindName("CarrierFrequencyUnitComboBox") as ComboBox;
+            _carrierAmplitudeTextBox =       _mainWindow.FindName("CarrierAmplitudeTextBox") as TextBox;
+            _carrierAmplitudeUnitComboBox =  _mainWindow.FindName("CarrierAmplitudeUnitComboBox") as ComboBox;
+            _modulatingWaveformComboBox =    _mainWindow.FindName("ModulatingWaveformComboBox") as ComboBox;
+            _modulationTypeComboBox =        _mainWindow.FindName("ModulationTypeComboBox") as ComboBox;
+            _modulationFrequencyTextBox =    _mainWindow.FindName("ModulationFrequencyTextBox") as TextBox;
             _modulationFrequencyUnitComboBox = _mainWindow.FindName("ModulationFrequencyUnitComboBox") as ComboBox;
-            _modulationDepthTextBox = _mainWindow.FindName("ModulationDepthTextBox") as TextBox;
+            _modulationDepthTextBox =        _mainWindow.FindName("ModulationDepthTextBox") as TextBox;
+
 
             // Initialize modulation type combo box
             if (_modulationTypeComboBox != null)
@@ -109,12 +111,17 @@ namespace DG2072_USB_Control.Modulation
             if (_carrierFrequencyTextBox != null)
                 _carrierFrequencyTextBox.Text = "100";  // Default 100 kHz for carrier
 
+            // Set default carrier amplitude
+            if (_carrierAmplitudeTextBox != null)
+                _carrierAmplitudeTextBox.Text = "3.0";  // Default 3 Vpp
+
             if (_modulationFrequencyTextBox != null)
                 _modulationFrequencyTextBox.Text = "500";  // Default 500 Hz for modulating
 
             if (_modulationDepthTextBox != null)
                 _modulationDepthTextBox.Text = "25.0";  // Default 25% depth
         }
+
         private void InitializeFrequencyUnitComboBox(ComboBox comboBox, int defaultIndex)
         {
             if (comboBox == null) return;
@@ -140,13 +147,32 @@ namespace DG2072_USB_Control.Modulation
             // Update modulating waveform based on carrier
             UpdateModulatingWaveformFromCarrier(carrierWaveform);
 
-            // REMOVE OR COMMENT OUT THIS LINE:
-            // CopyCarrierFrequencyToModulating();  // Don't copy carrier freq to modulating!
+            // REMOVED: Don't copy carrier frequency to modulating frequency
+            // This was causing the frequency mixing issue
+            // CopyCarrierFrequencyToModulating();  
 
             // Calculate and set modulating amplitude
             UpdateModulatingAmplitude();
 
             Log($"Carrier waveform changed to: {carrierWaveform}");
+        }
+
+        /// <summary>
+        /// Called when carrier amplitude text changes
+        /// </summary>
+        public void OnCarrierAmplitudeTextChanged()
+        {
+            // Update modulating amplitude if needed based on new carrier amplitude
+            UpdateModulatingAmplitude();
+            Log("Carrier amplitude changed");
+        }
+
+        /// <summary>
+        /// Called when carrier amplitude unit changes
+        /// </summary>
+        public void OnCarrierAmplitudeUnitChanged()
+        {
+            Log("Carrier amplitude unit changed");
         }
 
         /// <summary>
@@ -372,6 +398,21 @@ namespace DG2072_USB_Control.Modulation
                     carrierWaveform = ((ComboBoxItem)_carrierWaveformComboBox.SelectedItem).Content.ToString().ToUpper();
                 }
 
+
+                // Get CARRIER amplitude from the carrier amplitude textbox
+                double carrierAmplitude = 1.0; // Default 1 Vpp
+                if (_carrierAmplitudeTextBox != null && double.TryParse(_carrierAmplitudeTextBox.Text, out double carrierAmp))
+                {
+                    string unit = "Vpp";
+                    if (_carrierAmplitudeUnitComboBox?.SelectedItem != null)
+                    {
+                        unit = ((ComboBoxItem)_carrierAmplitudeUnitComboBox.SelectedItem).Content.ToString();
+                    }
+                    carrierAmplitude = carrierAmp * UnitConversionUtility.GetAmplitudeMultiplier(unit);
+                }
+
+
+
                 // Get modulating waveform
                 string modulatingWaveform = "SINE";
                 if (_modulatingWaveformComboBox?.SelectedItem != null)
@@ -400,13 +441,13 @@ namespace DG2072_USB_Control.Modulation
 
                 // Log what we're applying
                 Log($"Applying {modulationType} modulation:");
-                Log($"  Carrier: {carrierWaveform} at {carrierFrequency} Hz from UI");
+                Log($"  Carrier: {carrierWaveform} at {carrierFrequency} Hz, {carrierAmplitude} Vpp from UI");
                 Log($"  Modulating: {modulatingWaveform} at {modFrequency} Hz");
                 Log($"  Depth: {modDepth}%");
 
                 // Apply modulation based on type - pass carrier frequency explicitly
-                ApplyModulationByType(modulationType, carrierWaveform, carrierFrequency,
-                                    modulatingWaveform, modFrequency, modDepth);
+                ApplyModulationByType(modulationType, carrierWaveform, carrierFrequency, carrierAmplitude,
+                    modulatingWaveform, modFrequency, modDepth);
 
                 Log($"Modulation applied successfully");
             }
@@ -438,11 +479,10 @@ namespace DG2072_USB_Control.Modulation
         /// Apply specific modulation type to the device
         /// </summary>
         private void ApplyModulationByType(string modulationType, string carrierWaveform,
-                                    double carrierFrequency, string modulatingWaveform,
-                                    double modFrequency, double modDepth)
+                                    double carrierFrequency, double carrierAmplitude,
+                                    string modulatingWaveform, double modFrequency, double modDepth)
         {
-            // Get current amplitude, offset, and phase from device
-            double carrierAmp = _device.GetAmplitude(_activeChannel);
+            // Get current offset and phase from device
             double carrierOffset = _device.GetOffset(_activeChannel);
             double carrierPhase = _device.GetPhase(_activeChannel);
 
@@ -463,8 +503,8 @@ namespace DG2072_USB_Control.Modulation
             switch (modulationType)
             {
                 case "AM":
-                    // Set carrier waveform with the SPECIFIED frequency, not device frequency
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    // Set carrier waveform with the SPECIFIED frequency and amplitude
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:STATE ON");
@@ -476,7 +516,7 @@ namespace DG2072_USB_Control.Modulation
                     break;
 
                 case "FM":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:STATE ON");
@@ -488,7 +528,7 @@ namespace DG2072_USB_Control.Modulation
                     break;
 
                 case "PM":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:STATE ON");
@@ -501,7 +541,7 @@ namespace DG2072_USB_Control.Modulation
 
                 case "PWM":
                     // PWM requires a pulse carrier
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:PULS {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:PULS {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:PWM:STATE ON");
@@ -512,7 +552,7 @@ namespace DG2072_USB_Control.Modulation
                     break;
 
                 case "ASK":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:ASK:STATE ON");
@@ -524,7 +564,7 @@ namespace DG2072_USB_Control.Modulation
                     break;
 
                 case "FSK":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:FSK:STATE ON");
@@ -536,7 +576,7 @@ namespace DG2072_USB_Control.Modulation
                     break;
 
                 case "PSK":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmp},{carrierOffset},{carrierPhase}");
+                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
                     System.Threading.Thread.Sleep(100);
 
                     _device.SendCommand($"SOURCE{_activeChannel}:PSK:STATE ON");
@@ -551,6 +591,57 @@ namespace DG2072_USB_Control.Modulation
                     break;
             }
         }
+
+
+        /// <summary>
+        /// Refresh carrier amplitude from device
+        /// </summary>
+        public void RefreshCarrierAmplitude()
+        {
+            if (!IsDeviceConnected()) return;
+
+            try
+            {
+                double amplitude = _device.GetAmplitude(_activeChannel);
+
+                // Update the carrier amplitude display
+                if (_carrierAmplitudeTextBox != null && _carrierAmplitudeUnitComboBox != null)
+                {
+                    // Determine best unit
+                    string unit = "Vpp";
+                    double displayValue = amplitude;
+
+                    if (amplitude < 0.1)
+                    {
+                        unit = "mVpp";
+                        displayValue = amplitude * 1000;
+                    }
+
+                    _carrierAmplitudeTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(displayValue);
+
+                    // Update unit combo box
+                    for (int i = 0; i < _carrierAmplitudeUnitComboBox.Items.Count; i++)
+                    {
+                        var item = _carrierAmplitudeUnitComboBox.Items[i] as ComboBoxItem;
+                        if (item?.Content.ToString() == unit)
+                        {
+                            _carrierAmplitudeUnitComboBox.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Error refreshing carrier amplitude: {ex.Message}");
+            }
+        }
+
+
+
+
+
+
 
         /// <summary>
         /// Disable all modulation
@@ -587,17 +678,51 @@ namespace DG2072_USB_Control.Modulation
 
             try
             {
+                // Store current UI frequencies before refresh
+                double? storedCarrierFreq = null;
+                double? storedModFreq = null;
+
+                if (_carrierFrequencyTextBox != null && double.TryParse(_carrierFrequencyTextBox.Text, out double carrierFreq))
+                {
+                    string unit = ((ComboBoxItem)_carrierFrequencyUnitComboBox.SelectedItem)?.Content.ToString() ?? "Hz";
+                    storedCarrierFreq = carrierFreq * UnitConversionUtility.GetFrequencyMultiplier(unit);
+                }
+
+                if (_modulationFrequencyTextBox != null && double.TryParse(_modulationFrequencyTextBox.Text, out double modFreq))
+                {
+                    string unit = ((ComboBoxItem)_modulationFrequencyUnitComboBox.SelectedItem)?.Content.ToString() ?? "Hz";
+                    storedModFreq = modFreq * UnitConversionUtility.GetFrequencyMultiplier(unit);
+                }
+
                 // Check which modulation is active
                 string[] modTypes = { "AM", "FM", "PM", "PWM", "ASK", "FSK", "PSK" };
+                bool foundActiveModulation = false;
 
                 foreach (var modType in modTypes)
                 {
                     string response = _device.SendQuery($"SOURCE{_activeChannel}:{modType}:STATE?");
-                    if (response.Trim() == "ON")
+                    if (response.Trim() == "ON" || response.Trim() == "1")
                     {
                         // This modulation type is active
                         RefreshModulationSettings(modType);
+                        foundActiveModulation = true;
                         break;
+                    }
+                }
+
+                // If no modulation is active, keep the stored frequencies
+                if (!foundActiveModulation)
+                {
+                    // Restore carrier frequency if we had one
+                    if (storedCarrierFreq.HasValue && _carrierFrequencyTextBox != null)
+                    {
+                        UpdateFrequencyDisplay(_carrierFrequencyTextBox, _carrierFrequencyUnitComboBox, storedCarrierFreq.Value);
+                    }
+
+                    // Restore modulation frequency if we had one
+                    if (storedModFreq.HasValue && _modulationFrequencyTextBox != null)
+                    {
+                        UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, storedModFreq.Value);
                     }
                 }
             }

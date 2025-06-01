@@ -1584,7 +1584,7 @@ namespace DG2072_USB_Control
             string waveform = ((ComboBoxItem)ChannelWaveformComboBox.SelectedItem).Content.ToString().ToUpper();
             string selectedArbWaveform = ((ComboBoxItem)ChannelWaveformComboBox.SelectedItem).Content.ToString();
 
-            string waveform = ((ComboBoxItem)ChannelWaveformComboBox.SelectedItem).Content.ToString(); // unsure this is defined
+
             if (_modulationController != null)
             {
                 _modulationController.UpdateModulationAvailability(waveform);
@@ -3066,28 +3066,28 @@ namespace DG2072_USB_Control
         //}
 
 
-        private void ModulatingWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Handle modulating waveform selection changes if needed
-        }
+        //private void ModulatingWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    // Handle modulating waveform selection changes if needed
+        //}
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (_isInitializing || !isConnected)
-            {
-                LogMessage($"Skipping modulation type change - Initializing: {_isInitializing}, Connected: {isConnected}");
-                return;
-            }
+        //private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (_isInitializing || !isConnected)
+        //    {
+        //        LogMessage($"Skipping modulation type change - Initializing: {_isInitializing}, Connected: {isConnected}");
+        //        return;
+        //    }
 
-            if (_modulationController != null)
-                _modulationController.OnModulationTypeChanged();
-        }
+        //    if (_modulationController != null)
+        //        _modulationController.OnModulationTypeChanged();
+        //}
 
 
-        private void CarrierFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Handle carrier frequency unit changes if needed
-        }
+        //private void CarrierFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    // Handle carrier frequency unit changes if needed
+        //}
 
         //private void CarrierAmplitudeTextBox_TextChanged(object sender, TextChangedEventArgs e)
         //{
@@ -3106,15 +3106,15 @@ namespace DG2072_USB_Control
         //}
 
 
-        private void ModulationFrequencyUnitComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Initialize frequency units when loaded
-        }
+        //private void ModulationFrequencyUnitComboBox_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    // Initialize frequency units when loaded
+        //}
 
-        private void ModulationFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Handle modulation frequency unit changes if needed
-        }
+        //private void ModulationFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    // Handle modulation frequency unit changes if needed
+        //}
 
         /// <summary>
         /// Handles the selection change event for the Modulation tab in the TabControl.   

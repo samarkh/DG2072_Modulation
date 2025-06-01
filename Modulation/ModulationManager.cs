@@ -721,6 +721,9 @@ namespace DG2072_USB_Control.Modulation
                         // This modulation type is active
                         RefreshModulationSettings(modType);
                         foundActiveModulation = true;
+
+                        // ONLY refresh carrier amplitude if modulation is actually active
+                        RefreshCarrierAmplitude();
                         break;
                     }
                 }
@@ -728,6 +731,8 @@ namespace DG2072_USB_Control.Modulation
                 // If no modulation is active, keep the stored frequencies
                 if (!foundActiveModulation)
                 {
+                    // DON'T call RefreshCarrierAmplitude() here - this preserves the 3.0V default
+
                     // Restore carrier frequency if we had one
                     if (storedCarrierFreq.HasValue && _carrierFrequencyTextBox != null)
                     {

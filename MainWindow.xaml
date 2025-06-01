@@ -71,7 +71,7 @@
                             <Button x:Name="btnCH1On" Content="CH1: OFF" Width="80" Background="#FFF3E86F" Foreground="#FF0EEF65" Margin="3,0,3,0" Click="BtnCH1On_Click" FontWeight="Bold"/>
                             <Button x:Name="btnCH2On" Content="CH2: OFF" Width="80" Background="#FFF3ABEA" Foreground="#FF0EEF65" Margin="3,0,3,0" Click="BtnCH2On_Click" FontWeight="Bold"/>
                         </StackPanel>
-                        <TabControl SelectionChanged="TabControl_SelectionChanged" Margin="-5,-86,0,0" Grid.ColumnSpan="2">
+                        <TabControl Margin="-5,-86,0,0" Grid.ColumnSpan="2">
                             <TabItem Header="Waveform Controls" Margin="-2,-1,-1,0">
                                 <!-- Channel Controls -->
                                 <GroupBox x:Name="ChannelControlsGroupBox" Header="Channel 1 Controls" Grid.Row="1" Margin="5">

@@ -3201,7 +3201,7 @@ namespace DG2072_USB_Control
                         _modulationManager.RefreshSettings();
 
                         // Ensure carrier amplitude is refreshed from device
-                        _modulationManager.RefreshCarrierAmplitude();
+                        //_modulationManager.RefreshCarrierAmplitude();
                     }
                 }
             }

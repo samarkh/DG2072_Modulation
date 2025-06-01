@@ -79,17 +79,16 @@ namespace DG2072_USB_Control.Modulation
         private void InitializeControls()
         {
             // Find controls in the main window
-            _carrierWaveformComboBox =       _mainWindow.FindName("CarrierWaveformComboBox") as ComboBox;
-            _carrierFrequencyTextBox =       _mainWindow.FindName("CarrierFrequencyTextBox") as TextBox;
-            _carrierFrequencyUnitComboBox =  _mainWindow.FindName("CarrierFrequencyUnitComboBox") as ComboBox;
-            _carrierAmplitudeTextBox =       _mainWindow.FindName("CarrierAmplitudeTextBox") as TextBox;
-            _carrierAmplitudeUnitComboBox =  _mainWindow.FindName("CarrierAmplitudeUnitComboBox") as ComboBox;
-            _modulatingWaveformComboBox =    _mainWindow.FindName("ModulatingWaveformComboBox") as ComboBox;
-            _modulationTypeComboBox =        _mainWindow.FindName("ModulationTypeComboBox") as ComboBox;
-            _modulationFrequencyTextBox =    _mainWindow.FindName("ModulationFrequencyTextBox") as TextBox;
+            _carrierWaveformComboBox = _mainWindow.FindName("CarrierWaveformComboBox") as ComboBox;
+            _carrierFrequencyTextBox = _mainWindow.FindName("CarrierFrequencyTextBox") as TextBox;
+            _carrierFrequencyUnitComboBox = _mainWindow.FindName("CarrierFrequencyUnitComboBox") as ComboBox;
+            _carrierAmplitudeTextBox = _mainWindow.FindName("CarrierAmplitudeTextBox") as TextBox;
+            _carrierAmplitudeUnitComboBox = _mainWindow.FindName("CarrierAmplitudeUnitComboBox") as ComboBox;
+            _modulatingWaveformComboBox = _mainWindow.FindName("ModulatingWaveformComboBox") as ComboBox;
+            _modulationTypeComboBox = _mainWindow.FindName("ModulationTypeComboBox") as ComboBox;
+            _modulationFrequencyTextBox = _mainWindow.FindName("ModulationFrequencyTextBox") as TextBox;
             _modulationFrequencyUnitComboBox = _mainWindow.FindName("ModulationFrequencyUnitComboBox") as ComboBox;
-            _modulationDepthTextBox =        _mainWindow.FindName("ModulationDepthTextBox") as TextBox;
-
+            _modulationDepthTextBox = _mainWindow.FindName("ModulationDepthTextBox") as TextBox;
 
             // Initialize modulation type combo box
             if (_modulationTypeComboBox != null)
@@ -104,8 +103,8 @@ namespace DG2072_USB_Control.Modulation
             }
 
             // Initialize frequency unit combo boxes
-            InitializeFrequencyUnitComboBox(_carrierFrequencyUnitComboBox, 3);
-            InitializeFrequencyUnitComboBox(_modulationFrequencyUnitComboBox, 2);
+            InitializeFrequencyUnitComboBox(_carrierFrequencyUnitComboBox, 3);  // Default kHz for carrier
+            InitializeFrequencyUnitComboBox(_modulationFrequencyUnitComboBox, 2); // Default Hz for modulation
 
             // Set default values
             if (_carrierFrequencyTextBox != null)
@@ -115,8 +114,9 @@ namespace DG2072_USB_Control.Modulation
             if (_carrierAmplitudeTextBox != null)
                 _carrierAmplitudeTextBox.Text = "3.0";  // Default 3 Vpp
 
-            if (_modulationFrequencyTextBox != null)
-                _modulationFrequencyTextBox.Text = "500";  // Default 500 Hz for modulating
+            // REMOVED: Don't set default modulation frequency - it will be set from waveform tab
+            // if (_modulationFrequencyTextBox != null)
+            //     _modulationFrequencyTextBox.Text = "500";  // Default 500 Hz for modulating
 
             if (_modulationDepthTextBox != null)
                 _modulationDepthTextBox.Text = "25.0";  // Default 25% depth
@@ -421,7 +421,10 @@ namespace DG2072_USB_Control.Modulation
                 }
 
                 // Get modulation frequency
-                double modFrequency = 500; // Default 500Hz
+                // In ModulationManager.cs, update the part of ApplyModulation that gets modulation frequency:
+
+                // Get modulation frequency
+                double modFrequency = 0;
                 if (_modulationFrequencyTextBox != null && double.TryParse(_modulationFrequencyTextBox.Text, out double modFreq))
                 {
                     string unit = "Hz";
@@ -431,6 +434,18 @@ namespace DG2072_USB_Control.Modulation
                     }
                     modFrequency = modFreq * UnitConversionUtility.GetFrequencyMultiplier(unit);
                 }
+                else
+                {
+                    // If no modulation frequency is set, show an error
+                    Log("Error: Modulation frequency is not set. Please enter a modulation frequency.");
+                    System.Windows.MessageBox.Show(
+                        "Please enter a modulation frequency before applying modulation.",
+                        "Missing Modulation Frequency",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Warning);
+                    return;
+                }
+
 
                 // Get modulation depth
                 double modDepth = 50; // Default 50%

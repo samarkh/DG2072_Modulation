@@ -3053,6 +3053,9 @@ namespace DG2072_USB_Control
             // Handle modulation frequency unit changes if needed
         }
 
+        /// <summary>
+        /// Handles the selection change event for the Modulation tab in the TabControl.   
+        ///  
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_isInitializing) return;
@@ -3075,12 +3078,19 @@ namespace DG2072_USB_Control
                 {
                     if (_modulationManager != null && isConnected)
                     {
-                        // Store the current waveform frequency BEFORE any changes
-                        double currentWaveformFrequency = 0;
-                        if (double.TryParse(ChannelFrequencyTextBox.Text, out double freq))
+                        // Get the MODULATION frequency (not carrier) before making changes
+                        double modulationFrequency = 0;
+                        var modFreqTextBox = this.FindName("ModulationFrequencyTextBox") as TextBox;
+                        var modFreqUnitComboBox = this.FindName("ModulationFrequencyUnitComboBox") as ComboBox;
+
+                        if (modFreqTextBox != null && double.TryParse(modFreqTextBox.Text, out double modFreq))
                         {
-                            string unit = UnitConversionUtility.GetFrequencyUnit(ChannelFrequencyUnitComboBox);
-                            currentWaveformFrequency = freq * UnitConversionUtility.GetFrequencyMultiplier(unit);
+                            string unit = "Hz";
+                            if (modFreqUnitComboBox?.SelectedItem != null)
+                            {
+                                unit = ((ComboBoxItem)modFreqUnitComboBox.SelectedItem).Content.ToString();
+                            }
+                            modulationFrequency = modFreq * UnitConversionUtility.GetFrequencyMultiplier(unit);
                         }
 
                         // Get the modulating waveform type to set as the new waveform
@@ -3096,27 +3106,81 @@ namespace DG2072_USB_Control
                             SetWaveformTypeInUI(modulatingWaveform);
                         }
 
-                        // IMPORTANT: Restore the original frequency, don't let it be overwritten
-                        if (currentWaveformFrequency > 0)
+                        // Set the waveform frequency to the modulation frequency
+                        if (modulationFrequency > 0)
                         {
-                            // Temporarily store the frequency
                             System.Threading.Thread.Sleep(100); // Small delay to ensure commands are processed
 
-                            // Set the frequency back to what it was
-                            rigolDG2072.SetFrequency(activeChannel, currentWaveformFrequency);
+                            // Set the frequency to the modulation frequency
+                            rigolDG2072.SetFrequency(activeChannel, modulationFrequency);
 
-                            // Update the UI to show the correct frequency
+                            // Update the UI to show the modulation frequency
                             UpdateFrequencyValue(ChannelFrequencyTextBox, ChannelFrequencyUnitComboBox, activeChannel);
+
+                            LogMessage($"Set waveform frequency to modulation frequency: {modulationFrequency} Hz");
                         }
                     }
                 }
                 // Handle entering the Modulation tab
                 else if (selectedTab != null && selectedTab.Name == "ModulationTab")
                 {
-                    // Refresh modulation settings when switching to modulation tab
+                    // Copy waveform frequency to modulation frequency when switching TO modulation tab
                     if (_modulationManager != null && isConnected)
                     {
-                        // Don't copy frequencies - let modulation use its own defaults
+                        // Get the current waveform frequency
+                        double waveformFrequency = 0;
+                        if (double.TryParse(ChannelFrequencyTextBox.Text, out double freq))
+                        {
+                            string unit = UnitConversionUtility.GetFrequencyUnit(ChannelFrequencyUnitComboBox);
+                            waveformFrequency = freq * UnitConversionUtility.GetFrequencyMultiplier(unit);
+                        }
+
+                        // Set the modulation frequency to match the waveform frequency
+                        if (waveformFrequency > 0)
+                        {
+                            var modFreqTextBox = this.FindName("ModulationFrequencyTextBox") as TextBox;
+                            var modFreqUnitComboBox = this.FindName("ModulationFrequencyUnitComboBox") as ComboBox;
+
+                            if (modFreqTextBox != null && modFreqUnitComboBox != null)
+                            {
+                                // Determine best unit for display
+                                string unit = "Hz";
+                                double displayValue = waveformFrequency;
+
+                                if (waveformFrequency >= 1e6)
+                                {
+                                    unit = "MHz";
+                                    displayValue = waveformFrequency / 1e6;
+                                }
+                                else if (waveformFrequency >= 1e3)
+                                {
+                                    unit = "kHz";
+                                    displayValue = waveformFrequency / 1e3;
+                                }
+                                else if (waveformFrequency < 1)
+                                {
+                                    unit = "mHz";
+                                    displayValue = waveformFrequency * 1e3;
+                                }
+
+                                modFreqTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(displayValue);
+
+                                // Set the unit combo box
+                                for (int i = 0; i < modFreqUnitComboBox.Items.Count; i++)
+                                {
+                                    var item = modFreqUnitComboBox.Items[i] as ComboBoxItem;
+                                    if (item?.Content.ToString() == unit)
+                                    {
+                                        modFreqUnitComboBox.SelectedIndex = i;
+                                        break;
+                                    }
+                                }
+
+                                LogMessage($"Set modulation frequency to waveform frequency: {waveformFrequency} Hz");
+                            }
+                        }
+
+                        // Refresh other modulation settings (but preserve the frequency we just set)
                         _modulationManager.RefreshSettings();
 
                         // Ensure carrier amplitude is refreshed from device
@@ -3125,7 +3189,6 @@ namespace DG2072_USB_Control
                 }
             }
         }
-
         // Helper method to get the current modulating waveform type
         private string GetModulatingWaveformType()
         {

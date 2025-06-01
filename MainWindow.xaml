@@ -55,8 +55,8 @@
                     <!-- Channel Panel with Channel Toggle Button -->
                     <Grid Margin="0,110,0,-11">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="77*"/>
+                            <ColumnDefinition Width="74*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" MinHeight="478"/>
@@ -64,13 +64,14 @@
                         </Grid.RowDefinitions>
 
                         <!-- Channel Selector -->
-                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="-10,-118,10,601" Grid.ColumnSpan="2">
+                        <!-- <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="-10,-118,10,601" Grid.ColumnSpan="2"> -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,-115,0,757" Grid.ColumnSpan="2">
                             <ToggleButton x:Name="ChannelToggleButton" Content="Channel 1" Width="100" Click="ChannelToggleButton_Click" IsChecked="True" Height="24"/>
                             <TextBlock x:Name="ActiveChannelTextBlock" Text="Channel 1" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0"/>
                             <Button x:Name="btnCH1On" Content="CH1: OFF" Width="80" Background="#FFF3E86F" Foreground="#FF0EEF65" Margin="3,0,3,0" Click="BtnCH1On_Click" FontWeight="Bold"/>
                             <Button x:Name="btnCH2On" Content="CH2: OFF" Width="80" Background="#FFF3ABEA" Foreground="#FF0EEF65" Margin="3,0,3,0" Click="BtnCH2On_Click" FontWeight="Bold"/>
                         </StackPanel>
-                        <TabControl SelectionChanged="TabControl_SelectionChanged" Margin="-8,-90,0,0" Grid.ColumnSpan="2">
+                        <TabControl SelectionChanged="TabControl_SelectionChanged" Margin="-5,-86,0,0" Grid.ColumnSpan="2">
                             <TabItem Header="Waveform Controls" Margin="-2,-1,-1,0">
                                 <!-- Channel Controls -->
                                 <GroupBox x:Name="ChannelControlsGroupBox" Header="Channel 1 Controls" Grid.Row="1" Margin="5">
@@ -281,7 +282,7 @@
                                                 <ComboBoxItem Content="ps"/>
                                             </ComboBox>
                                         </DockPanel>
-                                        
+
                                         <Button x:Name="ChannelApplyButton" Content="Apply Settings" Click="ChannelApplyButton_Click" Height="24" Width="120"/>
 
 
@@ -293,7 +294,7 @@
                                         <!-- Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section -->
                                         <!-- Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section -->
                                         <!-- Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section Harmonics Section -->
-                                        <GroupBox x:Name="HarmonicsGroupBox" Header="Harmonics Controls" Visibility="Collapsed" Margin="0,10,0,0">
+                                        <GroupBox x:Name="HarmonicsGroupBox" Header="Harmonics Controls" Visibility="Visible" Margin="0,10,0,0">
                                             <!--   <GroupBox x:Name="HarmonicsGroupBox" Header="Harmonics Controls" Visibility="Visible" Margin="0,10,0,0"> -->
                                             <StackPanel>
                                                 <!-- Harmonics Master Toggle -->
@@ -907,7 +908,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                     <!-- Existing GroupBox stays in Row 0 -->
                                     <GroupBox Header="Modulation Settings" Margin="10,10,10,26" Padding="10" Grid.Row="0" Grid.RowSpan="2">
                                         <StackPanel Orientation="Vertical" Margin="5">
-                                            
+
                                             <!-- Carrier Section -->
                                             <GroupBox Header="Carrier Settings" Margin="0,5">
                                                 <Grid Margin="5">
@@ -958,7 +959,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                             <ComboBoxItem Content="MHz"/>
                                                         </ComboBox>
                                                     </StackPanel>
-                                                    
+
                                                     <!-- Carrier Amplitude - THIS IS THE MISSING SECTION -->
                                                     <TextBlock Text="Carrier Amplitude:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
                                                     <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Margin="0,5"
@@ -978,7 +979,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                     </StackPanel>
 
 
-                                       
+
                                                 </Grid>
                                             </GroupBox>
 

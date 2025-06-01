@@ -1173,13 +1173,6 @@ namespace DG2072_USB_Control
             _harmonicsUIController = new HarmonicsUIController(_harmonicsManager, this);
             _harmonicsUIController.LogEvent += (s, message) => LogMessage(message);
 
-            // Initialize the modulation manager
-            //_modulationManager = new ModulationManager(rigolDG2072, activeChannel, this);
-            //_modulationManager.LogEvent += (s, message) => LogMessage(message);
-
-            //// Initialize the modulation UI controls NOW (before connection)
-            //_modulationManager.InitializeUI();
-
             _modulationController = new ModulationController(rigolDG2072, activeChannel, this);
             _modulationController.LogEvent += (s, message) => LogMessage(message);
             // Don't initialize UI here - wait until after connection
@@ -3055,22 +3048,22 @@ namespace DG2072_USB_Control
         // Add this new region for Modulation Event Handlers:
         #region Modulation Event Handlers
 
-        private void CarrierWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (_isInitializing || !isConnected) return;
+        //private void CarrierWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (_isInitializing || !isConnected) return;
 
-            if (_modulationManager != null)
-                _modulationManager.OnCarrierWaveformChanged();
-        }
+        //    if (_modulationController != null)
+        //        _modulationController.OnCarrierWaveformChanged();
+        //}
 
-        private void ModulatingWaveformComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            // This should populate the combo box regardless of _isInitializing
-            //if (_isInitializing) return;  // Don't initialize during startup
+        //private void ModulatingWaveformComboBox_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    // This should populate the combo box regardless of _isInitializing
+        //    //if (_isInitializing) return;  // Don't initialize during startup
 
-            if (_modulationManager != null)
-                _modulationManager.OnModulationTypeChanged();
-        }
+        //    if (_modulationController != null)
+        //        _modulationController.OnModulationTypeChanged();
+        //}
 
 
         private void ModulatingWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -3086,8 +3079,8 @@ namespace DG2072_USB_Control
                 return;
             }
 
-            if (_modulationManager != null)
-                _modulationManager.OnModulationTypeChanged();
+            if (_modulationController != null)
+                _modulationController.OnModulationTypeChanged();
         }
 
 
@@ -3096,21 +3089,21 @@ namespace DG2072_USB_Control
             // Handle carrier frequency unit changes if needed
         }
 
-        private void CarrierAmplitudeTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (_isInitializing || !isConnected) return;
+        //private void CarrierAmplitudeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (_isInitializing || !isConnected) return;
 
-            if (_modulationManager != null)
-                _modulationManager.OnCarrierAmplitudeTextChanged();
-        }
+        //    if (_modulationController != null)
+        //        _modulationController.OnCarrierAmplitudeTextChanged();
+        //}
 
-        private void CarrierAmplitudeUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (_isInitializing || !isConnected) return;
+        //private void CarrierAmplitudeUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (_isInitializing || !isConnected) return;
 
-            if (_modulationManager != null)
-                _modulationManager.OnCarrierAmplitudeUnitChanged();
-        }
+        //    if (_modulationController != null)
+        //        _modulationController.OnCarrierAmplitudeUnitChanged();
+        //}
 
 
         private void ModulationFrequencyUnitComboBox_Loaded(object sender, RoutedEventArgs e)

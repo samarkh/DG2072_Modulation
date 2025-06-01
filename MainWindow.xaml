@@ -907,6 +907,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                     <!-- Existing GroupBox stays in Row 0 -->
                                     <GroupBox Header="Modulation Settings" Margin="10,10,10,26" Padding="10" Grid.Row="0" Grid.RowSpan="2">
                                         <StackPanel Orientation="Vertical" Margin="5">
+                                            
                                             <!-- Carrier Section -->
                                             <GroupBox Header="Carrier Settings" Margin="0,5">
                                                 <Grid Margin="5">
@@ -956,27 +957,28 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                             <ComboBoxItem Content="kHz" IsSelected="True"/>
                                                             <ComboBoxItem Content="MHz"/>
                                                         </ComboBox>
-
-
-                                                        <!-- Carrier Amplitude -->
-                                                        <TextBlock Text="Carrier Amplitude:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
-                                                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Margin="0,5"
-            ToolTip="Enter the carrier amplitude. Default: 3 Vpp.">
-                                                            <TextBox Width="100"
-             Text="3.0" x:Name="CarrierAmplitudeTextBox" TextAlignment="Right"/>
-                                                            <ComboBox x:Name="CarrierAmplitudeUnitComboBox" Width="70" 
-              Margin="5,0,0,0" 
-              HorizontalAlignment="Left">
-                                                                <ComboBoxItem Content="Vpp" IsSelected="True"/>
-                                                                <ComboBoxItem Content="mVpp"/>
-                                                                <ComboBoxItem Content="Vrms"/>
-                                                                <ComboBoxItem Content="mVrms"/>
-                                                            </ComboBox>
-                                                        </StackPanel>
-
-
-
                                                     </StackPanel>
+                                                    
+                                                    <!-- Carrier Amplitude - THIS IS THE MISSING SECTION -->
+                                                    <TextBlock Text="Carrier Amplitude:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+                                                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Margin="0,5"
+                    ToolTip="Enter the carrier amplitude. Default: 3 Vpp.">
+                                                        <TextBox Width="100"
+                     Text="3.0" x:Name="CarrierAmplitudeTextBox" TextAlignment="Right"
+                     TextChanged="CarrierAmplitudeTextBox_TextChanged"/>
+                                                        <ComboBox x:Name="CarrierAmplitudeUnitComboBox" Width="70" 
+                      Margin="5,0,0,0" 
+                      SelectionChanged="CarrierAmplitudeUnitComboBox_SelectionChanged"
+                      HorizontalAlignment="Left">
+                                                            <ComboBoxItem Content="Vpp" IsSelected="True"/>
+                                                            <ComboBoxItem Content="mVpp"/>
+                                                            <ComboBoxItem Content="Vrms"/>
+                                                            <ComboBoxItem Content="mVrms"/>
+                                                        </ComboBox>
+                                                    </StackPanel>
+
+
+                                       
                                                 </Grid>
                                             </GroupBox>
 

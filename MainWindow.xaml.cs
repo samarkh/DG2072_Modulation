@@ -3043,6 +3043,23 @@ namespace DG2072_USB_Control
             // Handle carrier frequency unit changes if needed
         }
 
+        private void CarrierAmplitudeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_isInitializing || !isConnected) return;
+
+            if (_modulationManager != null)
+                _modulationManager.OnCarrierAmplitudeTextChanged();
+        }
+
+        private void CarrierAmplitudeUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_isInitializing || !isConnected) return;
+
+            if (_modulationManager != null)
+                _modulationManager.OnCarrierAmplitudeUnitChanged();
+        }
+
+
         private void ModulationFrequencyUnitComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             // Initialize frequency units when loaded
@@ -3189,6 +3206,7 @@ namespace DG2072_USB_Control
                 }
             }
         }
+       
         // Helper method to get the current modulating waveform type
         private string GetModulatingWaveformType()
         {
@@ -3220,6 +3238,7 @@ namespace DG2072_USB_Control
             }
             return "SINE"; // Default
         }
+
 
         // Helper method to set waveform type in UI
         private void SetWaveformTypeInUI(string waveformType)

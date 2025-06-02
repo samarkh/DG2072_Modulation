@@ -910,7 +910,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                         <!-- Integrated Modulation Panel -->
                                         <GroupBox x:Name="ModulationPanel" 
 											Header="🔴🔴🔴 MODULATION SETTINGS 🔴🔴🔴" 
-											Visibility="Visible"
+											Visibility="Collapsed"
 											Background="Yellow"
 											BorderBrush="Red"
 											BorderThickness="3"

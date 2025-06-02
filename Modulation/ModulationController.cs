@@ -108,6 +108,18 @@ namespace DG2072_USB_Control.Modulation
         {
             // Find controls in the main window
             _modulationPanel = _mainWindow.FindName("ModulationPanel") as GroupBox;
+
+            // ADD LOGGING to verify the panel is found
+            if (_modulationPanel != null)
+            {
+                Log("ModulationPanel found successfully during initialization");
+                Log($"Initial ModulationPanel visibility: {_modulationPanel.Visibility}");
+            }
+            else
+            {
+                Log("ERROR: ModulationPanel not found during initialization!");
+            }
+
             _modulationToggleButton = _mainWindow.FindName("ModulationToggleButton") as Button;
             _modulationTypeComboBox = _mainWindow.FindName("ModulationTypeComboBox") as ComboBox;
             _modulatingWaveformComboBox = _mainWindow.FindName("ModulatingWaveformComboBox") as ComboBox;
@@ -115,6 +127,7 @@ namespace DG2072_USB_Control.Modulation
             _modulationFrequencyUnitComboBox = _mainWindow.FindName("ModulationFrequencyUnitComboBox") as ComboBox;
             _modulationDepthTextBox = _mainWindow.FindName("ModulationDepthTextBox") as TextBox;
 
+            // ADD THESE TWO LINES FOR DSSC CONTROLS
             _dsscCheckBox = _mainWindow.FindName("DSSCCheckBox") as CheckBox;
             _dsscDockPanel = _mainWindow.FindName("DSSCDockPanel") as DockPanel;
 
@@ -127,6 +140,7 @@ namespace DG2072_USB_Control.Modulation
 
             // Initially hide modulation controls
             UpdateModulationVisibility(false);
+            Log("ModulationPanel initially hidden");
         }
 
         /// <summary>
@@ -986,6 +1000,8 @@ namespace DG2072_USB_Control.Modulation
         /// <summary>
         /// Sync modulation state from device when modulation is detected
         /// </summary>
+        // In ModulationController.cs, update the SyncModulationFromDevice method:
+
         public void SyncModulationFromDevice(string detectedModType)
         {
             if (!IsDeviceConnected()) return;
@@ -1046,11 +1062,30 @@ namespace DG2072_USB_Control.Modulation
 
                 // Update UI state to show modulation is enabled
                 _isModulationEnabled = true;
+
+                // IMPORTANT: Make sure the panel is visible
                 UpdateModulationVisibility(true);
+                Log($"Setting modulation panel visibility to: Visible");
+
+                // Also try setting it directly as a fallback
+                if (_modulationPanel != null)
+                {
+                    _modulationPanel.Dispatcher.Invoke(() =>
+                    {
+                        _modulationPanel.Visibility = Visibility.Visible;
+                        Log($"Modulation panel visibility is now: {_modulationPanel.Visibility}");
+                    });
+                }
+                else
+                {
+                    Log("WARNING: _modulationPanel is null!");
+                }
+
                 UpdateToggleButtonState();
 
-                if(_mainWindow is MainWindow mainWindow)
-{
+                // Notify MainWindow to update status display
+                if (_mainWindow is MainWindow mainWindow)
+                {
                     mainWindow.Dispatcher.Invoke(() =>
                     {
                         // Find and call the UpdateModulationStatus method
@@ -1060,8 +1095,6 @@ namespace DG2072_USB_Control.Modulation
                     });
                 }
 
-
-
                 Log($"{detectedModType} modulation synced from device");
             }
             catch (Exception ex)
@@ -1069,7 +1102,6 @@ namespace DG2072_USB_Control.Modulation
                 Log($"Error syncing modulation from device: {ex.Message}");
             }
         }
-
         /// <summary>
         /// Force disable modulation UI when device has no modulation
         /// </summary>

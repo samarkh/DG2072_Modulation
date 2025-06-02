@@ -267,63 +267,63 @@ namespace DG2072_USB_Control.Modulation
             }
         }
 
-        /// <summary>
-        /// Copy carrier frequency to modulating frequency
-        /// </summary>
-        private void CopyCarrierFrequencyToModulating()
-        {
-            if (!IsDeviceConnected()) return;
+        ///// <summary>
+        ///// Copy carrier frequency to modulating frequency
+        ///// </summary>
+        //private void CopyCarrierFrequencyToModulating()
+        //{
+        //    if (!IsDeviceConnected()) return;
 
-            try
-            {
-                // Get carrier frequency from device
-                double carrierFrequency = _device.GetFrequency(_activeChannel);
+        //    try
+        //    {
+        //        // Get carrier frequency from device
+        //        double carrierFrequency = _device.GetFrequency(_activeChannel);
 
-                // Update modulating frequency textbox
-                if (_modulationFrequencyTextBox != null)
-                {
-                    // Find appropriate unit
-                    string unit = "Hz";
-                    double displayValue = carrierFrequency;
+        //        // Update modulating frequency textbox
+        //        if (_modulationFrequencyTextBox != null)
+        //        {
+        //            // Find appropriate unit
+        //            string unit = "Hz";
+        //            double displayValue = carrierFrequency;
 
-                    if (carrierFrequency >= 1e6)
-                    {
-                        unit = "MHz";
-                        displayValue = carrierFrequency / 1e6;
-                    }
-                    else if (carrierFrequency >= 1e3)
-                    {
-                        unit = "kHz";
-                        displayValue = carrierFrequency / 1e3;
-                    }
-                    else if (carrierFrequency < 1e-3)
-                    {
-                        unit = "mHz";
-                        displayValue = carrierFrequency * 1e3;
-                    }
+        //            if (carrierFrequency >= 1e6)
+        //            {
+        //                unit = "MHz";
+        //                displayValue = carrierFrequency / 1e6;
+        //            }
+        //            else if (carrierFrequency >= 1e3)
+        //            {
+        //                unit = "kHz";
+        //                displayValue = carrierFrequency / 1e3;
+        //            }
+        //            else if (carrierFrequency < 1e-3)
+        //            {
+        //                unit = "mHz";
+        //                displayValue = carrierFrequency * 1e3;
+        //            }
 
-                    _modulationFrequencyTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(displayValue);
+        //            _modulationFrequencyTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(displayValue);
 
-                    // Update unit combo box
-                    if (_modulationFrequencyUnitComboBox != null)
-                    {
-                        for (int i = 0; i < _modulationFrequencyUnitComboBox.Items.Count; i++)
-                        {
-                            var item = _modulationFrequencyUnitComboBox.Items[i] as ComboBoxItem;
-                            if (item?.Content.ToString() == unit)
-                            {
-                                _modulationFrequencyUnitComboBox.SelectedIndex = i;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Log($"Error copying carrier frequency: {ex.Message}");
-            }
-        }
+        //            // Update unit combo box
+        //            if (_modulationFrequencyUnitComboBox != null)
+        //            {
+        //                for (int i = 0; i < _modulationFrequencyUnitComboBox.Items.Count; i++)
+        //                {
+        //                    var item = _modulationFrequencyUnitComboBox.Items[i] as ComboBoxItem;
+        //                    if (item?.Content.ToString() == unit)
+        //                    {
+        //                        _modulationFrequencyUnitComboBox.SelectedIndex = i;
+        //                        break;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log($"Error copying carrier frequency: {ex.Message}");
+        //    }
+        //}
 
         /// <summary>
         /// Calculate and update modulating amplitude based on carrier amplitude
@@ -651,11 +651,6 @@ namespace DG2072_USB_Control.Modulation
                 Log($"Error refreshing carrier amplitude: {ex.Message}");
             }
         }
-
-
-
-
-
 
 
         /// <summary>

@@ -947,7 +947,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
 														ToolTip="Set the frequency of the modulating signal"/>
                                                     <TextBox x:Name="ModulationFrequencyTextBox" 
 														Width="100" 
-														Text="1.0" 
+														Text="100.0" 
 														TextChanged="ModulationFrequencyTextBox_TextChanged"
 														LostFocus="ModulationFrequencyTextBox_LostFocus"
 														HorizontalContentAlignment="Right" 
@@ -967,7 +967,7 @@ For accurate voltage measurement, set the load impedance to match your actual lo
 													ToolTip="Set the modulation depth/index as a percentage"/>
 													<TextBox x:Name="ModulationDepthTextBox" 
 														Width="100" 
-														Text="50.0"
+														Text="100.0"
 														TextChanged="ModulationDepthTextBox_TextChanged"
 														LostFocus="ModulationDepthTextBox_LostFocus"
 														HorizontalContentAlignment="Right" 

@@ -1127,8 +1127,30 @@ namespace DG2072_USB_Control.Modulation
                     if (response.Trim() == "ON" || response.Trim() == "1")
                     {
                         // Refresh settings for this modulation type
-                        RefreshModulationSettings(modType);
-                        break;
+                        switch (modType)
+                        {
+                            case "AM":
+                                RefreshAMSettings();
+                                break;
+                            case "FM":
+                                RefreshFMSettings();
+                                break;
+                            case "PM":
+                                RefreshPMSettings();
+                                break;
+                            case "PWM":
+                                RefreshPWMSettings();
+                                break;
+                            case "ASK":
+                                RefreshASKSettings();
+                                break;
+                            case "FSK":
+                                RefreshFSKSettings();
+                                break;
+                            case "PSK":
+                                RefreshPSKSettings();
+                                break;
+                        }
                     }
                 }
             }
@@ -1137,6 +1159,88 @@ namespace DG2072_USB_Control.Modulation
                 Log($"Error refreshing modulation settings: {ex.Message}");
             }
         }
+
+
+        /// <summary>
+        /// Refresh AM settings from device
+        /// </summary>
+        /// <summary>
+        /// Refresh AM settings from device
+        /// </summary>
+        private void RefreshAMSettings()
+        {
+            try
+            {
+                // Get AM frequency
+                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:INT:FREQ?");
+                if (double.TryParse(freqResponse, out double freq))
+                {
+                    UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, freq);
+                }
+
+                // Get AM depth
+                string depthResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:DEPTH?");
+                if (double.TryParse(depthResponse, out double depth))
+                {
+                    if (_modulationDepthTextBox != null)
+                        _modulationDepthTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(depth);
+                }
+
+                // Get AM function
+                string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:INT:FUNC?");
+                UpdateModulatingWaveformSelection(funcResponse.Trim());
+
+                // ADDED: Get DSSC state for AM
+                string dsscResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:DSSC?");
+                if (_dsscCheckBox != null)
+                {
+                    _dsscCheckBox.IsChecked = (dsscResponse.Trim() == "ON" || dsscResponse.Trim() == "1");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Error refreshing AM settings: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Refresh FM settings from device
+        /// </summary>
+        private void RefreshFMSettings()
+        {
+            try
+            {
+                // Get FM frequency
+                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:FM:INT:FREQ?");
+                if (double.TryParse(freqResponse, out double freq))
+                {
+                    UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, freq);
+                }
+
+                // Get FM deviation
+                string devResponse = _device.SendQuery($"SOURCE{_activeChannel}:FM:DEVIATION?");
+                if (double.TryParse(devResponse, out double deviation))
+                {
+                    // Convert deviation back to depth percentage
+                    double carrierFreq = _device.GetFrequency(_activeChannel);
+                    double depth = (deviation / carrierFreq) * 100.0;
+                    if (_modulationDepthTextBox != null)
+                        _modulationDepthTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(depth);
+                }
+
+                // Get FM function
+                string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:FM:INT:FUNC?");
+                UpdateModulatingWaveformSelection(funcResponse.Trim());
+            }
+            catch (Exception ex)
+            {
+                Log($"Error refreshing FM settings: {ex.Message}");
+            }
+        }
+
+
+
+
 
         /// <summary>
         /// Add missing refresh methods for other modulation types

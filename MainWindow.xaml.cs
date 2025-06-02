@@ -1267,16 +1267,22 @@ namespace DG2072_USB_Control
                                     if (response.Trim() == "ON" || response.Trim() == "1")
                                     {
                                         LogMessage($"Detected {modType} modulation active on device during startup");
-                                        _modulationController.SyncModulationFromDevice(modType);
 
-                                        // ADD THIS: Force the modulation panel to be visible
-                                        if (ModulationPanel != null)
+                                        // Enable the UI elements
+                                        EnableModulationUIOnly();
+
+                                        // Try to sync settings (but don't fail if it errors)
+                                        try
                                         {
-                                            Dispatcher.Invoke(() =>
-                                            {
-                                                ModulationPanel.Visibility = Visibility.Visible;
-                                                LogMessage($"Forced ModulationPanel visibility to Visible");
-                                            });
+                                            // Set the internal state in the controller
+                                            _modulationController.SetModulationEnabledState(true);  // You'll need to make this public
+
+                                            // Sync the settings
+                                            _modulationController.SyncModulationFromDevice(modType);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            LogMessage($"Note: Couldn't sync all settings yet: {ex.Message}");
                                         }
 
                                         break;
@@ -3244,6 +3250,36 @@ namespace DG2072_USB_Control
                 LogMessage("DSSC (Double-Sideband Suppressed Carrier) disabled");
             }
         }
+
+
+        // <summary>
+        /// Enable modulation UI when detected on device (without applying new settings)
+        /// </summary>
+        private void EnableModulationUIOnly()
+        {
+            if (_modulationController != null)
+            {
+                // Find and show the modulation panel directly
+                var modPanel = FindName("ModulationPanel") as GroupBox;
+                if (modPanel != null)
+                {
+                    modPanel.Visibility = Visibility.Visible;
+                    LogMessage("ModulationPanel made visible");
+                }
+
+                // Update the button to show correct state
+                if (ModulationToggleButton != null)
+                {
+                    ModulationToggleButton.Content = "Disable Modulation";
+                    ModulationToggleButton.Background = System.Windows.Media.Brushes.LightCoral;
+                }
+
+                // Update the status
+                UpdateModulationStatus();
+            }
+        }
+
+
 
 
         #endregion

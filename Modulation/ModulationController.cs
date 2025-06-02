@@ -894,28 +894,19 @@ namespace DG2072_USB_Control.Modulation
             if (_modulationToggleButton != null)
             {
                 _modulationToggleButton.Content = _isModulationEnabled ? "Disable Modulation" : "Enable Modulation";
-                // Optional: Change button appearance
                 if (_isModulationEnabled)
                 {
                     _modulationToggleButton.Background = System.Windows.Media.Brushes.LightCoral;
-
-                    // SIMPLE FIX: If modulation is enabled, make sure the panel is visible!
-                    if (_modulationPanel != null)
-                    {
-                        _modulationPanel.Visibility = Visibility.Visible;
-                    }
                 }
                 else
                 {
                     _modulationToggleButton.Background = System.Windows.Media.Brushes.LightGreen;
-
-                    // Hide panel when modulation is disabled
-                    if (_modulationPanel != null)
-                    {
-                        _modulationPanel.Visibility = Visibility.Collapsed;
-                    }
                 }
             }
+
+            // ONE LINE FIX: Find and show the panel whenever button is red
+            var panel = _mainWindow?.FindName("ModulationPanel") as GroupBox;
+            if (panel != null) panel.Visibility = _isModulationEnabled ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

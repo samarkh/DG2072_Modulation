@@ -102,45 +102,61 @@ namespace DG2072_USB_Control.Modulation
         public bool IsEnabled => _isModulationEnabled;
 
         /// <summary>
-        /// Initialize UI controls - called after window is loaded
+        /// Check if UI has been initialized
+        /// </summary>
+        public bool IsUIInitialized()
+        {
+            return _modulationPanel != null &&
+                   _modulationToggleButton != null &&
+                   _modulationTypeComboBox != null;
+        }
+
+        /// <summary>
+        /// Initialize UI controls with null checks
         /// </summary>
         public void InitializeUI()
         {
-            // Find controls in the main window
-            _modulationPanel = _mainWindow.FindName("ModulationPanel") as GroupBox;
-
-            // ADD LOGGING to verify the panel is found
-            if (_modulationPanel != null)
+            try
             {
-                Log("ModulationPanel found successfully during initialization");
-                Log($"Initial ModulationPanel visibility: {_modulationPanel.Visibility}");
+                // Find controls in the main window
+                _modulationPanel = _mainWindow.FindName("ModulationPanel") as GroupBox;
+                _modulationToggleButton = _mainWindow.FindName("ModulationToggleButton") as Button;
+                _modulationTypeComboBox = _mainWindow.FindName("ModulationTypeComboBox") as ComboBox;
+                _modulatingWaveformComboBox = _mainWindow.FindName("ModulatingWaveformComboBox") as ComboBox;
+                _modulationFrequencyTextBox = _mainWindow.FindName("ModulationFrequencyTextBox") as TextBox;
+                _modulationFrequencyUnitComboBox = _mainWindow.FindName("ModulationFrequencyUnitComboBox") as ComboBox;
+                _modulationDepthTextBox = _mainWindow.FindName("ModulationDepthTextBox") as TextBox;
+                _dsscCheckBox = _mainWindow.FindName("DSSCCheckBox") as CheckBox;
+                _dsscDockPanel = _mainWindow.FindName("DSSCDockPanel") as DockPanel;
+
+                // Log what we found
+                Log($"ModulationPanel found: {_modulationPanel != null}");
+                Log($"ModulationToggleButton found: {_modulationToggleButton != null}");
+                Log($"ModulationTypeComboBox found: {_modulationTypeComboBox != null}");
+
+                // Only proceed if we have the essential controls
+                if (_modulationTypeComboBox != null)
+                {
+                    // Initialize combo boxes
+                    InitializeModulationTypes();
+                    InitializeFrequencyUnits();
+
+                    // Set default values
+                    SetDefaultValues();
+                }
+                else
+                {
+                    Log("ERROR: Essential modulation controls not found!");
+                }
+
+                // Initially hide modulation controls
+                UpdateModulationVisibility(false);
+                Log("ModulationPanel initially hidden");
             }
-            else
+            catch (Exception ex)
             {
-                Log("ERROR: ModulationPanel not found during initialization!");
+                Log($"Error in InitializeUI: {ex.Message}");
             }
-
-            _modulationToggleButton = _mainWindow.FindName("ModulationToggleButton") as Button;
-            _modulationTypeComboBox = _mainWindow.FindName("ModulationTypeComboBox") as ComboBox;
-            _modulatingWaveformComboBox = _mainWindow.FindName("ModulatingWaveformComboBox") as ComboBox;
-            _modulationFrequencyTextBox = _mainWindow.FindName("ModulationFrequencyTextBox") as TextBox;
-            _modulationFrequencyUnitComboBox = _mainWindow.FindName("ModulationFrequencyUnitComboBox") as ComboBox;
-            _modulationDepthTextBox = _mainWindow.FindName("ModulationDepthTextBox") as TextBox;
-
-            // ADD THESE TWO LINES FOR DSSC CONTROLS
-            _dsscCheckBox = _mainWindow.FindName("DSSCCheckBox") as CheckBox;
-            _dsscDockPanel = _mainWindow.FindName("DSSCDockPanel") as DockPanel;
-
-            // Initialize combo boxes
-            InitializeModulationTypes();
-            InitializeFrequencyUnits();
-
-            // Set default values
-            SetDefaultValues();
-
-            // Initially hide modulation controls
-            UpdateModulationVisibility(false);
-            Log("ModulationPanel initially hidden");
         }
 
         /// <summary>
@@ -889,25 +905,134 @@ namespace DG2072_USB_Control.Modulation
         /// <summary>
         /// Update toggle button state
         /// </summary>
+        /// 
         private void UpdateToggleButtonState()
         {
             if (_modulationToggleButton != null)
             {
                 _modulationToggleButton.Content = _isModulationEnabled ? "Disable Modulation" : "Enable Modulation";
+
                 if (_isModulationEnabled)
                 {
+                    // THIS IS WHERE THE BUTTON TURNS RED
                     _modulationToggleButton.Background = System.Windows.Media.Brushes.LightCoral;
+
+                    // PIGGYBACK HERE - Since the button successfully turns red, 
+                    // we KNOW this code is executing, so force the panel visible here
+                    if (_modulationPanel != null)
+                    {
+                        Log($"Button turning RED - forcing panel visible!");
+                        _modulationPanel.Visibility = Visibility.Visible;
+
+                        // Extra insurance - schedule another visibility set
+                        _modulationPanel.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            _modulationPanel.Visibility = Visibility.Visible;
+                            Log($"Deferred visibility set - panel is now: {_modulationPanel.Visibility}");
+                        }), System.Windows.Threading.DispatcherPriority.Loaded);
+                    }
+                    else
+                    {
+                        Log("ERROR: Button turned red but _modulationPanel is null!");
+                    }
                 }
                 else
                 {
                     _modulationToggleButton.Background = System.Windows.Media.Brushes.LightGreen;
+
+                    if (_modulationPanel != null)
+                    {
+                        _modulationPanel.Visibility = Visibility.Collapsed;
+                    }
                 }
             }
-
-            // ONE LINE FIX: Find and show the panel whenever button is red
-            var panel = _mainWindow?.FindName("ModulationPanel") as GroupBox;
-            if (panel != null) panel.Visibility = _isModulationEnabled ? Visibility.Visible : Visibility.Collapsed;
         }
+        // private void UpdateToggleButtonState()
+        //{
+        //    if (_modulationToggleButton != null)
+        //    {
+        //        _modulationToggleButton.Content = _isModulationEnabled ? "Disable Modulation" : "Enable Modulation";
+
+        //        if (_isModulationEnabled)
+        //        {
+        //            _modulationToggleButton.Background = System.Windows.Media.Brushes.LightCoral;
+
+        //            // FORCE the panel to be visible when button turns red
+        //            if (_modulationPanel != null)
+        //            {
+        //                // Use Dispatcher to ensure we're on the UI thread
+        //                _modulationPanel.Dispatcher.Invoke(() =>
+        //                {
+        //                    _modulationPanel.Visibility = Visibility.Visible;
+
+        //                    // Double-check it worked
+        //                    if (_modulationPanel.Visibility != Visibility.Visible)
+        //                    {
+        //                        Log("WARNING: Failed to set ModulationPanel visibility!");
+
+        //                        // Try alternative approach - directly manipulate the property
+        //                        try
+        //                        {
+        //                            _modulationPanel.SetValue(UIElement.VisibilityProperty, Visibility.Visible);
+        //                            Log("Used SetValue to force visibility");
+        //                        }
+        //                        catch (Exception ex)
+        //                        {
+        //                            Log($"Error forcing visibility: {ex.Message}");
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        Log("ModulationPanel successfully made visible");
+        //                    }
+        //                });
+        //            }
+        //            else
+        //            {
+        //                Log("ERROR: _modulationPanel is null in UpdateToggleButtonState!");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            _modulationToggleButton.Background = System.Windows.Media.Brushes.LightGreen;
+
+        //            // Hide panel when modulation is disabled
+        //            if (_modulationPanel != null)
+        //            {
+        //                _modulationPanel.Dispatcher.Invoke(() =>
+        //                {
+        //                    _modulationPanel.Visibility = Visibility.Collapsed;
+        //                });
+        //            }
+        //        }
+        //    }
+        //}
+
+
+        /// <summary>
+        /// Force update UI state based on current enabled state
+        /// </summary>
+        public void ForceUpdateUIState()
+        {
+            Log($"ForceUpdateUIState called. IsEnabled: {_isModulationEnabled}");
+
+            UpdateToggleButtonState();
+            UpdateModulationVisibility(_isModulationEnabled);
+
+            // Extra force - directly set panel visibility
+            if (_modulationPanel != null && _isModulationEnabled)
+            {
+                _modulationPanel.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    _modulationPanel.Visibility = Visibility.Visible;
+                    _modulationPanel.InvalidateVisual();
+                    _modulationPanel.UpdateLayout();
+
+                    Log($"Forced panel update. Visibility is now: {_modulationPanel.Visibility}");
+                }), System.Windows.Threading.DispatcherPriority.Render);
+            }
+        }
+
 
         /// <summary>
         /// Update modulation panel visibility
@@ -1016,15 +1141,29 @@ namespace DG2072_USB_Control.Modulation
             {
                 Log($"Syncing {detectedModType} modulation state from device");
 
-                // First, update the modulation type in UI
-                for (int i = 0; i < _modulationTypeComboBox.Items.Count; i++)
+                // IMPORTANT: Check if UI is initialized first
+                if (_modulationTypeComboBox == null)
                 {
-                    var item = _modulationTypeComboBox.Items[i] as ComboBoxItem;
-                    if (item?.Content.ToString() == detectedModType)
+                    Log("UI controls not initialized yet - initializing now");
+                    InitializeUI();
+                }
+
+                // First, update the modulation type in UI
+                if (_modulationTypeComboBox != null)
+                {
+                    for (int i = 0; i < _modulationTypeComboBox.Items.Count; i++)
                     {
-                        _modulationTypeComboBox.SelectedIndex = i;
-                        break;
+                        var item = _modulationTypeComboBox.Items[i] as ComboBoxItem;
+                        if (item?.Content.ToString() == detectedModType)
+                        {
+                            _modulationTypeComboBox.SelectedIndex = i;
+                            break;
+                        }
                     }
+                }
+                else
+                {
+                    Log("WARNING: _modulationTypeComboBox is null");
                 }
 
                 // Update available modulating waveforms for this type
@@ -1070,14 +1209,11 @@ namespace DG2072_USB_Control.Modulation
                 _isModulationEnabled = true;
 
                 // IMPORTANT: Make sure the panel is visible
-                UpdateModulationVisibility(true);
-                Log($"Setting modulation panel visibility to: Visible");
-
-                // Also try setting it directly as a fallback
                 if (_modulationPanel != null)
                 {
                     _modulationPanel.Dispatcher.Invoke(() =>
                     {
+                        UpdateModulationVisibility(true);
                         _modulationPanel.Visibility = Visibility.Visible;
                         Log($"Modulation panel visibility is now: {_modulationPanel.Visibility}");
                     });
@@ -1106,8 +1242,10 @@ namespace DG2072_USB_Control.Modulation
             catch (Exception ex)
             {
                 Log($"Error syncing modulation from device: {ex.Message}");
+                Log($"Stack trace: {ex.StackTrace}");
             }
         }
+
         /// <summary>
         /// Force disable modulation UI when device has no modulation
         /// </summary>

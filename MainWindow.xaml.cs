@@ -1259,43 +1259,39 @@ namespace DG2072_USB_Control
                             {
                                 delayedModCheck.Stop();
 
+                                // IMPORTANT: Ensure modulation controller is initialized
+                                if (_modulationController != null && !_modulationController.IsUIInitialized())
+                                {
+                                    _modulationController.InitializeUI();
+                                    LogMessage("Initialized modulation controller UI before sync");
+                                }
+
                                 // Check for active modulation after everything is initialized
                                 string[] modTypes = { "AM", "FM", "PM", "PWM", "ASK", "FSK", "PSK" };
                                 foreach (var modType in modTypes)
                                 {
-                                    string response = rigolDG2072.SendQuery($"SOURCE{activeChannel}:{modType}:STATE?");
-                                    if (response.Trim() == "ON" || response.Trim() == "1")
+                                    try
                                     {
-                                        LogMessage($"Detected {modType} modulation active on device during startup");
-
-                                        // Enable the UI elements
-                                        EnableModulationUIOnly();
-
-                                        // Try to sync settings (but don't fail if it errors)
-                                        try
+                                        string response = rigolDG2072.SendQuery($"SOURCE{activeChannel}:{modType}:STATE?");
+                                        if (response.Trim() == "ON" || response.Trim() == "1")
                                         {
-                                            // Set the internal state in the controller
+                                            LogMessage($"Detected {modType} modulation active on device during startup");
+
+                                            // Set the internal state first
                                             _modulationController.SetModulationEnabledState(true);
 
-                                            // Sync the settings
+                                            // Then sync the settings
                                             _modulationController.SyncModulationFromDevice(modType);
 
-                                            // Force the modulation panel to be visible
-                                            if (ModulationPanel != null)
-                                            {
-                                                Dispatcher.Invoke(() =>
-                                                {
-                                                    ModulationPanel.Visibility = Visibility.Visible;
-                                                    LogMessage($"Forced ModulationPanel visibility to Visible");
-                                                });
-                                            }
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            LogMessage($"Note: Couldn't sync all settings yet: {ex.Message}");
-                                        }
+                                            // Force UI state update after sync
+                                            _modulationController.ForceUpdateUIState();
 
-                                        break;
+                                            break;
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        LogMessage($"Error checking {modType}: {ex.Message}");
                                     }
                                 }
                             };
@@ -1324,6 +1320,8 @@ namespace DG2072_USB_Control
             };
             startupTimer.Start();
         }
+
+
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {

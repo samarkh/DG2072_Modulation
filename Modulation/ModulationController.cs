@@ -947,66 +947,7 @@ namespace DG2072_USB_Control.Modulation
                 }
             }
         }
-        // private void UpdateToggleButtonState()
-        //{
-        //    if (_modulationToggleButton != null)
-        //    {
-        //        _modulationToggleButton.Content = _isModulationEnabled ? "Disable Modulation" : "Enable Modulation";
 
-        //        if (_isModulationEnabled)
-        //        {
-        //            _modulationToggleButton.Background = System.Windows.Media.Brushes.LightCoral;
-
-        //            // FORCE the panel to be visible when button turns red
-        //            if (_modulationPanel != null)
-        //            {
-        //                // Use Dispatcher to ensure we're on the UI thread
-        //                _modulationPanel.Dispatcher.Invoke(() =>
-        //                {
-        //                    _modulationPanel.Visibility = Visibility.Visible;
-
-        //                    // Double-check it worked
-        //                    if (_modulationPanel.Visibility != Visibility.Visible)
-        //                    {
-        //                        Log("WARNING: Failed to set ModulationPanel visibility!");
-
-        //                        // Try alternative approach - directly manipulate the property
-        //                        try
-        //                        {
-        //                            _modulationPanel.SetValue(UIElement.VisibilityProperty, Visibility.Visible);
-        //                            Log("Used SetValue to force visibility");
-        //                        }
-        //                        catch (Exception ex)
-        //                        {
-        //                            Log($"Error forcing visibility: {ex.Message}");
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        Log("ModulationPanel successfully made visible");
-        //                    }
-        //                });
-        //            }
-        //            else
-        //            {
-        //                Log("ERROR: _modulationPanel is null in UpdateToggleButtonState!");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            _modulationToggleButton.Background = System.Windows.Media.Brushes.LightGreen;
-
-        //            // Hide panel when modulation is disabled
-        //            if (_modulationPanel != null)
-        //            {
-        //                _modulationPanel.Dispatcher.Invoke(() =>
-        //                {
-        //                    _modulationPanel.Visibility = Visibility.Collapsed;
-        //                });
-        //            }
-        //        }
-        //    }
-        //}
 
 
         /// <summary>

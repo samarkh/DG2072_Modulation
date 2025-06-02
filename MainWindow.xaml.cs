@@ -1236,11 +1236,6 @@ namespace DG2072_USB_Control
 
             startupTimer.Start();
         }
-        // Rename the event handler to reflect its more general purpose
-        //private void FrequencyPeriodModeToggle_Click(object sender, RoutedEventArgs e)
-        //{
-        //    frequencyPeriodConverter?.ToggleMode();
-        //}
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -1423,8 +1418,6 @@ namespace DG2072_USB_Control
             CommandLogTextBox.Clear();
         }
 
-
-
         private void PrimaryFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!isConnected) return;
@@ -1478,9 +1471,6 @@ namespace DG2072_USB_Control
                 }
             }
         }
-
-
-
 
         #endregion
 
@@ -1840,10 +1830,6 @@ namespace DG2072_USB_Control
             UpdateWaveformSpecificControls(waveform);
         }
 
-
-        // Modify the ChannelFrequencyTextBox_TextChanged method to update 
-        // dual tone center frequency when in Center/Offset mode
-
         private void ChannelFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (frequencyPeriodConverter?.IsFrequencyMode == true)
@@ -2114,8 +2100,6 @@ namespace DG2072_USB_Control
                     break;
             }
         }
-
-
 
         #endregion
 
@@ -3048,286 +3032,6 @@ namespace DG2072_USB_Control
         // Add this new region for Modulation Event Handlers:
         #region Modulation Event Handlers
 
-        //private void CarrierWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    if (_isInitializing || !isConnected) return;
-
-        //    if (_modulationController != null)
-        //        _modulationController.OnCarrierWaveformChanged();
-        //}
-
-        //private void ModulatingWaveformComboBox_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    // This should populate the combo box regardless of _isInitializing
-        //    //if (_isInitializing) return;  // Don't initialize during startup
-
-        //    if (_modulationController != null)
-        //        _modulationController.OnModulationTypeChanged();
-        //}
-
-
-        //private void ModulatingWaveformComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    // Handle modulating waveform selection changes if needed
-        //}
-
-        //private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    if (_isInitializing || !isConnected)
-        //    {
-        //        LogMessage($"Skipping modulation type change - Initializing: {_isInitializing}, Connected: {isConnected}");
-        //        return;
-        //    }
-
-        //    if (_modulationController != null)
-        //        _modulationController.OnModulationTypeChanged();
-        //}
-
-
-        //private void CarrierFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    // Handle carrier frequency unit changes if needed
-        //}
-
-        //private void CarrierAmplitudeTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-        //    if (_isInitializing || !isConnected) return;
-
-        //    if (_modulationController != null)
-        //        _modulationController.OnCarrierAmplitudeTextChanged();
-        //}
-
-        //private void CarrierAmplitudeUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    if (_isInitializing || !isConnected) return;
-
-        //    if (_modulationController != null)
-        //        _modulationController.OnCarrierAmplitudeUnitChanged();
-        //}
-
-
-        //private void ModulationFrequencyUnitComboBox_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    // Initialize frequency units when loaded
-        //}
-
-        //private void ModulationFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    // Handle modulation frequency unit changes if needed
-        //}
-
-        /// <summary>
-        /// Handles the selection change event for the Modulation tab in the TabControl.   
-        ///  
-        //private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    if (_isInitializing) return;
-
-        //    // Only process if this is the main TabControl (not nested ones)
-        //    if (sender is TabControl tabControl && e.Source == tabControl)
-        //    {
-        //        // Get the previously selected tab
-        //        TabItem previousTab = null;
-        //        if (e.RemovedItems.Count > 0)
-        //        {
-        //            previousTab = e.RemovedItems[0] as TabItem;
-        //        }
-
-        //        // Get the newly selected tab
-        //        TabItem selectedTab = tabControl.SelectedItem as TabItem;
-
-        //        // Handle leaving the Modulation tab
-        //        if (previousTab != null && previousTab.Name == "ModulationTab" && selectedTab != null && selectedTab.Header.ToString() == "Waveform Controls")
-        //        {
-        //            if (_modulationManager != null && isConnected)
-        //            {
-        //                // Get the MODULATION frequency (not carrier) before making changes
-        //                double modulationFrequency = 0;
-        //                var modFreqTextBox = this.FindName("ModulationFrequencyTextBox") as TextBox;
-        //                var modFreqUnitComboBox = this.FindName("ModulationFrequencyUnitComboBox") as ComboBox;
-
-        //                if (modFreqTextBox != null && double.TryParse(modFreqTextBox.Text, out double modFreq))
-        //                {
-        //                    string unit = "Hz";
-        //                    if (modFreqUnitComboBox?.SelectedItem != null)
-        //                    {
-        //                        unit = ((ComboBoxItem)modFreqUnitComboBox.SelectedItem).Content.ToString();
-        //                    }
-        //                    modulationFrequency = modFreq * UnitConversionUtility.GetFrequencyMultiplier(unit);
-        //                }
-
-        //                // Get the modulating waveform type to set as the new waveform
-        //                string modulatingWaveform = GetModulatingWaveformType();
-
-        //                // Disable all modulation
-        //                _modulationManager.DisableModulation();
-        //                LogMessage("Modulation disabled when switching to Waveform Controls tab");
-
-        //                // Set the waveform type to the modulating waveform if valid
-        //                if (!string.IsNullOrEmpty(modulatingWaveform))
-        //                {
-        //                    SetWaveformTypeInUI(modulatingWaveform);
-        //                }
-
-        //                // Set the waveform frequency to the modulation frequency
-        //                if (modulationFrequency > 0)
-        //                {
-        //                    System.Threading.Thread.Sleep(100); // Small delay to ensure commands are processed
-
-        //                    // Set the frequency to the modulation frequency
-        //                    rigolDG2072.SetFrequency(activeChannel, modulationFrequency);
-
-        //                    // Update the UI to show the modulation frequency
-        //                    UpdateFrequencyValue(ChannelFrequencyTextBox, ChannelFrequencyUnitComboBox, activeChannel);
-
-        //                    LogMessage($"Set waveform frequency to modulation frequency: {modulationFrequency} Hz");
-        //                }
-        //            }
-        //        }
-        //        // Handle entering the Modulation tab
-        //        else if (selectedTab != null && selectedTab.Name == "ModulationTab")
-        //        {
-        //            // Copy waveform frequency to modulation frequency when switching TO modulation tab
-        //            if (_modulationManager != null && isConnected)
-        //            {
-        //                // Get the current waveform frequency
-        //                double waveformFrequency = 0;
-        //                if (double.TryParse(ChannelFrequencyTextBox.Text, out double freq))
-        //                {
-        //                    string unit = UnitConversionUtility.GetFrequencyUnit(ChannelFrequencyUnitComboBox);
-        //                    waveformFrequency = freq * UnitConversionUtility.GetFrequencyMultiplier(unit);
-        //                }
-
-        //                // Set the modulation frequency to match the waveform frequency
-        //                if (waveformFrequency > 0)
-        //                {
-        //                    var modFreqTextBox = this.FindName("ModulationFrequencyTextBox") as TextBox;
-        //                    var modFreqUnitComboBox = this.FindName("ModulationFrequencyUnitComboBox") as ComboBox;
-
-        //                    if (modFreqTextBox != null && modFreqUnitComboBox != null)
-        //                    {
-        //                        // Determine best unit for display
-        //                        string unit = "Hz";
-        //                        double displayValue = waveformFrequency;
-
-        //                        if (waveformFrequency >= 1e6)
-        //                        {
-        //                            unit = "MHz";
-        //                            displayValue = waveformFrequency / 1e6;
-        //                        }
-        //                        else if (waveformFrequency >= 1e3)
-        //                        {
-        //                            unit = "kHz";
-        //                            displayValue = waveformFrequency / 1e3;
-        //                        }
-        //                        else if (waveformFrequency < 1)
-        //                        {
-        //                            unit = "mHz";
-        //                            displayValue = waveformFrequency * 1e3;
-        //                        }
-
-        //                        modFreqTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(displayValue);
-
-        //                        // Set the unit combo box
-        //                        for (int i = 0; i < modFreqUnitComboBox.Items.Count; i++)
-        //                        {
-        //                            var item = modFreqUnitComboBox.Items[i] as ComboBoxItem;
-        //                            if (item?.Content.ToString() == unit)
-        //                            {
-        //                                modFreqUnitComboBox.SelectedIndex = i;
-        //                                break;
-        //                            }
-        //                        }
-
-        //                        LogMessage($"Set modulation frequency to waveform frequency: {waveformFrequency} Hz");
-        //                    }
-        //                }
-
-        //                // Refresh other modulation settings (but preserve the frequency we just set)
-        //                _modulationManager.RefreshSettings();
-
-        //                // Ensure carrier amplitude is refreshed from device
-        //                //_modulationManager.RefreshCarrierAmplitude();
-        //            }
-        //        }
-        //    }
-        //}
-       
-        // Helper method to get the current modulating waveform type
-        //private string GetModulatingWaveformType()
-        //{
-        //    try
-        //    {
-        //        // Use 'this' instead of '_mainWindow' since we're in MainWindow class
-        //        var modulatingWaveformComboBox = this.FindName("ModulatingWaveformComboBox") as ComboBox;
-        //        if (modulatingWaveformComboBox?.SelectedItem != null)
-        //        {
-        //            string waveform = ((ComboBoxItem)modulatingWaveformComboBox.SelectedItem).Content.ToString();
-
-        //            // Map modulating waveform names to main waveform names
-        //            switch (waveform.ToUpper())
-        //            {
-        //                case "SINE": return "SINE";
-        //                case "SQUARE": return "SQUARE";
-        //                case "TRIANGLE":
-        //                case "UP RAMP":
-        //                case "DOWN RAMP": return "RAMP";
-        //                case "NOISE": return "NOISE";
-        //                case "ARBITRARY WAVEFORM": return "ARBITRARY WAVEFORM";
-        //                default: return "SINE"; // Default fallback
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogMessage($"Error getting modulating waveform type: {ex.Message}");
-        //    }
-        //    return "SINE"; // Default
-        //}
-
-
-        // Helper method to set waveform type in UI
-        private void SetWaveformTypeInUI(string waveformType)
-        {
-            try
-            {
-                // Find the matching item in the waveform combo box
-                for (int i = 0; i < ChannelWaveformComboBox.Items.Count; i++)
-                {
-                    var item = ChannelWaveformComboBox.Items[i] as ComboBoxItem;
-                    if (item != null && item.Content.ToString().ToUpper() == waveformType.ToUpper())
-                    {
-                        ChannelWaveformComboBox.SelectedIndex = i;
-                        LogMessage($"Set waveform type to: {waveformType}");
-                        break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                LogMessage($"Error setting waveform type: {ex.Message}");
-            }
-        }
-
-
-        //private void ApplyModulationButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (_modulationManager != null)
-        //        _modulationManager.ApplyModulation();
-        //}
-
-        //private void DisableModulationButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (_modulationManager != null)
-        //        _modulationManager.DisableModulation();
-        //}
-
-
-
-
-
-
-
         private void ModulationToggleButton_Click(object sender, RoutedEventArgs e)
         {
             if (_modulationController == null) return;
@@ -3426,25 +3130,6 @@ namespace DG2072_USB_Control
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         #endregion
 

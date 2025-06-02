@@ -886,6 +886,9 @@ namespace DG2072_USB_Control.Modulation
         /// <summary>
         /// Update toggle button state
         /// </summary>
+        /// <summary>
+        /// Update toggle button state
+        /// </summary>
         private void UpdateToggleButtonState()
         {
             if (_modulationToggleButton != null)
@@ -895,14 +898,26 @@ namespace DG2072_USB_Control.Modulation
                 if (_isModulationEnabled)
                 {
                     _modulationToggleButton.Background = System.Windows.Media.Brushes.LightCoral;
+
+                    // SIMPLE FIX: If modulation is enabled, make sure the panel is visible!
+                    if (_modulationPanel != null)
+                    {
+                        _modulationPanel.Visibility = Visibility.Visible;
+                    }
                 }
                 else
                 {
                     _modulationToggleButton.Background = System.Windows.Media.Brushes.LightGreen;
+
+                    // Hide panel when modulation is disabled
+                    if (_modulationPanel != null)
+                    {
+                        _modulationPanel.Visibility = Visibility.Collapsed;
+                    }
                 }
             }
         }
-        
+
         /// <summary>
         /// Update modulation panel visibility
         /// </summary>

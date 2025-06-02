@@ -1268,6 +1268,17 @@ namespace DG2072_USB_Control
                                     {
                                         LogMessage($"Detected {modType} modulation active on device during startup");
                                         _modulationController.SyncModulationFromDevice(modType);
+
+                                        // ADD THIS: Force the modulation panel to be visible
+                                        if (ModulationPanel != null)
+                                        {
+                                            Dispatcher.Invoke(() =>
+                                            {
+                                                ModulationPanel.Visibility = Visibility.Visible;
+                                                LogMessage($"Forced ModulationPanel visibility to Visible");
+                                            });
+                                        }
+
                                         break;
                                     }
                                 }

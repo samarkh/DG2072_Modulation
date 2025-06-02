@@ -547,16 +547,12 @@ namespace DG2072_USB_Control.Modulation
                     // Always update these parameters
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:DEPTH {modDepth}");
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FREQ {modFrequency}");
-                    //_device.SendCommand($"SOURCE{_activeChannel}:AM:DSSC OFF");
 
-
+                    // Use checkbox state for DSSC
                     bool dsscEnabled = _dsscCheckBox?.IsChecked ?? false;
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:DSSC {(dsscEnabled ? "ON" : "OFF")}");
 
                     Log($"AM DSSC mode: {(dsscEnabled ? "Enabled" : "Disabled")}");
-
-
-
                     break;
 
                 case "FM":

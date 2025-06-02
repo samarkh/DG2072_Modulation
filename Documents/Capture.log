@@ -1,46 +1,126 @@
-[11:17:11] Auto-connecting to instrument...
-[11:17:11] Starting connection process...
-[11:17:11] Creating VISA connection...
-[11:20:00] Connected to USB0::0x1AB1::0x0644::DG2P224100508::INSTR
-[11:20:00] VISA Connect returned in 168956ms
-[11:20:00] Connected to Rigol DG2072
-[11:20:00] Refreshing all instrument settings...
-[11:20:00] Query: :SOUR1:FUNC?, Response: SIN
-[11:20:00] Updating waveform selection - Device reports: SIN
-[11:20:00] Selected waveform: Sine
-[11:20:00] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
-[11:20:00] Refreshed Sine parameters for CH1
-[11:20:00] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
-[11:20:00] Query: SOURCE1:VOLTAGE?, Response: 1.000000E+00
-[11:20:00] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
-[11:20:00] Query: SOURCE1:PHASE?, Response: 0.000000E+00
-[11:20:00] Query: OUTPUT1?, Response: OFF
-[11:20:00] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
-[11:20:00] Refreshed Channel 1 settings
-[11:20:00] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
-[11:20:00] Instrument settings refreshed successfully
-[11:20:00] Refreshing all instrument settings...
-[11:20:00] Query: :SOUR1:FUNC?, Response: SIN
-[11:20:00] Updating waveform selection - Device reports: SIN
-[11:20:00] Selected waveform: Sine
-[11:20:00] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
-[11:20:00] Refreshed Sine parameters for CH1
-[11:20:00] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
-[11:20:00] Query: SOURCE1:VOLTAGE?, Response: 1.000000E+00
-[11:20:00] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
-[11:20:00] Query: SOURCE1:PHASE?, Response: 0.000000E+00
-[11:20:00] Query: OUTPUT1?, Response: OFF
-[11:20:00] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
-[11:20:00] Refreshed Channel 1 settings
-[11:20:00] Setting FrequencyPeriodModeToggle visibility to Visible for waveform SINE
-[11:20:00] Instrument settings refreshed successfully
-[11:20:00] Auto-connection successful
-[11:20:01] Command sent: SOURCE1:FREQuency 1000
-[11:20:01] Command sent: SOURCE1:FREQuency 1000
-[11:20:01] Set CH1 frequency to 1000 Hz using SOURCE:FREQuency command directly
-[11:20:01] Set CH1 frequency to 1000 Hz (1000 Hz)
-[11:20:01] Command sent: SOURCE1:VOLTAGE 1
-[11:20:01] Set CH1 amplitude to 1 Vpp (1 Vpp)
-[11:20:01] Command sent: SOURCE1:VOLTAGE:OFFSET 0
-[11:20:01] Set CH1 offset to 0 V (0 V)
-[11:20:01] Command sent: SOURCE1:PHASE 0
+[09:35:00] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
+[09:35:00] Query: SOURCE1:VOLTAGE?, Response: 3.000000E+00
+[09:35:00] Query: SOURCE1:VOLTAGE:OFFSET?, Response: 0.000000E+00
+[09:35:00] Query: SOURCE1:PHASE?, Response: 0.000000E+00
+[09:35:00] Query: :SOUR1:FUNC?, Response: SIN
+[09:35:00] Stored carrier settings: SIN @ 1000Hz, 3Vpp
+[09:35:00] Applying AM modulation:
+[09:35:00]   Carrier: SIN at 1000 Hz, 3 Vpp
+[09:35:00]   Modulating: SINE at 1000 Hz
+[09:35:00]   Depth: 50%
+[09:35:00] Command sent: SOURCE1:APPLY:SIN 1000,3,0,0
+[09:35:00] Command sent: SOURCE1:APPLY:SIN 1000,3,0,0
+[09:35:00] Command sent: SOURCE1:AM:STATE ON
+[09:35:00] Command sent: SOURCE1:AM:STATE ON
+[09:35:00] Command sent: SOURCE1:AM:SOURCE INT
+[09:35:00] Command sent: SOURCE1:AM:SOURCE INT
+[09:35:00] Command sent: SOURCE1:AM:INT:FUNC SIN
+[09:35:00] Command sent: SOURCE1:AM:INT:FUNC SIN
+[09:35:00] Command sent: SOURCE1:AM 50
+[09:35:00] Command sent: SOURCE1:AM 50
+[09:35:00] Command sent: SOURCE1:AM:INT:FREQ 1000
+[09:35:01] Command sent: SOURCE1:AM:INT:FREQ 1000
+[09:35:01] Command sent: SOURCE1:AM:DSSC OFF
+[09:35:01] Command sent: SOURCE1:AM:DSSC OFF
+[09:35:01] Modulation applied successfully
+[09:35:01] Applying AM modulation:
+[09:35:01]   Carrier: SIN at 1000 Hz, 3 Vpp
+[09:35:01]   Modulating: Sine at 1000 Hz
+[09:35:01]   Depth: 50%
+[09:35:01] Command sent: SOURCE1:APPLY:SIN 1000,3,0,0
+[09:35:01] Command sent: SOURCE1:APPLY:SIN 1000,3,0,0
+[09:35:01] Command sent: SOURCE1:AM:STATE ON
+[09:35:01] Command sent: SOURCE1:AM:STATE ON
+[09:35:01] Command sent: SOURCE1:AM:SOURCE INT
+[09:35:01] Command sent: SOURCE1:AM:SOURCE INT
+[09:35:01] Command sent: SOURCE1:AM:INT:FUNC SIN
+[09:35:01] Command sent: SOURCE1:AM:INT:FUNC SIN
+[09:35:01] Command sent: SOURCE1:AM 50
+[09:35:01] Command sent: SOURCE1:AM 50
+[09:35:01] Command sent: SOURCE1:AM:INT:FREQ 1000
+[09:35:01] Command sent: SOURCE1:AM:INT:FREQ 1000
+[09:35:01] Command sent: SOURCE1:AM:DSSC OFF
+[09:35:01] Command sent: SOURCE1:AM:DSSC OFF
+[09:35:01] Modulation applied successfully
+[09:35:01] Query: SOURCE1:FREQuency?, Response: 1.000000E+03
+[09:35:01] Applying AM modulation:
+[09:35:01]   Carrier: SIN at 1000 Hz, 3 Vpp
+[09:35:01]   Modulating: Sine at 1000 Hz
+[09:35:01]   Depth: 50%
+[09:35:01] Command sent: SOURCE1:APPLY:SIN 1000,3,0,0
+[09:35:01] Command sent: SOURCE1:APPLY:SIN 1000,3,0,0
+[09:35:01] Command sent: SOURCE1:AM:STATE ON
+[09:35:01] Command sent: SOURCE1:AM:STATE ON
+[09:35:01] Command sent: SOURCE1:AM:SOURCE INT
+[09:35:01] Command sent: SOURCE1:AM:SOURCE INT
+[09:35:01] Command sent: SOURCE1:AM:INT:FUNC SIN
+[09:35:01] Command sent: SOURCE1:AM:INT:FUNC SIN
+[09:35:01] Command sent: SOURCE1:AM 50
+[09:35:01] Command sent: SOURCE1:AM 50
+[09:35:01] Command sent: SOURCE1:AM:INT:FREQ 1000
+[09:35:01] Command sent: SOURCE1:AM:INT:FREQ 1000
+[09:35:01] Command sent: SOURCE1:AM:DSSC OFF
+[09:35:01] Command sent: SOURCE1:AM:DSSC OFF
+[09:35:01] Modulation applied successfully
+[09:35:01] Applying AM modulation:
+[09:35:01]   Carrier: SIN at 1000 Hz, 3 Vpp
+[09:35:01]   Modulating: Sine at 1000 Hz
+[09:35:01]   Depth: 50%
+[09:35:01] Command sent: SOURCE1:APPLY:SIN 1000,3,0,0
+[09:35:01] Command sent: SOURCE1:APPLY:SIN 1000,3,0,0
+[09:35:01] Command sent: SOURCE1:AM:STATE ON
+[09:35:01] Command sent: SOURCE1:AM:STATE ON
+[09:35:01] Command sent: SOURCE1:AM:SOURCE INT
+[09:35:01] Command sent: SOURCE1:AM:SOURCE INT
+[09:35:01] Command sent: SOURCE1:AM:INT:FUNC SIN
+[09:35:01] Command sent: SOURCE1:AM:INT:FUNC SIN
+[09:35:01] Command sent: SOURCE1:AM 50
+[09:35:01] Command sent: SOURCE1:AM 50
+[09:35:01] Command sent: SOURCE1:AM:INT:FREQ 1000
+[09:35:01] Command sent: SOURCE1:AM:INT:FREQ 1000
+[09:35:01] Command sent: SOURCE1:AM:DSSC OFF
+[09:35:01] Command sent: SOURCE1:AM:DSSC OFF
+[09:35:01] Modulation applied successfully
+[09:35:01] Modulation enabled
+[09:35:09] Command sent: SOURCE1:FREQuency 1000000
+[09:35:09] Command sent: SOURCE1:FREQuency 1000000
+[09:35:09] Set CH1 frequency to 1000000 Hz using SOURCE:FREQuency command directly
+[09:35:09] Set CH1 frequency to 1 MHz (1000000 Hz)
+[09:35:16] Applying AM modulation:
+[09:35:16]   Carrier: SIN at 1000 Hz, 3 Vpp
+[09:35:16]   Modulating: Sine at 1000 Hz
+[09:35:16]   Depth: 30%
+[09:35:16] Command sent: SOURCE1:APPLY:SIN 1000,3,0,0
+[09:35:16] Command sent: SOURCE1:APPLY:SIN 1000,3,0,0
+[09:35:16] Command sent: SOURCE1:AM:STATE ON
+[09:35:16] Command sent: SOURCE1:AM:STATE ON
+[09:35:16] Command sent: SOURCE1:AM:SOURCE INT
+[09:35:16] Command sent: SOURCE1:AM:SOURCE INT
+[09:35:16] Command sent: SOURCE1:AM:INT:FUNC SIN
+[09:35:16] Command sent: SOURCE1:AM:INT:FUNC SIN
+[09:35:16] Command sent: SOURCE1:AM 30
+[09:35:16] Command sent: SOURCE1:AM 30
+[09:35:16] Command sent: SOURCE1:AM:INT:FREQ 1000
+[09:35:16] Command sent: SOURCE1:AM:INT:FREQ 1000
+[09:35:16] Command sent: SOURCE1:AM:DSSC OFF
+[09:35:16] Command sent: SOURCE1:AM:DSSC OFF
+[09:35:16] Modulation applied successfully
+[09:35:24] Applying AM modulation:
+[09:35:24]   Carrier: SIN at 1000 Hz, 3 Vpp
+[09:35:24]   Modulating: Sine at 1000 Hz
+[09:35:24]   Depth: 30%
+[09:35:24] Command sent: SOURCE1:APPLY:SIN 1000,3,0,0
+[09:35:24] Command sent: SOURCE1:APPLY:SIN 1000,3,0,0
+[09:35:24] Command sent: SOURCE1:AM:STATE ON
+[09:35:24] Command sent: SOURCE1:AM:STATE ON
+[09:35:24] Command sent: SOURCE1:AM:SOURCE INT
+[09:35:24] Command sent: SOURCE1:AM:SOURCE INT
+[09:35:24] Command sent: SOURCE1:AM:INT:FUNC SIN
+[09:35:24] Command sent: SOURCE1:AM:INT:FUNC SIN
+[09:35:24] Command sent: SOURCE1:AM 30
+[09:35:24] Command sent: SOURCE1:AM 30
+[09:35:24] Command sent: SOURCE1:AM:INT:FREQ 1000
+[09:35:24] Command sent: SOURCE1:AM:INT:FREQ 1000
+[09:35:24] Command sent: SOURCE1:AM:DSSC OFF
+[09:35:24] Command sent: SOURCE1:AM:DSSC OFF
+[09:35:24] Modulation applied successfully

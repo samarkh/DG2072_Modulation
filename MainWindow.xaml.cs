@@ -3254,36 +3254,36 @@ namespace DG2072_USB_Control
         //}
        
         // Helper method to get the current modulating waveform type
-        private string GetModulatingWaveformType()
-        {
-            try
-            {
-                // Use 'this' instead of '_mainWindow' since we're in MainWindow class
-                var modulatingWaveformComboBox = this.FindName("ModulatingWaveformComboBox") as ComboBox;
-                if (modulatingWaveformComboBox?.SelectedItem != null)
-                {
-                    string waveform = ((ComboBoxItem)modulatingWaveformComboBox.SelectedItem).Content.ToString();
+        //private string GetModulatingWaveformType()
+        //{
+        //    try
+        //    {
+        //        // Use 'this' instead of '_mainWindow' since we're in MainWindow class
+        //        var modulatingWaveformComboBox = this.FindName("ModulatingWaveformComboBox") as ComboBox;
+        //        if (modulatingWaveformComboBox?.SelectedItem != null)
+        //        {
+        //            string waveform = ((ComboBoxItem)modulatingWaveformComboBox.SelectedItem).Content.ToString();
 
-                    // Map modulating waveform names to main waveform names
-                    switch (waveform.ToUpper())
-                    {
-                        case "SINE": return "SINE";
-                        case "SQUARE": return "SQUARE";
-                        case "TRIANGLE":
-                        case "UP RAMP":
-                        case "DOWN RAMP": return "RAMP";
-                        case "NOISE": return "NOISE";
-                        case "ARBITRARY WAVEFORM": return "ARBITRARY WAVEFORM";
-                        default: return "SINE"; // Default fallback
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                LogMessage($"Error getting modulating waveform type: {ex.Message}");
-            }
-            return "SINE"; // Default
-        }
+        //            // Map modulating waveform names to main waveform names
+        //            switch (waveform.ToUpper())
+        //            {
+        //                case "SINE": return "SINE";
+        //                case "SQUARE": return "SQUARE";
+        //                case "TRIANGLE":
+        //                case "UP RAMP":
+        //                case "DOWN RAMP": return "RAMP";
+        //                case "NOISE": return "NOISE";
+        //                case "ARBITRARY WAVEFORM": return "ARBITRARY WAVEFORM";
+        //                default: return "SINE"; // Default fallback
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogMessage($"Error getting modulating waveform type: {ex.Message}");
+        //    }
+        //    return "SINE"; // Default
+        //}
 
 
         // Helper method to set waveform type in UI

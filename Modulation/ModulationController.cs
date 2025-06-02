@@ -151,6 +151,7 @@ namespace DG2072_USB_Control.Modulation
         /// <summary>
         /// Enable modulation mode
         /// </summary>
+        // Also, ensure the combo box is populated when modulation is enabled:
         public void EnableModulation()
         {
             if (!IsDeviceConnected()) return;
@@ -164,6 +165,13 @@ namespace DG2072_USB_Control.Modulation
                 _isModulationEnabled = true;
                 UpdateModulationVisibility(true);
                 UpdateToggleButtonState();
+
+                // FIX: Ensure modulating waveforms are populated
+                if (_modulationTypeComboBox?.SelectedItem != null)
+                {
+                    string currentModType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
+                    UpdateAvailableModulatingWaveforms(currentModType);
+                }
 
                 // Get current waveform frequency and copy to modulation frequency
                 double carrierFreq = _device.GetFrequency(_activeChannel);
@@ -527,8 +535,33 @@ namespace DG2072_USB_Control.Modulation
             {
                 _modulationTypeComboBox.Items.Add(new ComboBoxItem { Content = modType });
             }
+
             if (_modulationTypeComboBox.Items.Count > 0)
+            {
                 _modulationTypeComboBox.SelectedIndex = 0;
+
+                // FIX: Also populate the modulating waveforms for the default selection
+                string defaultModType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
+                UpdateAvailableModulatingWaveforms(defaultModType);
+            }
+        }
+       
+        
+        // Alternative fix - update SetDefaultValues to ensure everything is initialized:
+        private void SetDefaultValues()
+        {
+            if (_modulationFrequencyTextBox != null)
+                _modulationFrequencyTextBox.Text = "1.0"; // 1 kHz default
+
+            if (_modulationDepthTextBox != null)
+                _modulationDepthTextBox.Text = "50.0"; // 50% default
+
+            // FIX: Ensure modulating waveforms are populated for the current modulation type
+            if (_modulationTypeComboBox?.SelectedItem != null)
+            {
+                string currentModType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
+                UpdateAvailableModulatingWaveforms(currentModType);
+            }
         }
 
         /// <summary>
@@ -545,18 +578,6 @@ namespace DG2072_USB_Control.Modulation
                 _modulationFrequencyUnitComboBox.Items.Add(new ComboBoxItem { Content = unit });
             }
             _modulationFrequencyUnitComboBox.SelectedIndex = 3; // Default to kHz
-        }
-
-        /// <summary>
-        /// Set default modulation values
-        /// </summary>
-        private void SetDefaultValues()
-        {
-            if (_modulationFrequencyTextBox != null)
-                _modulationFrequencyTextBox.Text = "1.0"; // 1 kHz default
-
-            if (_modulationDepthTextBox != null)
-                _modulationDepthTextBox.Text = "50.0"; // 50% default
         }
 
         /// <summary>

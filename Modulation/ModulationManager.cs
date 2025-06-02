@@ -608,6 +608,122 @@ namespace DG2072_USB_Control.Modulation
         }
 
 
+
+
+
+
+
+
+        /// <summary>
+        /// Disable all modulation
+        /// </summary>
+        public void DisableModulation()
+        {
+            if (!IsDeviceConnected()) return;
+
+            try
+            {
+                // Turn off all modulation types
+                _device.SendCommand($"SOURCE{_activeChannel}:AM:STATE OFF");
+                _device.SendCommand($"SOURCE{_activeChannel}:FM:STATE OFF");
+                _device.SendCommand($"SOURCE{_activeChannel}:PM:STATE OFF");
+                _device.SendCommand($"SOURCE{_activeChannel}:PWM:STATE OFF");
+                _device.SendCommand($"SOURCE{_activeChannel}:ASK:STATE OFF");
+                _device.SendCommand($"SOURCE{_activeChannel}:FSK:STATE OFF");
+                _device.SendCommand($"SOURCE{_activeChannel}:PSK:STATE OFF");
+
+                Log("All modulation disabled");
+            }
+            catch (Exception ex)
+            {
+                Log($"Error disabling modulation: {ex.Message}");
+            }
+        }
+
+
+
+        /// <summary>
+        /// Update frequency display with appropriate unit
+        /// </summary>
+        private void UpdateFrequencyDisplay(TextBox textBox, ComboBox unitComboBox, double frequencyHz)
+        {
+            if (textBox == null || unitComboBox == null) return;
+
+            // Determine best unit
+            string unit = "Hz";
+            double displayValue = frequencyHz;
+
+            if (frequencyHz >= 1e6)
+            {
+                unit = "MHz";
+                displayValue = frequencyHz / 1e6;
+            }
+            else if (frequencyHz >= 1e3)
+            {
+                unit = "kHz";
+                displayValue = frequencyHz / 1e3;
+            }
+            else if (frequencyHz < 1e-3)
+            {
+                unit = "mHz";
+                displayValue = frequencyHz * 1e3;
+            }
+            else if (frequencyHz < 1e-6)
+            {
+                unit = "µHz";
+                displayValue = frequencyHz * 1e6;
+            }
+
+            textBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(displayValue);
+
+            // Update unit combo box
+            for (int i = 0; i < unitComboBox.Items.Count; i++)
+            {
+                var item = unitComboBox.Items[i] as ComboBoxItem;
+                if (item?.Content.ToString() == unit)
+                {
+                    unitComboBox.SelectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update modulating waveform selection
+        /// </summary>
+        private void UpdateModulatingWaveformSelection(string waveform)
+        {
+            if (_modulatingWaveformComboBox == null) return;
+
+            for (int i = 0; i < _modulatingWaveformComboBox.Items.Count; i++)
+            {
+                var item = _modulatingWaveformComboBox.Items[i] as ComboBoxItem;
+                if (item?.Content.ToString() == waveform)
+                {
+                    _modulatingWaveformComboBox.SelectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check if device is connected
+        /// </summary>
+        private bool IsDeviceConnected()
+        {
+            return _device != null && _device.IsConnected;
+        }
+
+        /// <summary>
+        /// Log a message
+        /// </summary>
+        private void Log(string message)
+        {
+            LogEvent?.Invoke(this, message);
+        }
+
+        #region Refresh
+
         /// <summary>
         /// Refresh carrier amplitude from device
         /// </summary>
@@ -652,32 +768,6 @@ namespace DG2072_USB_Control.Modulation
             }
         }
 
-
-        /// <summary>
-        /// Disable all modulation
-        /// </summary>
-        public void DisableModulation()
-        {
-            if (!IsDeviceConnected()) return;
-
-            try
-            {
-                // Turn off all modulation types
-                _device.SendCommand($"SOURCE{_activeChannel}:AM:STATE OFF");
-                _device.SendCommand($"SOURCE{_activeChannel}:FM:STATE OFF");
-                _device.SendCommand($"SOURCE{_activeChannel}:PM:STATE OFF");
-                _device.SendCommand($"SOURCE{_activeChannel}:PWM:STATE OFF");
-                _device.SendCommand($"SOURCE{_activeChannel}:ASK:STATE OFF");
-                _device.SendCommand($"SOURCE{_activeChannel}:FSK:STATE OFF");
-                _device.SendCommand($"SOURCE{_activeChannel}:PSK:STATE OFF");
-
-                Log("All modulation disabled");
-            }
-            catch (Exception ex)
-            {
-                Log($"Error disabling modulation: {ex.Message}");
-            }
-        }
 
         /// <summary>
         /// Refresh modulation settings from device
@@ -782,64 +872,301 @@ namespace DG2072_USB_Control.Modulation
             }
         }
 
+        // Add ALL these refresh methods to ModulationController.cs
 
         /// <summary>
-        /// Update frequency display with appropriate unit
+        /// Refresh AM settings from device
         /// </summary>
-        private void UpdateFrequencyDisplay(TextBox textBox, ComboBox unitComboBox, double frequencyHz)
+        private void RefreshAMSettings()
         {
-            if (textBox == null || unitComboBox == null) return;
-
-            // Determine best unit
-            string unit = "Hz";
-            double displayValue = frequencyHz;
-
-            if (frequencyHz >= 1e6)
+            try
             {
-                unit = "MHz";
-                displayValue = frequencyHz / 1e6;
-            }
-            else if (frequencyHz >= 1e3)
-            {
-                unit = "kHz";
-                displayValue = frequencyHz / 1e3;
-            }
-            else if (frequencyHz < 1e-3)
-            {
-                unit = "mHz";
-                displayValue = frequencyHz * 1e3;
-            }
-            else if (frequencyHz < 1e-6)
-            {
-                unit = "µHz";
-                displayValue = frequencyHz * 1e6;
-            }
-
-            textBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(displayValue);
-
-            // Update unit combo box
-            for (int i = 0; i < unitComboBox.Items.Count; i++)
-            {
-                var item = unitComboBox.Items[i] as ComboBoxItem;
-                if (item?.Content.ToString() == unit)
+                // Get AM frequency
+                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:INT:FREQ?");
+                if (double.TryParse(freqResponse, out double freq))
                 {
-                    unitComboBox.SelectedIndex = i;
-                    break;
+                    UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, freq);
                 }
+
+                // Get AM depth
+                string depthResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:DEPTH?");
+                if (double.TryParse(depthResponse, out double depth))
+                {
+                    if (_modulationDepthTextBox != null)
+                        _modulationDepthTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(depth);
+                }
+
+                // Get AM function
+                string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:INT:FUNC?");
+                UpdateModulatingWaveformSelection(funcResponse.Trim());
+
+                // ADDED: Get DSSC state for AM
+                string dsscResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:DSSC?");
+                if (_dsscCheckBox != null)
+                {
+                    _dsscCheckBox.IsChecked = (dsscResponse.Trim() == "ON" || dsscResponse.Trim() == "1");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Error refreshing AM settings: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// Update modulating waveform selection
+        /// Refresh FM settings from device
         /// </summary>
-        private void UpdateModulatingWaveformSelection(string waveform)
+        private void RefreshFMSettings()
+        {
+            try
+            {
+                // Get FM frequency
+                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:FM:INT:FREQ?");
+                if (double.TryParse(freqResponse, out double freq))
+                {
+                    UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, freq);
+                }
+
+                // Get FM deviation
+                string devResponse = _device.SendQuery($"SOURCE{_activeChannel}:FM:DEVIATION?");
+                if (double.TryParse(devResponse, out double deviation))
+                {
+                    // Convert deviation back to depth percentage
+                    double carrierFreq = _device.GetFrequency(_activeChannel);
+                    double depth = (deviation / carrierFreq) * 100.0;
+                    if (_modulationDepthTextBox != null)
+                        _modulationDepthTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(depth);
+                }
+
+                // Get FM function
+                string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:FM:INT:FUNC?");
+                UpdateModulatingWaveformSelection(funcResponse.Trim());
+            }
+            catch (Exception ex)
+            {
+                Log($"Error refreshing FM settings: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Refresh PM settings from device
+        /// </summary>
+        private void RefreshPMSettings()
+        {
+            try
+            {
+                // Get PM frequency
+                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:PM:INT:FREQ?");
+                if (double.TryParse(freqResponse, out double freq))
+                {
+                    UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, freq);
+                }
+
+                // Get PM deviation
+                string devResponse = _device.SendQuery($"SOURCE{_activeChannel}:PM:DEVIATION?");
+                if (double.TryParse(devResponse, out double deviation))
+                {
+                    // Convert phase deviation to depth percentage
+                    double depth = (deviation / 180.0) * 100.0;
+                    if (_modulationDepthTextBox != null)
+                        _modulationDepthTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(depth);
+                }
+
+                // Get PM function
+                string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:PM:INT:FUNC?");
+                UpdateModulatingWaveformSelection(funcResponse.Trim());
+            }
+            catch (Exception ex)
+            {
+                Log($"Error refreshing PM settings: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Refresh PWM settings from device
+        /// </summary>
+        private void RefreshPWMSettings()
+        {
+            try
+            {
+                // Get PWM frequency
+                string freqResponse = _device.SendQuery($"SOURCE{_activeChannel}:PWM:INT:FREQ?");
+                if (double.TryParse(freqResponse, out double freq))
+                {
+                    UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, freq);
+                }
+
+                // Get PWM deviation
+                string devResponse = _device.SendQuery($"SOURCE{_activeChannel}:PWM:DEVIATION?");
+                if (double.TryParse(devResponse, out double deviation))
+                {
+                    if (_modulationDepthTextBox != null)
+                        _modulationDepthTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(deviation);
+                }
+
+                // Get PWM function
+                string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:PWM:INT:FUNC?");
+                UpdateModulatingWaveformSelection(funcResponse.Trim());
+            }
+            catch (Exception ex)
+            {
+                Log($"Error refreshing PWM settings: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Refresh ASK settings from device
+        /// </summary>
+        private void RefreshASKSettings()
+        {
+            try
+            {
+                // Get ASK rate
+                string rateResponse = _device.SendQuery($"SOURCE{_activeChannel}:ASK:RATE?");
+                if (double.TryParse(rateResponse, out double rate))
+                {
+                    UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, rate);
+                }
+
+                // Get ASK amplitude
+                string ampResponse = _device.SendQuery($"SOURCE{_activeChannel}:ASK:AMPLITUDE?");
+                if (double.TryParse(ampResponse, out double amplitude))
+                {
+                    // Convert to percentage
+                    double depth = amplitude * 100.0;
+                    if (_modulationDepthTextBox != null)
+                        _modulationDepthTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(depth);
+                }
+
+                // ASK only uses square wave
+                UpdateModulatingWaveformSelection("Square");
+            }
+            catch (Exception ex)
+            {
+                Log($"Error refreshing ASK settings: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Refresh FSK settings from device
+        /// </summary>
+        private void RefreshFSKSettings()
+        {
+            try
+            {
+                // Get FSK rate
+                string rateResponse = _device.SendQuery($"SOURCE{_activeChannel}:FSK:RATE?");
+                if (double.TryParse(rateResponse, out double rate))
+                {
+                    UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, rate);
+                }
+
+                // Get FSK hop frequency
+                string hopResponse = _device.SendQuery($"SOURCE{_activeChannel}:FSK:FREQUENCY?");
+                if (double.TryParse(hopResponse, out double hopFreq))
+                {
+                    // Convert to depth percentage
+                    double carrierFreq = _storedCarrierFrequency;
+                    if (carrierFreq > 0)
+                    {
+                        double depth = ((hopFreq / carrierFreq) - 1) * 100.0;
+                        if (_modulationDepthTextBox != null)
+                            _modulationDepthTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(depth);
+                    }
+                }
+
+                // FSK only uses square wave
+                UpdateModulatingWaveformSelection("Square");
+            }
+            catch (Exception ex)
+            {
+                Log($"Error refreshing FSK settings: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Refresh PSK settings from device
+        /// </summary>
+        private void RefreshPSKSettings()
+        {
+            try
+            {
+                // Get PSK rate
+                string rateResponse = _device.SendQuery($"SOURCE{_activeChannel}:PSK:RATE?");
+                if (double.TryParse(rateResponse, out double rate))
+                {
+                    UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, rate);
+                }
+
+                // Get PSK phase
+                string phaseResponse = _device.SendQuery($"SOURCE{_activeChannel}:PSK:PHASE?");
+                if (double.TryParse(phaseResponse, out double phase))
+                {
+                    // Phase is already in degrees, use as depth
+                    if (_modulationDepthTextBox != null)
+                        _modulationDepthTextBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(phase);
+                }
+
+                // PSK only uses square wave
+                UpdateModulatingWaveformSelection("Square");
+            }
+            catch (Exception ex)
+            {
+                Log($"Error refreshing PSK settings: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Refresh DSSC state from device
+        /// </summary>
+        public void RefreshDSSCState()
+        {
+            if (!IsDeviceConnected() || _dsscCheckBox == null) return;
+
+            try
+            {
+                // Only query if AM is active
+                string amState = _device.SendQuery($"SOURCE{_activeChannel}:AM:STATE?");
+                if (amState.Trim() == "ON" || amState.Trim() == "1")
+                {
+                    string dsscState = _device.SendQuery($"SOURCE{_activeChannel}:AM:DSSC?");
+                    bool isDSSCOn = (dsscState.Trim() == "ON" || dsscState.Trim() == "1");
+                    _dsscCheckBox.IsChecked = isDSSCOn;
+                    Log($"DSSC state from device: {(isDSSCOn ? "Enabled" : "Disabled")}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Error refreshing DSSC state: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Update modulating waveform selection helper
+        /// </summary>
+        private void UpdateModulatingWaveformSelection(string deviceWaveform)
         {
             if (_modulatingWaveformComboBox == null) return;
 
+            // Map device waveform to UI string
+            string uiWaveform = "";
+            switch (deviceWaveform.ToUpper())
+            {
+                case "SIN": uiWaveform = "Sine"; break;
+                case "SQU": uiWaveform = "Square"; break;
+                case "TRI": uiWaveform = "Triangle"; break;
+                case "RAMP": uiWaveform = "Up Ramp"; break;
+                case "NRAM": uiWaveform = "Down Ramp"; break;
+                case "NOIS": uiWaveform = "Noise"; break;
+                case "ARB": uiWaveform = "Arbitrary Waveform"; break;
+                case "SQUARE": uiWaveform = "Square"; break; // For keying modes
+            }
+
+            // Find and select in combo box
             for (int i = 0; i < _modulatingWaveformComboBox.Items.Count; i++)
             {
                 var item = _modulatingWaveformComboBox.Items[i] as ComboBoxItem;
-                if (item?.Content.ToString() == waveform)
+                if (item?.Content.ToString() == uiWaveform)
                 {
                     _modulatingWaveformComboBox.SelectedIndex = i;
                     break;
@@ -847,20 +1174,9 @@ namespace DG2072_USB_Control.Modulation
             }
         }
 
-        /// <summary>
-        /// Check if device is connected
-        /// </summary>
-        private bool IsDeviceConnected()
-        {
-            return _device != null && _device.IsConnected;
-        }
+        #region
 
-        /// <summary>
-        /// Log a message
-        /// </summary>
-        private void Log(string message)
-        {
-            LogEvent?.Invoke(this, message);
-        }
     }
+
+
 }

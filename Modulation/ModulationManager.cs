@@ -785,6 +785,9 @@ namespace DG2072_USB_Control.Modulation
         /// <summary>
         /// Refresh AM settings from device
         /// </summary>
+        /// <summary>
+        /// Refresh AM settings from device
+        /// </summary>
         private void RefreshAMSettings()
         {
             try
@@ -807,6 +810,13 @@ namespace DG2072_USB_Control.Modulation
                 // Get AM function
                 string funcResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:INT:FUNC?");
                 UpdateModulatingWaveformSelection(funcResponse.Trim());
+
+                // ADDED: Get DSSC state for AM
+                string dsscResponse = _device.SendQuery($"SOURCE{_activeChannel}:AM:DSSC?");
+                if (_dsscCheckBox != null)
+                {
+                    _dsscCheckBox.IsChecked = (dsscResponse.Trim() == "ON" || dsscResponse.Trim() == "1");
+                }
             }
             catch (Exception ex)
             {

@@ -593,6 +593,46 @@ namespace DG2072_USB_Control
                 // ADD THIS SINGLE LINE - Refresh the channel output buttons
                 RefreshChannelOutputButtons();
 
+
+                // ADD after refreshing waveform settings:
+                if (_modulationController != null && isConnected)
+                {
+                    // Check if modulation is active on the device
+                    string[] modTypes = { "AM", "FM", "PM", "PWM", "ASK", "FSK", "PSK" };
+                    bool modulationActive = false;
+                    string activeModType = "";
+
+                    foreach (var modType in modTypes)
+                    {
+                        string response = rigolDG2072.SendQuery($"SOURCE{activeChannel}:{modType}:STATE?");
+                        if (response.Trim() == "ON" || response.Trim() == "1")
+                        {
+                            modulationActive = true;
+                            activeModType = modType;
+                            break;
+                        }
+                    }
+
+                    // If modulation is active but controller thinks it's off, sync the state
+                    if (modulationActive && !_modulationController.IsEnabled)
+                    {
+                        LogMessage($"Device has {activeModType} modulation enabled - syncing UI state");
+                        _modulationController.SyncModulationFromDevice(activeModType);
+                    }
+                    else if (!modulationActive && _modulationController.IsEnabled)
+                    {
+                        // Device has no modulation but UI thinks it's on
+                        LogMessage("Device has no modulation enabled - updating UI");
+                        _modulationController.ForceDisableUI();
+                    }
+                    else if (modulationActive && _modulationController.IsEnabled)
+                    {
+                        // Both agree modulation is on - just refresh the settings
+                        _modulationController.RefreshModulationSettings();
+                    }
+                }
+
+
                 LogMessage("Instrument settings refreshed successfully");
             }
             catch (Exception ex)
@@ -1209,9 +1249,31 @@ namespace DG2072_USB_Control
                         if (_modulationController != null)
                         {
                             _modulationController.InitializeUI();
+
+                            // ADD THIS: Check if device already has modulation enabled
+                            System.Windows.Threading.DispatcherTimer delayedModCheck = new System.Windows.Threading.DispatcherTimer
+                            {
+                                Interval = TimeSpan.FromMilliseconds(500)
+                            };
+                            delayedModCheck.Tick += (sender, e) =>
+                            {
+                                delayedModCheck.Stop();
+
+                                // Check for active modulation after everything is initialized
+                                string[] modTypes = { "AM", "FM", "PM", "PWM", "ASK", "FSK", "PSK" };
+                                foreach (var modType in modTypes)
+                                {
+                                    string response = rigolDG2072.SendQuery($"SOURCE{activeChannel}:{modType}:STATE?");
+                                    if (response.Trim() == "ON" || response.Trim() == "1")
+                                    {
+                                        LogMessage($"Detected {modType} modulation active on device during startup");
+                                        _modulationController.SyncModulationFromDevice(modType);
+                                        break;
+                                    }
+                                }
+                            };
+                            delayedModCheck.Start();
                         }
-
-
 
                         // NOW we're ready - clear the initialization flag
                         _isInitializing = false;
@@ -1233,7 +1295,6 @@ namespace DG2072_USB_Control
                     _isInitializing = false;
                 }
             };
-
             startupTimer.Start();
         }
 
@@ -3106,7 +3167,8 @@ namespace DG2072_USB_Control
             }
         }
 
-        // 7. ADD helper method to update modulation status
+        // Update the UpdateModulationStatus method in MainWindow.xaml.cs:
+
         private void UpdateModulationStatus()
         {
             if (ModulationStatusTextBlock != null && _modulationController != null)
@@ -3120,20 +3182,60 @@ namespace DG2072_USB_Control
                         modType = ((ComboBoxItem)ModulationTypeComboBox.SelectedItem).Content.ToString();
                     }
 
-                    ModulationStatusTextBlock.Text = $"Modulation: {modType} Enabled";
+                    // Check for DSSC if AM
+                    string dsscStatus = "";
+                    if (modType == "AM" && DSSCCheckBox != null && DSSCCheckBox.IsChecked == true)
+                    {
+                        dsscStatus = " (DSSC ON)";
+                    }
+
+                    ModulationStatusTextBlock.Text = $"Modulation: {modType}{dsscStatus} Enabled";
                     ModulationStatusTextBlock.Foreground = System.Windows.Media.Brushes.Green;
+
+                    // Also update the button
+                    if (ModulationToggleButton != null)
+                    {
+                        ModulationToggleButton.Background = System.Windows.Media.Brushes.LightCoral;
+                    }
                 }
                 else
                 {
                     ModulationStatusTextBlock.Text = "Modulation: Disabled";
                     ModulationStatusTextBlock.Foreground = System.Windows.Media.Brushes.Black;
+
+                    // Also update the button
+                    if (ModulationToggleButton != null)
+                    {
+                        ModulationToggleButton.Background = System.Windows.Media.Brushes.LightGreen;
+                    }
                 }
             }
         }
 
+        private void DSSCCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_isInitializing || !isConnected) return;
+
+            if (_modulationController != null)
+            {
+                _modulationController.OnDSSCChanged(true);
+                LogMessage("DSSC (Double-Sideband Suppressed Carrier) enabled");
+            }
+        }
+
+        private void DSSCCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (_isInitializing || !isConnected) return;
+
+            if (_modulationController != null)
+            {
+                _modulationController.OnDSSCChanged(false);
+                LogMessage("DSSC (Double-Sideband Suppressed Carrier) disabled");
+            }
+        }
+
+
         #endregion
-
-
 
     }
 }

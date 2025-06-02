@@ -37,6 +37,15 @@ namespace DG2072_USB_Control.Modulation
         private double _storedCarrierPhase;
         private string _storedCarrierWaveform;
 
+
+        // ADD THE NEW FIELDS HERE - Stored modulation settings for disable/enable
+        private double _lastModulationFrequency = 1000; // Default 1 kHz
+        private string _lastModulationFrequencyUnit = "kHz";
+        private double _lastModulationDepth = 50.0;
+        private string _lastModulationType = "AM";
+        private string _lastModulatingWaveform = "Sine";
+
+
         // ===== PRESERVED FROM ORIGINAL ModulationManager =====
 
         // Available modulation types
@@ -152,13 +161,14 @@ namespace DG2072_USB_Control.Modulation
         /// Enable modulation mode
         /// </summary>
         // Also, ensure the combo box is populated when modulation is enabled:
+        // If you want to restore the saved values when re-enabling:
         public void EnableModulation()
         {
             if (!IsDeviceConnected()) return;
 
             try
             {
-                // Store current carrier settings
+                // Store current carrier settings FROM UI
                 StoreCarrierSettings();
 
                 // Update UI
@@ -166,21 +176,39 @@ namespace DG2072_USB_Control.Modulation
                 UpdateModulationVisibility(true);
                 UpdateToggleButtonState();
 
-                // FIX: Ensure modulating waveforms are populated
+                // Restore saved modulation settings (optional)
+                if (_modulationFrequencyTextBox != null && _lastModulationFrequency > 0)
+                {
+                    _modulationFrequencyTextBox.Text = _lastModulationFrequency.ToString();
+
+                    // Restore the unit
+                    for (int i = 0; i < _modulationFrequencyUnitComboBox.Items.Count; i++)
+                    {
+                        var item = _modulationFrequencyUnitComboBox.Items[i] as ComboBoxItem;
+                        if (item?.Content.ToString() == _lastModulationFrequencyUnit)
+                        {
+                            _modulationFrequencyUnitComboBox.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+
+                if (_modulationDepthTextBox != null)
+                {
+                    _modulationDepthTextBox.Text = _lastModulationDepth.ToString();
+                }
+
+                // Ensure modulating waveforms are populated
                 if (_modulationTypeComboBox?.SelectedItem != null)
                 {
                     string currentModType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
                     UpdateAvailableModulatingWaveforms(currentModType);
                 }
 
-                // Get current waveform frequency and copy to modulation frequency
-                double carrierFreq = _device.GetFrequency(_activeChannel);
-                UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, carrierFreq);
+                Log($"Modulation enabled with frequency: {_lastModulationFrequency} {_lastModulationFrequencyUnit}");
 
                 // Apply modulation with current settings
                 ApplyModulation();
-
-                Log("Modulation enabled");
             }
             catch (Exception ex)
             {
@@ -190,16 +218,82 @@ namespace DG2072_USB_Control.Modulation
             }
         }
 
+
+
+        //public void EnableModulation()
+        //{
+        //    if (!IsDeviceConnected()) return;
+
+        //    try
+        //    {
+        //        // Store current carrier settings FROM UI
+        //        StoreCarrierSettings();
+
+        //        // Update UI
+        //        _isModulationEnabled = true;
+        //        UpdateModulationVisibility(true);
+        //        UpdateToggleButtonState();
+
+        //        // Ensure modulating waveforms are populated
+        //        if (_modulationTypeComboBox?.SelectedItem != null)
+        //        {
+        //            string currentModType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
+        //            UpdateAvailableModulatingWaveforms(currentModType);
+        //        }
+
+        //        // REMOVE THESE LINES - DO NOT COPY CARRIER FREQUENCY TO MODULATION!
+        //        // double carrierFreq = _device.GetFrequency(_activeChannel);
+        //        // UpdateFrequencyDisplay(_modulationFrequencyTextBox, _modulationFrequencyUnitComboBox, carrierFreq);
+
+        //        // The modulation frequency should keep whatever value it already has!
+        //        Log($"Modulation frequency preserved at: {_modulationFrequencyTextBox?.Text} {((ComboBoxItem)_modulationFrequencyUnitComboBox?.SelectedItem)?.Content}");
+
+        //        // Apply modulation with current settings
+        //        ApplyModulation();
+
+        //        Log("Modulation enabled");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log($"Error enabling modulation: {ex.Message}");
+        //        _isModulationEnabled = false;
+        //        UpdateModulationVisibility(false);
+        //    }
+        //}
+
         /// <summary>
         /// Disable modulation mode
         /// </summary>
+        // Update DisableModulation to save the modulation settings:
         public void DisableModulation()
         {
             if (!IsDeviceConnected()) return;
 
             try
             {
-                // Turn off all modulation types (preserved from original)
+                // Save current modulation settings before disabling
+                if (_modulationFrequencyTextBox != null && double.TryParse(_modulationFrequencyTextBox.Text, out double modFreq))
+                {
+                    _lastModulationFrequency = modFreq;
+                    if (_modulationFrequencyUnitComboBox?.SelectedItem != null)
+                    {
+                        _lastModulationFrequencyUnit = ((ComboBoxItem)_modulationFrequencyUnitComboBox.SelectedItem).Content.ToString();
+                    }
+                }
+
+                if (_modulationDepthTextBox != null && double.TryParse(_modulationDepthTextBox.Text, out double depth))
+                {
+                    _lastModulationDepth = depth;
+                }
+
+                if (_modulationTypeComboBox?.SelectedItem != null)
+                {
+                    _lastModulationType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
+                }
+
+                Log($"Saving modulation settings: {_lastModulationFrequency} {_lastModulationFrequencyUnit}, {_lastModulationDepth}%, Type: {_lastModulationType}");
+
+                // Turn off all modulation types
                 _device.SendCommand($"SOURCE{_activeChannel}:AM:STATE OFF");
                 _device.SendCommand($"SOURCE{_activeChannel}:FM:STATE OFF");
                 _device.SendCommand($"SOURCE{_activeChannel}:PM:STATE OFF");

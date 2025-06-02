@@ -975,6 +975,22 @@ For accurate voltage measurement, set the load impedance to match your actual lo
 														HorizontalAlignment="Left"/>
                                                 </DockPanel>
 
+
+                                                <!-- DSSC Control (only visible for AM modulation) -->
+                                                <DockPanel x:Name="DSSCDockPanel" Margin="0,5" Visibility="Collapsed">
+                                                    <Label Content="DSSC Mode:" Width="120" 
+           ToolTip="Double-Sideband Suppressed Carrier - When enabled, suppresses the carrier frequency leaving only the sidebands. This improves power efficiency by eliminating the carrier that contains no information. Useful for certain communication applications where carrier reconstruction is possible at the receiver."/>
+                                                    <CheckBox x:Name="DSSCCheckBox" 
+              Content="Enable DSSC" 
+              VerticalAlignment="Center"
+              Checked="DSSCCheckBox_Checked"
+              Unchecked="DSSCCheckBox_Unchecked"
+              ToolTip="Enable/disable Double-Sideband Suppressed Carrier mode for AM modulation"/>
+                                                </DockPanel>
+
+
+
+
                                                 <!-- Carrier Information -->
                                                 <Border BorderBrush="#FFD3D3D3" 
 													BorderThickness="1" 

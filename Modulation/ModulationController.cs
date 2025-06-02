@@ -30,6 +30,10 @@ namespace DG2072_USB_Control.Modulation
         private ComboBox _modulationFrequencyUnitComboBox;
         private TextBox _modulationDepthTextBox;
 
+        private CheckBox _dsscCheckBox;
+        private DockPanel _dsscDockPanel;
+
+
         // Stored carrier settings when modulation is enabled
         private double _storedCarrierFrequency;
         private double _storedCarrierAmplitude;
@@ -44,6 +48,7 @@ namespace DG2072_USB_Control.Modulation
         private double _lastModulationDepth = 50.0;
         private string _lastModulationType = "AM";
         private string _lastModulatingWaveform = "Sine";
+
 
 
         // ===== PRESERVED FROM ORIGINAL ModulationManager =====
@@ -107,6 +112,9 @@ namespace DG2072_USB_Control.Modulation
             _modulationFrequencyUnitComboBox = _mainWindow.FindName("ModulationFrequencyUnitComboBox") as ComboBox;
             _modulationDepthTextBox = _mainWindow.FindName("ModulationDepthTextBox") as TextBox;
 
+            _dsscCheckBox = _mainWindow.FindName("DSSCCheckBox") as CheckBox;
+            _dsscDockPanel = _mainWindow.FindName("DSSCDockPanel") as DockPanel;
+
             // Initialize combo boxes
             InitializeModulationTypes();
             InitializeFrequencyUnits();
@@ -163,59 +171,77 @@ namespace DG2072_USB_Control.Modulation
         // Also, ensure the combo box is populated when modulation is enabled:
         // If you want to restore the saved values when re-enabling:
         // Update EnableModulation to clearly separate carrier and modulation:
-        public void EnableModulation()
+            public void EnableModulation()
         {
             if (!IsDeviceConnected()) return;
 
             try
             {
-                Log("=== ENABLING MODULATION ===");
-
-                // STEP 1: Store CARRIER settings from UI
-                Log("Step 1: Storing CARRIER settings from UI...");
+                // Store current carrier settings FROM UI
                 StoreCarrierSettings();
 
-                // STEP 2: Update UI visibility
-                Log("Step 2: Showing modulation panel...");
+                // Update UI
                 _isModulationEnabled = true;
                 UpdateModulationVisibility(true);
                 UpdateToggleButtonState();
 
-                // STEP 3: Read MODULATION settings from device or use defaults
-                Log("Step 3: Setting MODULATION parameters...");
-
-                // First check if modulation is already active on device
-                bool modulationAlreadyActive = false;
-                string[] modTypes = { "AM", "FM", "PM", "PWM", "ASK", "FSK", "PSK" };
-                foreach (var modType in modTypes)
+                // Restore saved modulation settings
+                if (_modulationFrequencyTextBox != null && _lastModulationFrequency > 0)
                 {
-                    string response = _device.SendQuery($"SOURCE{_activeChannel}:{modType}:STATE?");
-                    if (response.Trim() == "ON" || response.Trim() == "1")
+                    _modulationFrequencyTextBox.Text = _lastModulationFrequency.ToString();
+
+                    // Restore the unit
+                    for (int i = 0; i < _modulationFrequencyUnitComboBox.Items.Count; i++)
                     {
-                        modulationAlreadyActive = true;
-                        break;
+                        var item = _modulationFrequencyUnitComboBox.Items[i] as ComboBoxItem;
+                        if (item?.Content.ToString() == _lastModulationFrequencyUnit)
+                        {
+                            _modulationFrequencyUnitComboBox.SelectedIndex = i;
+                            break;
+                        }
                     }
                 }
 
-                if (modulationAlreadyActive)
+                if (_modulationDepthTextBox != null)
                 {
-                    Log("Modulation already active on device, reading current settings...");
-                    ReadModulationSettingsFromDevice();
-                }
-                else
-                {
-                    Log("No modulation active on device, using UI defaults (100 Hz, 100%, Sine, AM)");
-                    // Defaults are already set in SetDefaultValues
+                    _modulationDepthTextBox.Text = _lastModulationDepth.ToString();
                 }
 
-                // STEP 4: Apply modulation
-                Log("Step 4: Applying modulation...");
-                Log($"  CARRIER: {_storedCarrierFrequency} Hz from UI");
-                Log($"  MODULATION: {_modulationFrequencyTextBox?.Text} {((ComboBoxItem)_modulationFrequencyUnitComboBox?.SelectedItem)?.Content} from device/defaults");
+                // Restore DSSC state if available
+                if (_dsscCheckBox != null)
+                {
+                    _dsscCheckBox.IsChecked = _lastDSSCEnabled;
+                }
 
+                // Ensure modulating waveforms are populated
+                if (_modulationTypeComboBox?.SelectedItem != null)
+                {
+                    string currentModType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
+                    UpdateAvailableModulatingWaveforms(currentModType);
+
+                    // Update DSSC visibility based on modulation type
+                    if (_dsscDockPanel != null)
+                    {
+                        _dsscDockPanel.Visibility = (currentModType == "AM") ? Visibility.Visible : Visibility.Collapsed;
+                    }
+                }
+
+                Log($"Modulation enabled with frequency: {_lastModulationFrequency} {_lastModulationFrequencyUnit}");
+
+                // Log DSSC state if AM modulation
+                if (_modulationTypeComboBox?.SelectedItem != null)
+                {
+                    string modType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
+                    if (modType == "AM")
+                    {
+                        Log($"DSSC mode: {(_lastDSSCEnabled ? "Enabled" : "Disabled")}");
+                    }
+                }
+
+                // Apply modulation with current settings
                 ApplyModulation();
 
-                Log("=== MODULATION ENABLED ===");
+                Log("Modulation enabled");
             }
             catch (Exception ex)
             {
@@ -224,7 +250,8 @@ namespace DG2072_USB_Control.Modulation
                 UpdateModulationVisibility(false);
             }
         }
-
+      
+        
         // Update the carrier info display to make separation clear:
         private void UpdateCarrierInfoDisplay()
         {
@@ -265,7 +292,19 @@ namespace DG2072_USB_Control.Modulation
                     _lastModulationType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
                 }
 
+                // Save DSSC state
+                if (_dsscCheckBox != null)
+                {
+                    _lastDSSCEnabled = _dsscCheckBox.IsChecked ?? false;
+                }
+
                 Log($"Saving modulation settings: {_lastModulationFrequency} {_lastModulationFrequencyUnit}, {_lastModulationDepth}%, Type: {_lastModulationType}");
+
+                // Log DSSC state if it was AM modulation
+                if (_lastModulationType == "AM")
+                {
+                    Log($"Saving DSSC state: {(_lastDSSCEnabled ? "Enabled" : "Disabled")}");
+                }
 
                 // Turn off all modulation types
                 _device.SendCommand($"SOURCE{_activeChannel}:AM:STATE OFF");
@@ -289,9 +328,35 @@ namespace DG2072_USB_Control.Modulation
             }
         }
 
+
+        public void RefreshDSSCState()
+        {
+            if (!IsDeviceConnected() || _dsscCheckBox == null) return;
+
+            try
+            {
+                // Only query if AM is active
+                string amState = _device.SendQuery($"SOURCE{_activeChannel}:AM:STATE?");
+                if (amState.Trim() == "ON" || amState.Trim() == "1")
+                {
+                    string dsscState = _device.SendQuery($"SOURCE{_activeChannel}:AM:DSSC?");
+                    bool isDSSCOn = (dsscState.Trim() == "ON" || dsscState.Trim() == "1");
+                    _dsscCheckBox.IsChecked = isDSSCOn;
+                    Log($"DSSC state from device: {(isDSSCOn ? "Enabled" : "Disabled")}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Error refreshing DSSC state: {ex.Message}");
+            }
+        }
+
+
+
         /// <summary>
         /// Called when modulation type changes
         /// </summary>
+        // 5. Update OnModulationTypeChanged to show/hide DSSC for AM only
         public void OnModulationTypeChanged()
         {
             if (_modulationTypeComboBox?.SelectedItem == null) return;
@@ -300,6 +365,12 @@ namespace DG2072_USB_Control.Modulation
 
             // Update available modulating waveforms
             UpdateAvailableModulatingWaveforms(modulationType);
+
+            // Show/hide DSSC control based on modulation type
+            if (_dsscDockPanel != null)
+            {
+                _dsscDockPanel.Visibility = (modulationType == "AM") ? Visibility.Visible : Visibility.Collapsed;
+            }
 
             // If modulation is enabled, apply the change
             if (_isModulationEnabled)
@@ -476,7 +547,16 @@ namespace DG2072_USB_Control.Modulation
                     // Always update these parameters
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:DEPTH {modDepth}");
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FREQ {modFrequency}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:AM:DSSC OFF");
+                    //_device.SendCommand($"SOURCE{_activeChannel}:AM:DSSC OFF");
+
+
+                    bool dsscEnabled = _dsscCheckBox?.IsChecked ?? false;
+                    _device.SendCommand($"SOURCE{_activeChannel}:AM:DSSC {(dsscEnabled ? "ON" : "OFF")}");
+
+                    Log($"AM DSSC mode: {(dsscEnabled ? "Enabled" : "Disabled")}");
+
+
+
                     break;
 
                 case "FM":
@@ -597,6 +677,15 @@ namespace DG2072_USB_Control.Modulation
                 default:
                     Log($"Unknown modulation type: {modulationType}");
                     break;
+            }
+        }
+       
+        public void OnDSSCChanged(bool isEnabled)
+        {
+            if (_isModulationEnabled)
+            {
+                // Apply the DSSC change
+                ApplyModulation();
             }
         }
 

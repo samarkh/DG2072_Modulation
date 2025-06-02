@@ -344,7 +344,7 @@ namespace DG2072_USB_Control.Modulation
         }
 
         /// <summary>
-        /// Apply specific modulation type to the device (FULLY PRESERVED)
+        /// Apply specific modulation type to the device (UPDATED WITH FIXES)
         /// </summary>
         private void ApplyModulationByType(string modulationType, string carrierWaveform,
                                     double carrierFrequency, double carrierAmplitude,
@@ -358,50 +358,94 @@ namespace DG2072_USB_Control.Modulation
             string scpiCarrierWaveform = "SIN"; // Default
             switch (carrierWaveform)
             {
-                case "SINE": scpiCarrierWaveform = "SIN"; break;
-                case "SQUARE": scpiCarrierWaveform = "SQU"; break;
-                case "RAMP": scpiCarrierWaveform = "RAMP"; break;
-                case "PULSE": scpiCarrierWaveform = "PULS"; break;
+                case "SINE":
+                case "SIN":
+                    scpiCarrierWaveform = "SIN";
+                    break;
+                case "SQUARE":
+                case "SQU":
+                    scpiCarrierWaveform = "SQU";
+                    break;
+                case "RAMP":
+                    scpiCarrierWaveform = "RAMP";
+                    break;
+                case "PULSE":
+                case "PULS":
+                    scpiCarrierWaveform = "PULS";
+                    break;
             }
 
             // Map modulating waveform to SCPI command
             string scpiModulatingWaveform = MapModulatingWaveformToScpi(modulatingWaveform);
 
+            // Log what we're about to apply
+            Log($"Applying {modulationType} with carrier {scpiCarrierWaveform} @ {carrierFrequency}Hz");
+
             // Send SCPI commands based on modulation type
             switch (modulationType)
             {
                 case "AM":
-                    // Set carrier waveform with the SPECIFIED frequency and amplitude
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
-                    System.Threading.Thread.Sleep(100);
+                    // Check if we're already in AM mode to avoid resetting carrier
+                    string amState = _device.SendQuery($"SOURCE{_activeChannel}:AM:STATE?");
+                    bool isAMActive = (amState.Trim() == "ON" || amState.Trim() == "1");
 
-                    _device.SendCommand($"SOURCE{_activeChannel}:AM:STATE ON");
-                    _device.SendCommand($"SOURCE{_activeChannel}:AM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FUNC {scpiModulatingWaveform}");
-                    _device.SendCommand($"SOURCE{_activeChannel}:AM {modDepth}");
+                    if (!isAMActive)
+                    {
+                        // Only set carrier if AM is not already active
+                        Log($"AM not active, setting carrier: {scpiCarrierWaveform} @ {carrierFrequency}Hz, {carrierAmplitude}Vpp");
+                        _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
+                        System.Threading.Thread.Sleep(100);
+
+                        _device.SendCommand($"SOURCE{_activeChannel}:AM:STATE ON");
+                        _device.SendCommand($"SOURCE{_activeChannel}:AM:SOURCE INT");
+                        _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FUNC {scpiModulatingWaveform}");
+                    }
+                    else
+                    {
+                        Log("AM already active, only updating modulation parameters");
+                    }
+
+                    // Always update these parameters
+                    _device.SendCommand($"SOURCE{_activeChannel}:AM:DEPTH {modDepth}");
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FREQ {modFrequency}");
                     _device.SendCommand($"SOURCE{_activeChannel}:AM:DSSC OFF");
                     break;
 
                 case "FM":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
-                    System.Threading.Thread.Sleep(100);
+                    // Check if already in FM mode
+                    string fmState = _device.SendQuery($"SOURCE{_activeChannel}:FM:STATE?");
+                    bool isFMActive = (fmState.Trim() == "ON" || fmState.Trim() == "1");
 
-                    _device.SendCommand($"SOURCE{_activeChannel}:FM:STATE ON");
-                    _device.SendCommand($"SOURCE{_activeChannel}:FM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FUNC {scpiModulatingWaveform}");
+                    if (!isFMActive)
+                    {
+                        _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
+                        System.Threading.Thread.Sleep(100);
+
+                        _device.SendCommand($"SOURCE{_activeChannel}:FM:STATE ON");
+                        _device.SendCommand($"SOURCE{_activeChannel}:FM:SOURCE INT");
+                        _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FUNC {scpiModulatingWaveform}");
+                    }
+
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FREQ {modFrequency}");
                     double deviation = carrierFrequency * (modDepth / 100.0);
                     _device.SendCommand($"SOURCE{_activeChannel}:FM:DEVIATION {deviation}");
                     break;
 
                 case "PM":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
-                    System.Threading.Thread.Sleep(100);
+                    // Check if already in PM mode
+                    string pmState = _device.SendQuery($"SOURCE{_activeChannel}:PM:STATE?");
+                    bool isPMActive = (pmState.Trim() == "ON" || pmState.Trim() == "1");
 
-                    _device.SendCommand($"SOURCE{_activeChannel}:PM:STATE ON");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FUNC {scpiModulatingWaveform}");
+                    if (!isPMActive)
+                    {
+                        _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
+                        System.Threading.Thread.Sleep(100);
+
+                        _device.SendCommand($"SOURCE{_activeChannel}:PM:STATE ON");
+                        _device.SendCommand($"SOURCE{_activeChannel}:PM:SOURCE INT");
+                        _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FUNC {scpiModulatingWaveform}");
+                    }
+
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FREQ {modFrequency}");
                     double phaseDeviation = 180 * (modDepth / 100.0); // Convert to degrees
                     _device.SendCommand($"SOURCE{_activeChannel}:PM:DEVIATION {phaseDeviation}");
@@ -409,22 +453,36 @@ namespace DG2072_USB_Control.Modulation
 
                 case "PWM":
                     // PWM requires a pulse carrier
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:PULS {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
-                    System.Threading.Thread.Sleep(100);
+                    string pwmState = _device.SendQuery($"SOURCE{_activeChannel}:PWM:STATE?");
+                    bool isPWMActive = (pwmState.Trim() == "ON" || pwmState.Trim() == "1");
 
-                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:STATE ON");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:SOURCE INT");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FUNC {scpiModulatingWaveform}");
+                    if (!isPWMActive)
+                    {
+                        _device.SendCommand($"SOURCE{_activeChannel}:APPLY:PULS {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
+                        System.Threading.Thread.Sleep(100);
+
+                        _device.SendCommand($"SOURCE{_activeChannel}:PWM:STATE ON");
+                        _device.SendCommand($"SOURCE{_activeChannel}:PWM:SOURCE INT");
+                        _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FUNC {scpiModulatingWaveform}");
+                    }
+
                     _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FREQ {modFrequency}");
                     _device.SendCommand($"SOURCE{_activeChannel}:PWM:DEVIATION {modDepth}");
                     break;
 
                 case "ASK":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
-                    System.Threading.Thread.Sleep(100);
+                    string askState = _device.SendQuery($"SOURCE{_activeChannel}:ASK:STATE?");
+                    bool isASKActive = (askState.Trim() == "ON" || askState.Trim() == "1");
 
-                    _device.SendCommand($"SOURCE{_activeChannel}:ASK:STATE ON");
-                    _device.SendCommand($"SOURCE{_activeChannel}:ASK:SOURCE INT");
+                    if (!isASKActive)
+                    {
+                        _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
+                        System.Threading.Thread.Sleep(100);
+
+                        _device.SendCommand($"SOURCE{_activeChannel}:ASK:STATE ON");
+                        _device.SendCommand($"SOURCE{_activeChannel}:ASK:SOURCE INT");
+                    }
+
                     _device.SendCommand($"SOURCE{_activeChannel}:ASK:RATE {modFrequency}");
                     // ASK amplitude is typically a factor (0-1) not percentage
                     double askAmplitude = modDepth / 100.0;
@@ -432,11 +490,18 @@ namespace DG2072_USB_Control.Modulation
                     break;
 
                 case "FSK":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
-                    System.Threading.Thread.Sleep(100);
+                    string fskState = _device.SendQuery($"SOURCE{_activeChannel}:FSK:STATE?");
+                    bool isFSKActive = (fskState.Trim() == "ON" || fskState.Trim() == "1");
 
-                    _device.SendCommand($"SOURCE{_activeChannel}:FSK:STATE ON");
-                    _device.SendCommand($"SOURCE{_activeChannel}:FSK:SOURCE INT");
+                    if (!isFSKActive)
+                    {
+                        _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
+                        System.Threading.Thread.Sleep(100);
+
+                        _device.SendCommand($"SOURCE{_activeChannel}:FSK:STATE ON");
+                        _device.SendCommand($"SOURCE{_activeChannel}:FSK:SOURCE INT");
+                    }
+
                     _device.SendCommand($"SOURCE{_activeChannel}:FSK:RATE {modFrequency}");
                     // FSK uses hop frequency - calculate based on depth percentage
                     double hopFreq = carrierFrequency * (1 + modDepth / 100.0); // e.g., 10% depth = 1.1x carrier
@@ -444,11 +509,18 @@ namespace DG2072_USB_Control.Modulation
                     break;
 
                 case "PSK":
-                    _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
-                    System.Threading.Thread.Sleep(100);
+                    string pskState = _device.SendQuery($"SOURCE{_activeChannel}:PSK:STATE?");
+                    bool isPSKActive = (pskState.Trim() == "ON" || pskState.Trim() == "1");
 
-                    _device.SendCommand($"SOURCE{_activeChannel}:PSK:STATE ON");
-                    _device.SendCommand($"SOURCE{_activeChannel}:PSK:SOURCE INT");
+                    if (!isPSKActive)
+                    {
+                        _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{scpiCarrierWaveform} {carrierFrequency},{carrierAmplitude},{carrierOffset},{carrierPhase}");
+                        System.Threading.Thread.Sleep(100);
+
+                        _device.SendCommand($"SOURCE{_activeChannel}:PSK:STATE ON");
+                        _device.SendCommand($"SOURCE{_activeChannel}:PSK:SOURCE INT");
+                    }
+
                     _device.SendCommand($"SOURCE{_activeChannel}:PSK:RATE {modFrequency}");
                     // PSK phase is in degrees - use depth directly as degrees
                     _device.SendCommand($"SOURCE{_activeChannel}:PSK:PHASE {modDepth}");
@@ -460,7 +532,7 @@ namespace DG2072_USB_Control.Modulation
             }
         }
 
-        // ===== NEW HELPER METHODS FOR INTEGRATED UI =====
+
 
         /// <summary>
         /// Store current carrier settings
@@ -471,12 +543,16 @@ namespace DG2072_USB_Control.Modulation
 
             try
             {
-                _storedCarrierFrequency = _device.GetFrequency(_activeChannel);
-                _storedCarrierAmplitude = _device.GetAmplitude(_activeChannel);
-                _storedCarrierOffset = _device.GetOffset(_activeChannel);
-                _storedCarrierPhase = _device.GetPhase(_activeChannel);
+                // PROBLEM: After modulation is applied, GetFrequency might return the modulated frequency
+                // SOLUTION: Get the carrier settings BEFORE any modulation is active, or from the UI
 
-                // Get waveform type from device
+                // Option 1: Get from UI controls instead of device
+                _storedCarrierFrequency = GetCarrierFrequencyFromUI();
+                _storedCarrierAmplitude = GetCarrierAmplitudeFromUI();
+                _storedCarrierOffset = GetCarrierOffsetFromUI();
+                _storedCarrierPhase = GetCarrierPhaseFromUI();
+
+                // Get waveform type from device (this is usually reliable)
                 string waveform = _device.SendQuery($":SOUR{_activeChannel}:FUNC?").Trim().ToUpper();
                 if (waveform.StartsWith("\"") && waveform.EndsWith("\""))
                 {
@@ -492,34 +568,21 @@ namespace DG2072_USB_Control.Modulation
             }
         }
 
-        /// <summary>
-        /// Update modulation panel visibility
-        /// </summary>
-        private void UpdateModulationVisibility(bool visible)
-        {
-            if (_modulationPanel != null)
-            {
-                _modulationPanel.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
 
-        /// <summary>
-        /// Update toggle button state
-        /// </summary>
-        private void UpdateToggleButtonState()
+        // Alternative fix - update SetDefaultValues to ensure everything is initialized:
+        private void SetDefaultValues()
         {
-            if (_modulationToggleButton != null)
+            if (_modulationFrequencyTextBox != null)
+                _modulationFrequencyTextBox.Text = "1.0"; // 1 kHz default
+
+            if (_modulationDepthTextBox != null)
+                _modulationDepthTextBox.Text = "50.0"; // 50% default
+
+            // FIX: Ensure modulating waveforms are populated for the current modulation type
+            if (_modulationTypeComboBox?.SelectedItem != null)
             {
-                _modulationToggleButton.Content = _isModulationEnabled ? "Disable Modulation" : "Enable Modulation";
-                // Optional: Change button appearance
-                if (_isModulationEnabled)
-                {
-                    _modulationToggleButton.Background = System.Windows.Media.Brushes.LightCoral;
-                }
-                else
-                {
-                    _modulationToggleButton.Background = System.Windows.Media.Brushes.LightGreen;
-                }
+                string currentModType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
+                UpdateAvailableModulatingWaveforms(currentModType);
             }
         }
 
@@ -545,24 +608,6 @@ namespace DG2072_USB_Control.Modulation
                 UpdateAvailableModulatingWaveforms(defaultModType);
             }
         }
-       
-        
-        // Alternative fix - update SetDefaultValues to ensure everything is initialized:
-        private void SetDefaultValues()
-        {
-            if (_modulationFrequencyTextBox != null)
-                _modulationFrequencyTextBox.Text = "1.0"; // 1 kHz default
-
-            if (_modulationDepthTextBox != null)
-                _modulationDepthTextBox.Text = "50.0"; // 50% default
-
-            // FIX: Ensure modulating waveforms are populated for the current modulation type
-            if (_modulationTypeComboBox?.SelectedItem != null)
-            {
-                string currentModType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
-                UpdateAvailableModulatingWaveforms(currentModType);
-            }
-        }
 
         /// <summary>
         /// Initialize frequency unit combo box
@@ -578,6 +623,38 @@ namespace DG2072_USB_Control.Modulation
                 _modulationFrequencyUnitComboBox.Items.Add(new ComboBoxItem { Content = unit });
             }
             _modulationFrequencyUnitComboBox.SelectedIndex = 3; // Default to kHz
+        }
+
+
+        /// <summary>
+        /// Update toggle button state
+        /// </summary>
+        private void UpdateToggleButtonState()
+        {
+            if (_modulationToggleButton != null)
+            {
+                _modulationToggleButton.Content = _isModulationEnabled ? "Disable Modulation" : "Enable Modulation";
+                // Optional: Change button appearance
+                if (_isModulationEnabled)
+                {
+                    _modulationToggleButton.Background = System.Windows.Media.Brushes.LightCoral;
+                }
+                else
+                {
+                    _modulationToggleButton.Background = System.Windows.Media.Brushes.LightGreen;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Update modulation panel visibility
+        /// </summary>
+        private void UpdateModulationVisibility(bool visible)
+        {
+            if (_modulationPanel != null)
+            {
+                _modulationPanel.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+            }
         }
 
         /// <summary>
@@ -662,5 +739,92 @@ namespace DG2072_USB_Control.Modulation
         {
             LogEvent?.Invoke(this, message);
         }
+
+
+ // ===== NEW HELPER METHODS FOR INTEGRATED UI =====
+        // Add these helper methods to get values from UI:
+
+     #region Modulation UI Helpers
+        private double GetCarrierFrequencyFromUI()
+        {
+            try
+            {
+                // Find the frequency textbox and unit combo in the main window
+                var freqTextBox = _mainWindow.FindName("ChannelFrequencyTextBox") as TextBox;
+                var unitComboBox = _mainWindow.FindName("ChannelFrequencyUnitComboBox") as ComboBox;
+
+                if (freqTextBox != null && unitComboBox != null &&
+                    double.TryParse(freqTextBox.Text, out double frequency))
+                {
+                    string unit = ((ComboBoxItem)unitComboBox.SelectedItem)?.Content.ToString() ?? "Hz";
+                    double multiplier = UnitConversionUtility.GetFrequencyMultiplier(unit);
+
+                    Log($"Getting carrier frequency from UI: {frequency} {unit} = {frequency * multiplier} Hz");
+                    return frequency * multiplier;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Error getting frequency from UI: {ex.Message}");
+            }
+
+            // Fallback to device if UI fails
+            return _device.GetFrequency(_activeChannel);
+        }
+
+        private double GetCarrierAmplitudeFromUI()
+        {
+            try
+            {
+                var ampTextBox = _mainWindow.FindName("ChannelAmplitudeTextBox") as TextBox;
+                var unitComboBox = _mainWindow.FindName("ChannelAmplitudeUnitComboBox") as ComboBox;
+
+                if (ampTextBox != null && unitComboBox != null &&
+                    double.TryParse(ampTextBox.Text, out double amplitude))
+                {
+                    string unit = ((ComboBoxItem)unitComboBox.SelectedItem)?.Content.ToString() ?? "Vpp";
+                    double multiplier = UnitConversionUtility.GetAmplitudeMultiplier(unit);
+                    return amplitude * multiplier;
+                }
+            }
+            catch { }
+
+            return _device.GetAmplitude(_activeChannel);
+        }
+
+        private double GetCarrierOffsetFromUI()
+        {
+            try
+            {
+                var offsetTextBox = _mainWindow.FindName("ChannelOffsetTextBox") as TextBox;
+                if (offsetTextBox != null && double.TryParse(offsetTextBox.Text, out double offset))
+                {
+                    return offset;
+                }
+            }
+            catch { }
+
+            return _device.GetOffset(_activeChannel);
+        }
+
+        private double GetCarrierPhaseFromUI()
+        {
+            try
+            {
+                var phaseTextBox = _mainWindow.FindName("ChannelPhaseTextBox") as TextBox;
+                if (phaseTextBox != null && double.TryParse(phaseTextBox.Text, out double phase))
+                {
+                    return phase;
+                }
+            }
+            catch { }
+
+            return _device.GetPhase(_activeChannel);
+        }
+
+        #endregion
+
+
+
     }
 }

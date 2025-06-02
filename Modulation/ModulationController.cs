@@ -1620,7 +1620,38 @@ namespace DG2072_USB_Control.Modulation
             }
         }
 
+        /// <summary>
+        /// Enable modulation UI only without applying to device
+        /// </summary>
+        public void EnableModulationUIOnly()
+        {
+            _isModulationEnabled = true;
+            UpdateModulationVisibility(true);
+            UpdateToggleButtonState();
 
+            // Ensure modulating waveforms are populated
+            if (_modulationTypeComboBox?.SelectedItem != null)
+            {
+                string currentModType = ((ComboBoxItem)_modulationTypeComboBox.SelectedItem).Content.ToString();
+                UpdateAvailableModulatingWaveforms(currentModType);
+
+                // Update DSSC visibility based on modulation type
+                if (_dsscDockPanel != null)
+                {
+                    _dsscDockPanel.Visibility = (currentModType == "AM") ? Visibility.Visible : Visibility.Collapsed;
+                }
+            }
+
+            Log("Modulation UI enabled (UI only)");
+        }
+
+        /// <summary>
+        /// Set the internal modulation enabled state
+        /// </summary>
+        public void SetModulationEnabledState(bool enabled)
+        {
+            _isModulationEnabled = enabled;
+        }
 
 
         #endregion

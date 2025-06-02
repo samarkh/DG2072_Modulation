@@ -1275,10 +1275,20 @@ namespace DG2072_USB_Control
                                         try
                                         {
                                             // Set the internal state in the controller
-                                            _modulationController.SetModulationEnabledState(true);  // You'll need to make this public
+                                            _modulationController.SetModulationEnabledState(true);
 
                                             // Sync the settings
                                             _modulationController.SyncModulationFromDevice(modType);
+
+                                            // Force the modulation panel to be visible
+                                            if (ModulationPanel != null)
+                                            {
+                                                Dispatcher.Invoke(() =>
+                                                {
+                                                    ModulationPanel.Visibility = Visibility.Visible;
+                                                    LogMessage($"Forced ModulationPanel visibility to Visible");
+                                                });
+                                            }
                                         }
                                         catch (Exception ex)
                                         {
@@ -3252,29 +3262,13 @@ namespace DG2072_USB_Control
         }
 
 
-        // <summary>
-        /// Enable modulation UI when detected on device (without applying new settings)
-        /// </summary>
         private void EnableModulationUIOnly()
         {
             if (_modulationController != null)
             {
-                // Find and show the modulation panel directly
-                var modPanel = FindName("ModulationPanel") as GroupBox;
-                if (modPanel != null)
-                {
-                    modPanel.Visibility = Visibility.Visible;
-                    LogMessage("ModulationPanel made visible");
-                }
+                _modulationController.EnableModulationUIOnly();
 
-                // Update the button to show correct state
-                if (ModulationToggleButton != null)
-                {
-                    ModulationToggleButton.Content = "Disable Modulation";
-                    ModulationToggleButton.Background = System.Windows.Media.Brushes.LightCoral;
-                }
-
-                // Update the status
+                // Update the modulation status display
                 UpdateModulationStatus();
             }
         }

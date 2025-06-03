@@ -1,0 +1,9 @@
+Modulation Type,Parameter,Description,Valid frequencys
+,,,
+AM,Depth,Modulation depth (0% to 120%),Modulation rate (2 mHz to 1 MHz)
+FM,Deviation,Frequency deviation (-99.999 MHz to +99.999 MHz),"	Modulation rate (2 mHz to 1 MHz)"
+PM,Phase Deviation,Phase deviation (0° to 360°),"	Modulation rate (2 mHz to 1 MHz)"
+ASK,Amplitude,Modulation amplitude (0 Vpp  to 10 Vpp),Modulation rate (2 mHz to 1 MHz)ASK
+FSK,Hop Frequency,Frequency to hop to (carrier Â± hop) (range = output channel range),Hop rate (2 mHz to 1 MHz)FSK
+PSK,Phase,Modulation phase (0° to 360°),Hop rate (2 mHz to 1 MHz)PSK
+PWM,Duty Cycle Deviation,Duty variation (%),"	Modulation rate (2 mHz to 1 MHz)"

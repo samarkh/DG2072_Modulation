@@ -962,17 +962,29 @@ For accurate voltage measurement, set the load impedance to match your actual lo
                                                 </DockPanel>
 
                                                 <!-- Modulation Depth -->
+                                                <!-- Modulation Depth with Dynamic Label and Units -->
                                                 <DockPanel Margin="0,5">
-                                                    <Label Content="Mod. Depth (%):" Width="120" 
-													ToolTip="Set the modulation depth/index as a percentage"/>
-													<TextBox x:Name="ModulationDepthTextBox" 
-														Width="100" 
-														Text="100.0"
-														TextChanged="ModulationDepthTextBox_TextChanged"
-														LostFocus="ModulationDepthTextBox_LostFocus"
-														HorizontalContentAlignment="Right" 
-														VerticalContentAlignment="Center"
-														HorizontalAlignment="Left"/>
+                                                    <Label x:Name="ModulationDepthLabel" 
+           Content="Mod. Depth (%):" 
+           Width="120" 
+           ToolTip="Modulation parameter - changes based on modulation type"/>
+                                                    <TextBox x:Name="ModulationDepthTextBox" 
+             Width="100" 
+             Text="100.0"
+             TextChanged="ModulationDepthTextBox_TextChanged"
+             LostFocus="ModulationDepthTextBox_LostFocus"
+             HorizontalContentAlignment="Right" 
+             VerticalContentAlignment="Center"
+             HorizontalAlignment="Left"/>
+                                                    <ComboBox x:Name="ModulationDepthUnitComboBox" 
+              Width="70" 
+              Margin="5,0,0,0"
+              SelectionChanged="ModulationDepthUnitComboBox_SelectionChanged"
+              HorizontalAlignment="Left"
+              Visibility="Collapsed"
+              ToolTip="Unit for the modulation parameter">
+                                                        <!-- Units will be populated dynamically based on modulation type -->
+                                                    </ComboBox>
                                                 </DockPanel>
 
 

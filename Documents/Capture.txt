@@ -1,0 +1,1055 @@
+1.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), ":SOUR1:FUNC?.", 13 (0xD), 13 (0xD))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.7822      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+2.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SIN.", 1024 (0x400), 4 (0x4))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.7822      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+3.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8172      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+4.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8172      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+5.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DEPTH 50.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8182      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+6.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8202      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+7.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DSSC OFF.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8222      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+8.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8313      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+9.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8313      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+10.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DEPTH 50.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8334      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+11.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8362      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+12.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DSSC OFF.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8382      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+13.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8452      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+14.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8452      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+15.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DEPTH 50.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8462      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+16.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8482      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+17.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DSSC OFF.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8502      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+18.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8563      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+19.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8563      Call Duration 00:00:00.0009
+Status: 0 (VI_SUCCESS)
+
+20.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DEPTH 50.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8582      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+21.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8603      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+22.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DSSC OFF.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8613      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+23.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8682      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+24.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8692      Call Duration 00:00:00.0020
+Status: 0 (VI_SUCCESS)
+
+25.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DEPTH 50.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8723      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+26.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8733      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+27.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DSSC OFF.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8753      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+28.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8823      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+29.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8823      Call Duration 00:00:00.0019
+Status: 0 (VI_SUCCESS)
+
+30.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DEPTH 100.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8853      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+31.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8873      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+32.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DSSC OFF.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.8883      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+33.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.9062      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+34.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.9062      Call Duration 00:00:00.0020
+Status: 0 (VI_SUCCESS)
+
+35.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DEPTH 100.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.9093      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+36.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.9113      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+37.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:AM:DSSC OFF.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:25.9163      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+38.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:STATE?.", 19 (0x13), 19 (0x13))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.3896      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+39.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OFF.", 1024 (0x400), 4 (0x4))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.3896      Call Duration 00:00:00.0009
+Status: 0 (VI_SUCCESS)
+
+40.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:APPLY:SIN 1000,5,0,0.", 29 (0x1D), 29 (0x1D))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.3916      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+41.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:STATE ON.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.4942      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+42.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:SOURCE INT.", 23 (0x17), 23 (0x17))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.4992      Call Duration 00:00:00.0009
+Status: 0 (VI_SUCCESS)
+
+43.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:RATE 100.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5042      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+44.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:PHASE 100.", 22 (0x16), 22 (0x16))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5082      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+45.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:STATE?.", 19 (0x13), 19 (0x13))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5262      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+46.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5262      Call Duration 00:00:00.0009
+Status: 0 (VI_SUCCESS)
+
+47.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:RATE 100.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5302      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+48.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:PHASE 100.", 22 (0x16), 22 (0x16))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5342      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+49.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:STATE?.", 19 (0x13), 19 (0x13))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5512      Call Duration 00:00:00.0011
+Status: 0 (VI_SUCCESS)
+
+50.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5523      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+51.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:RATE 100.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5532      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+52.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:PHASE 90.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5552      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+53.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:STATE?.", 19 (0x13), 19 (0x13))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5663      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+54.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5663      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+55.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:RATE 100.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5672      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+56.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:PHASE 90.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5682      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+57.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:STATE?.", 19 (0x13), 19 (0x13))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5752      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+58.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5752      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+59.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:RATE 100.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5772      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+60.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:PHASE 90.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5802      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+61.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:STATE?.", 19 (0x13), 19 (0x13))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5912      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+62.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "ON.", 1024 (0x400), 3 (0x3))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5912      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+63.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:RATE 100.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5922      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+64.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:PSK:PHASE 90.", 21 (0x15), 21 (0x15))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:32.5942      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+65.  viGetAttribute (0x00C6E3B0, 0x3FFF0190 (VI_ATTR_FIND_RSRC_MODE), 32792 (0x8018))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4386      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+66.  viSetAttribute (0x00C6E3B0, 0x3FFF0190 (VI_ATTR_FIND_RSRC_MODE), 32792 (0x8018))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4386      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+67.  viFindRsrc (0x00C6E3B0, "/?*", 0x0379BF58, 4 (0x4), "PXI0::MEMACC")
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4396      Call Duration 00:00:00.0079
+Status: 0 (VI_SUCCESS)
+
+68.  viParseRsrc (0x00C6E3B0, "PXI0::MEMACC", 5 (0x5), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4476      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+69.  viOpen (0x00C6E3B0, "PXI0::MEMACC", 4 (0x4), 0 (0x0), 0x037A8908)
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4476      Call Duration 00:00:00.0000
+Status: 0x3FFF0077 (VI_WARN_CONFIG_NLOADED)
+
+70.  viGetAttribute (PXI0::MEMACC (0x037A8908), 0x3FFF0003 (VI_ATTR_RSRC_IMPL_VERSION), 0x01900000 (25.0))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4476      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+71.  viGetAttribute (PXI0::MEMACC (0x037A8908), 0x3FFF0175 (VI_ATTR_RSRC_MANF_ID), 4086 (0xFF6))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4487      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+72.  viClose (PXI0::MEMACC (0x037A8908))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4487      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+73.  viFindNext (0x0379BF58, "USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR")
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4487      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+74.  viParseRsrc (0x00C6E3B0, "USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR", 7 (0x7), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4487      Call Duration 00:00:00.0009
+Status: 0 (VI_SUCCESS)
+
+75.  viFindNext (0x0379BF58, "USB0::0x1AB1::0x0644::DG2P224100508::INSTR")
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4496      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+76.  viParseRsrc (0x00C6E3B0, "USB0::0x1AB1::0x0644::DG2P224100508::INSTR", 7 (0x7), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4496      Call Duration 00:00:00.0009
+Status: 0 (VI_SUCCESS)
+
+77.  viFindNext (0x0379BF58, "ASRL3::INSTR")
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4506      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+78.  viParseRsrc (0x00C6E3B0, "ASRL3::INSTR", 4 (0x4), 3 (0x3))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4506      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+79.  viClose (0x0379BF58)
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:24:34.4527      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+80.  viOpen (0x00C6E3B0, "USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR", 4 (0x4), 0 (0x0), 0x03818D18)
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6236      Call Duration 00:00:00.0020
+Status: 0 (VI_SUCCESS)
+
+81.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0x3FFF0175 (VI_ATTR_RSRC_MANF_ID), 4086 (0xFF6))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6256      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+82.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0x3FFF00D9 (VI_ATTR_MANF_ID), 6833 (0x1AB1))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6256      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+83.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0xBFFF0072 (VI_ATTR_MANF_NAME), "Rigol Technologies. ")
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6256      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+84.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0x3FFF00DF (VI_ATTR_MODEL_CODE), 1303 (0x517))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6267      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+85.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0xBFFF0077 (VI_ATTR_MODEL_NAME), "DS1000Z Series")
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6267      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+86.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0xBFFF01A0 (VI_ATTR_USB_SERIAL_NUM), "DS1ZE213800586")
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6267      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+87.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0x3FFF01A1 (VI_ATTR_USB_INTFC_NUM), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6267      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+88.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0x3FFF019F (VI_ATTR_4882_COMPLIANT), VI_TRUE)
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6267      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+89.  viClose (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6267      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+90.  viOpen (0x00C6E3B0, "USB0::0x1AB1::0x0644::DG2P224100508::INSTR", 4 (0x4), 0 (0x0), 0x03818D18)
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:24:34.6485      Call Duration 00:00:00.0032
+Status: 0 (VI_SUCCESS)
+
+91.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0x3FFF0175 (VI_ATTR_RSRC_MANF_ID), 4086 (0xFF6))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:24:34.6517      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+92.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0x3FFF00D9 (VI_ATTR_MANF_ID), 6833 (0x1AB1))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:24:34.6517      Call Duration 00:00:00.0007
+Status: 0 (VI_SUCCESS)
+
+93.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0xBFFF0072 (VI_ATTR_MANF_NAME), "Rigol")
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:24:34.6525      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+94.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0x3FFF00DF (VI_ATTR_MODEL_CODE), 1604 (0x644))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:24:34.6525      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+95.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0xBFFF0077 (VI_ATTR_MODEL_NAME), "DG2000")
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:24:34.6525      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+96.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0xBFFF01A0 (VI_ATTR_USB_SERIAL_NUM), "DG2P224100508")
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:24:34.6525      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+97.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0x3FFF01A1 (VI_ATTR_USB_INTFC_NUM), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:24:34.6525      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+98.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0x3FFF019F (VI_ATTR_4882_COMPLIANT), VI_TRUE)
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:24:34.6525      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+99.  viClose (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:24:34.6525      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+100.  viOpen (0x00C6E3B0, "ASRL3::INSTR", 4 (0x4), 0 (0x0), 0x03818D18)
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6756      Call Duration 00:00:00.0019
+Status: 0 (VI_SUCCESS)
+
+101.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0x3FFF0175 (VI_ATTR_RSRC_MANF_ID), 4086 (0xFF6))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6776      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+102.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0xBFFF00E9 (VI_ATTR_INTF_INST_NAME), "ASRL3  (COM3 - USB-SERIAL CH340)")
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6776      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+103.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0x3FFF0021 (VI_ATTR_ASRL_BAUD), 9600 (0x2580))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6786      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+104.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0x3FFF0023 (VI_ATTR_ASRL_PARITY), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6786      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+105.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0x3FFF0024 (VI_ATTR_ASRL_STOP_BITS), 10 (0xA))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6786      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+106.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0x3FFF0022 (VI_ATTR_ASRL_DATA_BITS), 8 (0x8))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6786      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+107.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0x3FFF0025 (VI_ATTR_ASRL_FLOW_CNTRL), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6786      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+108.  viClose (ASRL3::INSTR (0x03818D18))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:24:34.6786      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+109.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.4824      Call Duration 00:00:00.0009
+Status: 0 (VI_SUCCESS)
+
+110.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OFF.", 1024 (0x400), 4 (0x4))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.4834      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+111.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:APPLY:SIN 1000,5,0,0.", 29 (0x1D), 29 (0x1D))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.4854      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+112.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:STATE ON.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.5885      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+113.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:SOURCE INT.", 22 (0x16), 22 (0x16))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.5935      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+114.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:INT:FUNC SQU.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.5994      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+115.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.6044      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+116.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:DEVIATION 90.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.6084      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+117.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.6295      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+118.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OFF.", 1024 (0x400), 4 (0x4))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.6295      Call Duration 00:00:00.0016
+Status: 0 (VI_SUCCESS)
+
+119.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:APPLY:SIN 1000,5,0,0.", 29 (0x1D), 29 (0x1D))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.6327      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+120.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:STATE ON.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.7387      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+121.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:SOURCE INT.", 22 (0x16), 22 (0x16))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.7437      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+122.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:INT:FUNC SQU.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.7487      Call Duration 00:00:00.0001
+Status: 0 (VI_SUCCESS)
+
+123.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.7531      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+124.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:DEVIATION 90000000.", 30 (0x1E), 30 (0x1E))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.7590      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+125.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.7741      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+126.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OFF.", 1024 (0x400), 4 (0x4))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.7741      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+127.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:APPLY:SIN 1000,5,0,0.", 29 (0x1D), 29 (0x1D))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.7762      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+128.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:STATE ON.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.8800      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+129.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:SOURCE INT.", 22 (0x16), 22 (0x16))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.8859      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+130.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:INT:FUNC SQU.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.8910      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+131.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.8960      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+132.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:DEVIATION 10000000.", 30 (0x1E), 30 (0x1E))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.8999      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+133.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.9290      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+134.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OFF.", 1024 (0x400), 4 (0x4))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.9290      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+135.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:APPLY:SIN 1000,5,0,0.", 29 (0x1D), 29 (0x1D))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:42.9300      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+136.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:STATE ON.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.0331      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+137.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:SOURCE INT.", 22 (0x16), 22 (0x16))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.0392      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+138.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:INT:FUNC SIN.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.0441      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+139.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.0491      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+140.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:DEVIATION 10000000.", 30 (0x1E), 30 (0x1E))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.0538      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+141.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.0687      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+142.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OFF.", 1024 (0x400), 4 (0x4))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.0698      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+143.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:APPLY:SIN 1000,5,0,0.", 29 (0x1D), 29 (0x1D))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.0708      Call Duration 00:00:00.0009
+Status: 0 (VI_SUCCESS)
+
+144.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:STATE ON.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.1742      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+145.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:SOURCE INT.", 22 (0x16), 22 (0x16))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.1792      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+146.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:INT:FUNC SIN.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.1851      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+147.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.1902      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+148.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:DEVIATION 10000000.", 30 (0x1E), 30 (0x1E))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.1942      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+149.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:STATE?.", 18 (0x12), 18 (0x12))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.2092      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+150.  viRead (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "OFF.", 1024 (0x400), 4 (0x4))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.2092      Call Duration 00:00:00.0009
+Status: 0 (VI_SUCCESS)
+
+151.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:APPLY:SIN 1000,5,0,0.", 29 (0x1D), 29 (0x1D))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.2112      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+152.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:STATE ON.", 20 (0x14), 20 (0x14))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.3151      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+153.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:SOURCE INT.", 22 (0x16), 22 (0x16))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.3212      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+154.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:INT:FUNC SIN.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.3251      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+155.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:INT:FREQ 100.", 24 (0x18), 24 (0x18))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.3301      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+156.  viWrite (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), "SOURCE1:FM:DEVIATION 10000000.", 30 (0x1E), 30 (0x1E))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:24:43.3341      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+157.  viGetAttribute (0x00C6E3B0, 0x3FFF0190 (VI_ATTR_FIND_RSRC_MODE), 32792 (0x8018))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3764      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+158.  viSetAttribute (0x00C6E3B0, 0x3FFF0190 (VI_ATTR_FIND_RSRC_MODE), 32792 (0x8018))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3764      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+159.  viFindRsrc (0x00C6E3B0, "/?*", 0x0379BED8, 5 (0x5), "PXI0::MEMACC")
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3764      Call Duration 00:00:00.0080
+Status: 0 (VI_SUCCESS)
+
+160.  viParseRsrc (0x00C6E3B0, "PXI0::MEMACC", 5 (0x5), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3844      Call Duration 00:00:00.0009
+Status: 0 (VI_SUCCESS)
+
+161.  viOpen (0x00C6E3B0, "PXI0::MEMACC", 4 (0x4), 0 (0x0), 0x03818D18)
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3854      Call Duration 00:00:00.0000
+Status: 0x3FFF0077 (VI_WARN_CONFIG_NLOADED)
+
+162.  viGetAttribute (PXI0::MEMACC (0x03818D18), 0x3FFF0003 (VI_ATTR_RSRC_IMPL_VERSION), 0x01900000 (25.0))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3854      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+163.  viGetAttribute (PXI0::MEMACC (0x03818D18), 0x3FFF0175 (VI_ATTR_RSRC_MANF_ID), 4086 (0xFF6))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3854      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+164.  viClose (PXI0::MEMACC (0x03818D18))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3864      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+165.  viFindNext (0x0379BED8, "USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR")
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3864      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+166.  viParseRsrc (0x00C6E3B0, "USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR", 7 (0x7), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3864      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+167.  viFindNext (0x0379BED8, "USB0::0x1AB1::0x0644::DG2P224100508::INSTR")
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3874      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+168.  viParseRsrc (0x00C6E3B0, "USB0::0x1AB1::0x0644::DG2P224100508::INSTR", 7 (0x7), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3874      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+169.  viFindNext (0x0379BED8, "TCPIP0::192.168.0.3::inst0::INSTR")
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3874      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+170.  viParseRsrc (0x00C6E3B0, "TCPIP0::192.168.0.3::inst0::INSTR", 6 (0x6), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3884      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+171.  viFindNext (0x0379BED8, "ASRL3::INSTR")
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3894      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+172.  viParseRsrc (0x00C6E3B0, "ASRL3::INSTR", 4 (0x4), 3 (0x3))
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3894      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+173.  viClose (0x0379BED8)
+Process ID: 0x00001AA8         Thread ID: 0x000022F4
+Start Time: 15:25:00.3904      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+174.  viOpen (0x00C6E3B0, "USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR", 4 (0x4), 0 (0x0), 0x03818D18)
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7153      Call Duration 00:00:00.0020
+Status: 0 (VI_SUCCESS)
+
+175.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0x3FFF0175 (VI_ATTR_RSRC_MANF_ID), 4086 (0xFF6))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7173      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+176.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0x3FFF00D9 (VI_ATTR_MANF_ID), 6833 (0x1AB1))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7173      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+177.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0xBFFF0072 (VI_ATTR_MANF_NAME), "Rigol Technologies. ")
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7173      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+178.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0x3FFF00DF (VI_ATTR_MODEL_CODE), 1303 (0x517))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7173      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+179.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0xBFFF0077 (VI_ATTR_MODEL_NAME), "DS1000Z Series")
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7173      Call Duration 00:00:00.0009
+Status: 0 (VI_SUCCESS)
+
+180.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0xBFFF01A0 (VI_ATTR_USB_SERIAL_NUM), "DS1ZE213800586")
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7183      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+181.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0x3FFF01A1 (VI_ATTR_USB_INTFC_NUM), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7183      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+182.  viGetAttribute (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18), 0x3FFF019F (VI_ATTR_4882_COMPLIANT), VI_TRUE)
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7183      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+183.  viClose (USB0::0x1AB1::0x0517::DS1ZE213800586::INSTR (0x03818D18))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7183      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+184.  viOpen (0x00C6E3B0, "USB0::0x1AB1::0x0644::DG2P224100508::INSTR", 4 (0x4), 0 (0x0), 0x03818D18)
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7463      Call Duration 00:00:00.0030
+Status: 0 (VI_SUCCESS)
+
+185.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0x3FFF0175 (VI_ATTR_RSRC_MANF_ID), 4086 (0xFF6))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7493      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+186.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0x3FFF00D9 (VI_ATTR_MANF_ID), 6833 (0x1AB1))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7493      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+187.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0xBFFF0072 (VI_ATTR_MANF_NAME), "Rigol")
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7493      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+188.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0x3FFF00DF (VI_ATTR_MODEL_CODE), 1604 (0x644))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7493      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+189.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0xBFFF0077 (VI_ATTR_MODEL_NAME), "DG2000")
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7493      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+190.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0xBFFF01A0 (VI_ATTR_USB_SERIAL_NUM), "DG2P224100508")
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7493      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+191.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0x3FFF01A1 (VI_ATTR_USB_INTFC_NUM), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7493      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+192.  viGetAttribute (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18), 0x3FFF019F (VI_ATTR_4882_COMPLIANT), VI_TRUE)
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7493      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+193.  viClose (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x03818D18))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7493      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+194.  viOpen (0x00C6E3B0, "ASRL3::INSTR", 4 (0x4), 0 (0x0), 0x03818D18)
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7673      Call Duration 00:00:00.0029
+Status: 0 (VI_SUCCESS)
+
+195.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0x3FFF0175 (VI_ATTR_RSRC_MANF_ID), 4086 (0xFF6))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7703      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+196.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0xBFFF00E9 (VI_ATTR_INTF_INST_NAME), "ASRL3  (COM3 - USB-SERIAL CH340)")
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7703      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+197.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0x3FFF0021 (VI_ATTR_ASRL_BAUD), 9600 (0x2580))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7703      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+198.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0x3FFF0023 (VI_ATTR_ASRL_PARITY), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7703      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+199.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0x3FFF0024 (VI_ATTR_ASRL_STOP_BITS), 10 (0xA))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7703      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+200.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0x3FFF0022 (VI_ATTR_ASRL_DATA_BITS), 8 (0x8))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7703      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+201.  viGetAttribute (ASRL3::INSTR (0x03818D18), 0x3FFF0025 (VI_ATTR_ASRL_FLOW_CNTRL), 0 (0x0))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7703      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+202.  viClose (ASRL3::INSTR (0x03818D18))
+Process ID: 0x00001AA8         Thread ID: 0x00002B4C
+Start Time: 15:25:00.7703      Call Duration 00:00:00.0010
+Status: 0 (VI_SUCCESS)
+
+203.  viOpen (0x00C6E3B0, "TCPIP0::192.168.0.3::inst0::INSTR", 4 (0x4), 0 (0x0), 0x03818D18)
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7843      Call Duration 00:00:00.0150
+Status: 0 (VI_SUCCESS)
+
+204.  viGetAttribute (TCPIP0::192.168.0.3::inst0::INSTR (0x03818D18), 0x3FFF0175 (VI_ATTR_RSRC_MANF_ID), 4086 (0xFF6))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7993      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+205.  viGetAttribute (TCPIP0::192.168.0.3::inst0::INSTR (0x03818D18), 0xBFFF0195 (VI_ATTR_TCPIP_ADDR), "192.168.0.3")
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7993      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+206.  viGetAttribute (TCPIP0::192.168.0.3::inst0::INSTR (0x03818D18), 0xBFFF0196 (VI_ATTR_TCPIP_HOSTNAME), "192.168.0.3")
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.7993      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+207.  viGetAttribute (TCPIP0::192.168.0.3::inst0::INSTR (0x03818D18), 0xBFFF0199 (VI_ATTR_TCPIP_DEVICE_NAME), "inst0")
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.8263      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+208.  viClose (TCPIP0::192.168.0.3::inst0::INSTR (0x03818D18))
+Process ID: 0x00001AA8         Thread ID: 0x00002B48
+Start Time: 15:25:00.8263      Call Duration 00:00:00.0019
+Status: 0 (VI_SUCCESS)
+
+209.  viGpibControlREN (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001), 2 (0x2))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:25:13.1065      Call Duration 00:00:00.0123
+Status: 0 (VI_SUCCESS)
+
+210.  viClose (USB0::0x1AB1::0x0644::DG2P224100508::INSTR (0x00000001))
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:25:13.1189      Call Duration 00:00:00.0000
+Status: 0 (VI_SUCCESS)
+
+211.  viClose (0x00001001)
+Process ID: 0x00006C24         Thread ID: 0x000073C0
+Start Time: 15:25:13.1189      Call Duration 00:00:00.0091
+Status: 0 (VI_SUCCESS)
+

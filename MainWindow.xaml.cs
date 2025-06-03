@@ -1321,7 +1321,13 @@ namespace DG2072_USB_Control
             startupTimer.Start();
         }
 
+        private void ModulationDepthUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_isInitializing || !isConnected) return;
 
+            if (_modulationController != null)
+                _modulationController.OnModulationParameterChanged();
+        }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {

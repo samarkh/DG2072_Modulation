@@ -1,0 +1,29 @@
+Summary of Key Sweep Commands (Channel 1)
+Function	Command (abbr.)	Full Syntax
+Enable/Disable sweep	`:SOUR1:SWE:STAT {ON	OFF}`
+Query sweep status	:SOUR1:SWE:STAT?	:SOURce1:SWEep:STATe?
+Set sweep type	:SOUR1:SWE:SPAC {LIN|LOG|STE}	:SOURce1:SWEep:SPACing {LINear|LOGarithmic|STEp}
+Query sweep type	:SOUR1:SWE:SPAC?	:SOURce1:SWEep:SPACing?
+Set sweep time	:SOUR1:SWE:TIME <sec>	:SOURce1:SWEep:TIME {<seconds>|MIN|MAX}
+Query sweep time	:SOUR1:SWE:TIME?	:SOURce1:SWEep:TIME?
+Set step count (step mode)	:SOUR1:SWE:STEP <#>	:SOURce1:SWEep:STEP {<integer>|MIN|MAX}
+Query step count	:SOUR1:SWE:STEP?	:SOURce1:SWEep:STEP?
+Set start hold	:SOUR1:SWE:HTIM:STAR <sec>	:SOURce1:SWEep:HTIMe:STARt {<seconds>|MIN|MAX}
+Query start hold	:SOUR1:SWE:HTIM:STAR?	:SOURce1:SWEep:HTIMe:STARt?
+Set stop hold	:SOUR1:SWE:HTIM:STOP <sec>	:SOURce1:SWEep:HTIMe:STOP {<seconds>|MIN|MAX}
+Query stop hold	:SOUR1:SWE:HTIM:STOP?	:SOURce1:SWEep:HTIMe:STOP?
+Set return time	:SOUR1:SWE:RTIM <sec>	:SOURce1:SWEep:RTIMe {<seconds>|MIN|MAX}
+Query return time	:SOUR1:SWE:RTIM?	:SOURce1:SWEep:RTIMe?
+Set start frequency	:SOUR1:FREQ:STAR <Hz>	:SOURce1:FREQuency:STARt {<frequency>|MIN|MAX}
+Query start frequency	:SOUR1:FREQ:STAR?	:SOURce1:FREQuency:STARt?
+Set stop frequency	:SOUR1:FREQ:STOP <Hz>	:SOURce1:FREQuency:STOP {<frequency>|MIN|MAX}
+Query stop frequency	:SOUR1:FREQ:STOP?	:SOURce1:FREQuency:STOP?
+(Alt.) Set center frequency	:SOUR1:FREQ:CENT <Hz>	:SOURce1:FREQuency:CENTer {<frequency>|MIN|MAX}
+(Alt.) Query center frequency	:SOUR1:FREQ:CENT?	:SOURce1:FREQuency:CENTer?
+(Alt.) Set frequency span	:SOUR1:FREQ:SPAN <Hz>	:SOURce1:FREQuency:SPAN {<span>|MIN|MAX}
+(Alt.) Query frequency span	:SOUR1:FREQ:SPAN?	:SOURce1:FREQuency:SPAN?
+Set trigger source	:SOUR1:SWE:TRIG:SOUR {INT|EXT|MAN}	:SOURce1:SWEep:TRIGger:SOURce {INTernal|EXTernal|MANual}
+Query trigger source	:SOUR1:SWE:TRIG:SOUR?	:SOURce1:SWEep:TRIGger:SOURce?
+Set trigger slope (edge)	:SOUR1:SWE:TRIG:SLOP {POS|NEG}	:SOURce1:SWEep:TRIGger:SLOPe {POSitive|NEGative}
+Query trigger slope	:SOUR1:SWE:TRIG:SLOP?	:SOURce1:SWEep:TRIGger:SLOPe?
+Manual trigger execution	:SOUR1:SWE:TRIG	:SOURce1:SWEep:TRIGger[:IMMediate]

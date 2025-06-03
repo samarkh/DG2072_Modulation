@@ -463,6 +463,9 @@ namespace DG2072_USB_Control.Modulation
                                     double carrierFrequency, double carrierAmplitude,
                                     string modulatingWaveform, double modFrequency, double parameterValue)
         {
+            // IMPORTANT: Disable all other modulation types first
+            DisableOtherModulationTypes(modulationType);
+
             // Get current offset and phase from stored values
             double carrierOffset = _storedCarrierOffset;
             double carrierPhase = _storedCarrierPhase;
@@ -517,24 +520,23 @@ namespace DG2072_USB_Control.Modulation
             }
         }
 
+
+
+
+
         /// <summary>
         /// CORRECTED: Apply AM modulation (Depth 0-120%)
         /// </summary>
         private void ApplyAMModulation(string carrierWaveform, double carrierFreq, double carrierAmp,
             double carrierOffset, double carrierPhase, string modWaveform, double modFreq, double depth)
         {
-            string amState = _device.SendQuery($"SOURCE{_activeChannel}:AM:STATE?");
-            bool isAMActive = (amState.Trim() == "ON" || amState.Trim() == "1");
+            // Always apply carrier settings when switching modulation types
+            _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{carrierWaveform} {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+            System.Threading.Thread.Sleep(100);
 
-            if (!isAMActive)
-            {
-                _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{carrierWaveform} {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
-                System.Threading.Thread.Sleep(100);
-
-                _device.SendCommand($"SOURCE{_activeChannel}:AM:STATE ON");
-                _device.SendCommand($"SOURCE{_activeChannel}:AM:SOURCE INT");
-                _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FUNC {modWaveform}");
-            }
+            _device.SendCommand($"SOURCE{_activeChannel}:AM:STATE ON");
+            _device.SendCommand($"SOURCE{_activeChannel}:AM:SOURCE INT");
+            _device.SendCommand($"SOURCE{_activeChannel}:AM:INT:FUNC {modWaveform}");
 
             // Clamp depth to valid range (0-120%)
             depth = Math.Max(0, Math.Min(120, depth));
@@ -552,18 +554,13 @@ namespace DG2072_USB_Control.Modulation
         private void ApplyFMModulation(string carrierWaveform, double carrierFreq, double carrierAmp,
             double carrierOffset, double carrierPhase, string modWaveform, double modFreq, double deviation)
         {
-            string fmState = _device.SendQuery($"SOURCE{_activeChannel}:FM:STATE?");
-            bool isFMActive = (fmState.Trim() == "ON" || fmState.Trim() == "1");
+            // Always apply carrier settings when switching modulation types
+            _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{carrierWaveform} {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+            System.Threading.Thread.Sleep(100);
 
-            if (!isFMActive)
-            {
-                _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{carrierWaveform} {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
-                System.Threading.Thread.Sleep(100);
-
-                _device.SendCommand($"SOURCE{_activeChannel}:FM:STATE ON");
-                _device.SendCommand($"SOURCE{_activeChannel}:FM:SOURCE INT");
-                _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FUNC {modWaveform}");
-            }
+            _device.SendCommand($"SOURCE{_activeChannel}:FM:STATE ON");
+            _device.SendCommand($"SOURCE{_activeChannel}:FM:SOURCE INT");
+            _device.SendCommand($"SOURCE{_activeChannel}:FM:INT:FUNC {modWaveform}");
 
             // Clamp deviation to valid range (±99.999 MHz)
             double maxDeviation = 99.999e6; // 99.999 MHz in Hz
@@ -579,18 +576,13 @@ namespace DG2072_USB_Control.Modulation
         private void ApplyPMModulation(string carrierWaveform, double carrierFreq, double carrierAmp,
             double carrierOffset, double carrierPhase, string modWaveform, double modFreq, double phaseDeviation)
         {
-            string pmState = _device.SendQuery($"SOURCE{_activeChannel}:PM:STATE?");
-            bool isPMActive = (pmState.Trim() == "ON" || pmState.Trim() == "1");
+            // Always apply carrier settings when switching modulation types
+            _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{carrierWaveform} {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+            System.Threading.Thread.Sleep(100);
 
-            if (!isPMActive)
-            {
-                _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{carrierWaveform} {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
-                System.Threading.Thread.Sleep(100);
-
-                _device.SendCommand($"SOURCE{_activeChannel}:PM:STATE ON");
-                _device.SendCommand($"SOURCE{_activeChannel}:PM:SOURCE INT");
-                _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FUNC {modWaveform}");
-            }
+            _device.SendCommand($"SOURCE{_activeChannel}:PM:STATE ON");
+            _device.SendCommand($"SOURCE{_activeChannel}:PM:SOURCE INT");
+            _device.SendCommand($"SOURCE{_activeChannel}:PM:INT:FUNC {modWaveform}");
 
             // Clamp phase deviation to valid range (0-360°)
             phaseDeviation = Math.Max(0, Math.Min(360, phaseDeviation));
@@ -605,18 +597,13 @@ namespace DG2072_USB_Control.Modulation
         private void ApplyPWMModulation(double carrierFreq, double carrierAmp, double carrierOffset,
             double carrierPhase, string modWaveform, double modFreq, double dutyDeviation)
         {
-            string pwmState = _device.SendQuery($"SOURCE{_activeChannel}:PWM:STATE?");
-            bool isPWMActive = (pwmState.Trim() == "ON" || pwmState.Trim() == "1");
+            // PWM requires a pulse carrier - always apply settings
+            _device.SendCommand($"SOURCE{_activeChannel}:APPLY:PULS {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+            System.Threading.Thread.Sleep(100);
 
-            if (!isPWMActive)
-            {
-                _device.SendCommand($"SOURCE{_activeChannel}:APPLY:PULS {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
-                System.Threading.Thread.Sleep(100);
-
-                _device.SendCommand($"SOURCE{_activeChannel}:PWM:STATE ON");
-                _device.SendCommand($"SOURCE{_activeChannel}:PWM:SOURCE INT");
-                _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FUNC {modWaveform}");
-            }
+            _device.SendCommand($"SOURCE{_activeChannel}:PWM:STATE ON");
+            _device.SendCommand($"SOURCE{_activeChannel}:PWM:SOURCE INT");
+            _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FUNC {modWaveform}");
 
             _device.SendCommand($"SOURCE{_activeChannel}:PWM:INT:FREQ {modFreq}");
             _device.SendCommand($"SOURCE{_activeChannel}:PWM:DEVIATION {dutyDeviation}");
@@ -628,17 +615,12 @@ namespace DG2072_USB_Control.Modulation
         private void ApplyASKModulation(string carrierWaveform, double carrierFreq, double carrierAmp,
             double carrierOffset, double carrierPhase, double modFreq, double amplitudeVpp)
         {
-            string askState = _device.SendQuery($"SOURCE{_activeChannel}:ASK:STATE?");
-            bool isASKActive = (askState.Trim() == "ON" || askState.Trim() == "1");
+            // Always apply carrier settings when switching modulation types
+            _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{carrierWaveform} {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+            System.Threading.Thread.Sleep(100);
 
-            if (!isASKActive)
-            {
-                _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{carrierWaveform} {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
-                System.Threading.Thread.Sleep(100);
-
-                _device.SendCommand($"SOURCE{_activeChannel}:ASK:STATE ON");
-                _device.SendCommand($"SOURCE{_activeChannel}:ASK:SOURCE INT");
-            }
+            _device.SendCommand($"SOURCE{_activeChannel}:ASK:STATE ON");
+            _device.SendCommand($"SOURCE{_activeChannel}:ASK:SOURCE INT");
 
             // Clamp amplitude to valid range (0-10 Vpp)
             amplitudeVpp = Math.Max(0, Math.Min(10, amplitudeVpp));
@@ -654,17 +636,12 @@ namespace DG2072_USB_Control.Modulation
         private void ApplyFSKModulation(string carrierWaveform, double carrierFreq, double carrierAmp,
             double carrierOffset, double carrierPhase, double modFreq, double hopFrequency)
         {
-            string fskState = _device.SendQuery($"SOURCE{_activeChannel}:FSK:STATE?");
-            bool isFSKActive = (fskState.Trim() == "ON" || fskState.Trim() == "1");
+            // Always apply carrier settings when switching modulation types
+            _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{carrierWaveform} {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+            System.Threading.Thread.Sleep(100);
 
-            if (!isFSKActive)
-            {
-                _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{carrierWaveform} {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
-                System.Threading.Thread.Sleep(100);
-
-                _device.SendCommand($"SOURCE{_activeChannel}:FSK:STATE ON");
-                _device.SendCommand($"SOURCE{_activeChannel}:FSK:SOURCE INT");
-            }
+            _device.SendCommand($"SOURCE{_activeChannel}:FSK:STATE ON");
+            _device.SendCommand($"SOURCE{_activeChannel}:FSK:SOURCE INT");
 
             _device.SendCommand($"SOURCE{_activeChannel}:FSK:RATE {modFreq}");
             // CORRECTED: FSK uses the absolute hop frequency, not carrier + shift
@@ -677,17 +654,12 @@ namespace DG2072_USB_Control.Modulation
         private void ApplyPSKModulation(string carrierWaveform, double carrierFreq, double carrierAmp,
             double carrierOffset, double carrierPhase, double modFreq, double phaseShift)
         {
-            string pskState = _device.SendQuery($"SOURCE{_activeChannel}:PSK:STATE?");
-            bool isPSKActive = (pskState.Trim() == "ON" || pskState.Trim() == "1");
+            // Always apply carrier settings when switching modulation types
+            _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{carrierWaveform} {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
+            System.Threading.Thread.Sleep(100);
 
-            if (!isPSKActive)
-            {
-                _device.SendCommand($"SOURCE{_activeChannel}:APPLY:{carrierWaveform} {carrierFreq},{carrierAmp},{carrierOffset},{carrierPhase}");
-                System.Threading.Thread.Sleep(100);
-
-                _device.SendCommand($"SOURCE{_activeChannel}:PSK:STATE ON");
-                _device.SendCommand($"SOURCE{_activeChannel}:PSK:SOURCE INT");
-            }
+            _device.SendCommand($"SOURCE{_activeChannel}:PSK:STATE ON");
+            _device.SendCommand($"SOURCE{_activeChannel}:PSK:SOURCE INT");
 
             // Clamp phase to valid range (0-360°)
             phaseShift = Math.Max(0, Math.Min(360, phaseShift));
@@ -1122,6 +1094,28 @@ namespace DG2072_USB_Control.Modulation
                     _modulatingWaveformComboBox.SelectedIndex = 0;
             }
         }
+
+
+        /// <summary>
+        /// Disable all modulation types except the one specified
+        /// </summary>
+        private void DisableOtherModulationTypes(string keepType)
+        {
+            string[] allTypes = { "AM", "FM", "PM", "PWM", "ASK", "FSK", "PSK" };
+
+            foreach (var modType in allTypes)
+            {
+                if (modType != keepType)
+                {
+                    _device.SendCommand($"SOURCE{_activeChannel}:{modType}:STATE OFF");
+                }
+            }
+
+            // Small delay to ensure commands are processed
+            System.Threading.Thread.Sleep(50);
+        }
+
+
 
         private bool IsDeviceConnected()
         {

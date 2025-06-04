@@ -100,7 +100,13 @@ namespace DG2072_USB_Control
         private DG2072_USB_Control.Sweep.SweepController _sweepController;
 
 
-        public GroupBox SweepPanel => SweepPanelControl?.SweepPanelGroupBox;
+       // public GroupBox SweepPanel => SweepPanelControl?.SweepPanelGroupBox;
+
+
+
+
+
+
 
         // Constructor starts here
         // Constructor starts here

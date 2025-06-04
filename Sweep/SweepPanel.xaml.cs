@@ -7,7 +7,6 @@ namespace DG2072_USB_Control.Sweep
 {
     /// <summary>
     /// Self-contained SweepPanel that handles all its own events
-    /// THIS REPLACES YOUR CURRENT SweepPanel.xaml.cs FILE COMPLETELY
     /// </summary>
     public partial class SweepPanel : UserControl
     {
@@ -15,6 +14,29 @@ namespace DG2072_USB_Control.Sweep
         private bool _isInitializing = false;
 
         public event EventHandler<string> LogEvent;
+
+        // Public properties to expose UI controls to SweepController
+        public ComboBox SweepTypeComboBox_Public => SweepTypeComboBox;
+        public ComboBox TriggerSourceComboBox_Public => TriggerSourceComboBox;
+        public ComboBox TriggerSlopeComboBox_Public => TriggerSlopeComboBox;
+        public TextBox SweepTimeTextBox_Public => SweepTimeTextBox;
+        public TextBox ReturnTimeTextBox_Public => ReturnTimeTextBox;
+        public TextBox StartFrequencyTextBox_Public => StartFrequencyTextBox;
+        public ComboBox StartFrequencyUnitComboBox_Public => StartFrequencyUnitComboBox;
+        public TextBox StopFrequencyTextBox_Public => StopFrequencyTextBox;
+        public ComboBox StopFrequencyUnitComboBox_Public => StopFrequencyUnitComboBox;
+        public TextBox CenterFrequencyTextBox_Public => SweepCenterFrequencyTextBox;
+        public ComboBox CenterFrequencyUnitComboBox_Public => SweepCenterFrequencyUnitComboBox;
+        public TextBox SpanFrequencyTextBox_Public => SpanFrequencyTextBox;
+        public ComboBox SpanFrequencyUnitComboBox_Public => SpanFrequencyUnitComboBox;
+        public TextBox MarkerFrequencyTextBox_Public => MarkerFrequencyTextBox;
+        public ComboBox MarkerFrequencyUnitComboBox_Public => MarkerFrequencyUnitComboBox;
+        public TextBox StartHoldTextBox_Public => StartHoldTextBox;
+        public TextBox StopHoldTextBox_Public => StopHoldTextBox;
+        public TextBox StepCountTextBox_Public => StepCountTextBox;
+        public Button ManualTriggerButton_Public => ManualTriggerButton;
+        public StackPanel StartStopPanel_Public => StartStopPanel;
+        public StackPanel CenterSpanPanel_Public => CenterSpanPanel;
 
         public SweepPanel()
         {
@@ -117,14 +139,14 @@ namespace DG2072_USB_Control.Sweep
             _sweepController.OnStopFrequencyChanged();
         }
 
-        // Center/Span frequency event handlers
-        private void CenterFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        // Center/Span frequency event handlers - these match the XAML names
+        private void SweepCenterFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_isInitializing || _sweepController == null) return;
             _sweepController.OnCenterFrequencyChanged();
         }
 
-        private void CenterFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
+        private void SweepCenterFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (sender is TextBox textBox && double.TryParse(textBox.Text, out double value))
             {
@@ -132,7 +154,7 @@ namespace DG2072_USB_Control.Sweep
             }
         }
 
-        private void CenterFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SweepCenterFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_isInitializing || _sweepController == null) return;
             _sweepController.OnCenterFrequencyChanged();

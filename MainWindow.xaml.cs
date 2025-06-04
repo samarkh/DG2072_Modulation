@@ -100,8 +100,8 @@ namespace DG2072_USB_Control
         private DG2072_USB_Control.Sweep.SweepController _sweepController;
 
 
-       // public GroupBox SweepPanel => SweepPanelControl?.SweepPanelGroupBox;
-
+        // public GroupBox SweepPanel => SweepPanelControl?.SweepPanelGroupBox;// Add this field declaration with your other private fields:
+        private DG2072_USB_Control.Burst.BurstController _burstController;
 
 
 
@@ -341,6 +341,9 @@ namespace DG2072_USB_Control
 
             if (_sweepController != null)
                 _sweepController.ActiveChannel = channel;
+
+            if (_burstController != null)
+                _burstController.ActiveChannel = channel;
         }
 
         private void RefreshChannelSettings()
@@ -648,6 +651,9 @@ namespace DG2072_USB_Control
 
                 if (_sweepController != null && isConnected)
                     _sweepController.RefreshSweepSettings();
+
+                if (_burstController != null && isConnected)
+                    _burstController.RefreshBurstSettings();
 
 
 
@@ -1234,11 +1240,12 @@ namespace DG2072_USB_Control
             _modulationController = new ModulationController(rigolDG2072, activeChannel, this);
             _modulationController.LogEvent += (s, message) => LogMessage(message);
 
-            //_sweepController = new DG2072_USB_Control.Sweep.SweepController(rigolDG2072, activeChannel, this);
-            //_sweepController.LogEvent += (s, message) => LogMessage(message);
-
-            _sweepController = new DG2072_USB_Control.Sweep.SweepController(rigolDG2072, activeChannel, SweepPanelControl);
+            _sweepController = new DG2072_USB_Control.Sweep.SweepController(rigolDG2072, activeChannel, SweepPanelControl, this);
             _sweepController.LogEvent += (s, message) => LogMessage(message);
+
+            // Initialize the SweepPanel with the controller
+            SweepPanelControl.Initialize(_sweepController);
+
 
 
             // Don't initialize UI here - wait until after connection
@@ -1484,6 +1491,13 @@ namespace DG2072_USB_Control
                     {
                         _sweepController.InitializeUI();
                     }
+
+                    if (_burstController != null)
+                    {
+                        _burstController.InitializeUI();
+                    }
+
+
 
                     // Clear the initialization flag now that we're connected
                     _isInitializing = false;

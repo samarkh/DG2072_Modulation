@@ -3359,6 +3359,28 @@ namespace DG2072_USB_Control
         }
 
         #endregion
+
+
+        #region Burst
+
+        // 7. Add the event handler method:
+        private void BurstToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_burstController == null) return;
+
+            if (_burstController.IsEnabled)
+            {
+                _burstController.DisableBurst();
+            }
+            else
+            {
+                _burstController.EnableBurst();
+            }
+        }
+
+
+        #endregion
+    
     }
 }
 

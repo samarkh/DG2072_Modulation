@@ -893,5 +893,11 @@ namespace DG2072_USB_Control.Burst
                 displayValue = voltageInVolts;
             }
         }
+
+        // Add this method at the end of the BurstController class, before the closing brace
+        private void Log(string message)
+        {
+            LogEvent?.Invoke(this, message);
+        }
     }
 }

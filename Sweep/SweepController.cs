@@ -28,6 +28,12 @@ namespace DG2072_USB_Control.Sweep
 
         public event EventHandler<string> LogEvent;
 
+        // Helper method to get the sweep panel
+        private SweepPanel GetSweepPanel()
+        {
+            return _mainWindow.SweepPanelControl;
+        }
+
         public int ActiveChannel
         {
             get => _activeChannel;
@@ -75,33 +81,43 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                // Initialize sweep type combo box
-                if (_mainWindow.SweepTypeComboBox != null)
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel == null)
                 {
-                    _mainWindow.SweepTypeComboBox.Items.Clear();
-                    _mainWindow.SweepTypeComboBox.Items.Add(new ComboBoxItem { Content = "Linear", Tag = "LIN" });
-                    _mainWindow.SweepTypeComboBox.Items.Add(new ComboBoxItem { Content = "Logarithmic", Tag = "LOG" });
-                    _mainWindow.SweepTypeComboBox.Items.Add(new ComboBoxItem { Content = "Step", Tag = "STE" });
-                    _mainWindow.SweepTypeComboBox.SelectedIndex = 0;
+                    Log("SweepPanel UserControl not found");
+                    return;
+                }
+
+                // Initialize the panel with MainWindow reference
+                sweepPanel.Initialize(_mainWindow);
+
+                // Initialize sweep type combo box
+                if (sweepPanel.SweepTypeComboBox != null)
+                {
+                    sweepPanel.SweepTypeComboBox.Items.Clear();
+                    sweepPanel.SweepTypeComboBox.Items.Add(new ComboBoxItem { Content = "Linear", Tag = "LIN" });
+                    sweepPanel.SweepTypeComboBox.Items.Add(new ComboBoxItem { Content = "Logarithmic", Tag = "LOG" });
+                    sweepPanel.SweepTypeComboBox.Items.Add(new ComboBoxItem { Content = "Step", Tag = "STE" });
+                    sweepPanel.SweepTypeComboBox.SelectedIndex = 0;
                 }
 
                 // Initialize trigger source combo box
-                if (_mainWindow.TriggerSourceComboBox != null)
+                if (sweepPanel.TriggerSourceComboBox != null)
                 {
-                    _mainWindow.TriggerSourceComboBox.Items.Clear();
-                    _mainWindow.TriggerSourceComboBox.Items.Add(new ComboBoxItem { Content = "Internal", Tag = "INT" });
-                    _mainWindow.TriggerSourceComboBox.Items.Add(new ComboBoxItem { Content = "External", Tag = "EXT" });
-                    _mainWindow.TriggerSourceComboBox.Items.Add(new ComboBoxItem { Content = "Manual", Tag = "MAN" });
-                    _mainWindow.TriggerSourceComboBox.SelectedIndex = 0;
+                    sweepPanel.TriggerSourceComboBox.Items.Clear();
+                    sweepPanel.TriggerSourceComboBox.Items.Add(new ComboBoxItem { Content = "Internal", Tag = "INT" });
+                    sweepPanel.TriggerSourceComboBox.Items.Add(new ComboBoxItem { Content = "External", Tag = "EXT" });
+                    sweepPanel.TriggerSourceComboBox.Items.Add(new ComboBoxItem { Content = "Manual", Tag = "MAN" });
+                    sweepPanel.TriggerSourceComboBox.SelectedIndex = 0;
                 }
 
                 // Initialize trigger slope combo box
-                if (_mainWindow.TriggerSlopeComboBox != null)
+                if (sweepPanel.TriggerSlopeComboBox != null)
                 {
-                    _mainWindow.TriggerSlopeComboBox.Items.Clear();
-                    _mainWindow.TriggerSlopeComboBox.Items.Add(new ComboBoxItem { Content = "Positive", Tag = "POS" });
-                    _mainWindow.TriggerSlopeComboBox.Items.Add(new ComboBoxItem { Content = "Negative", Tag = "NEG" });
-                    _mainWindow.TriggerSlopeComboBox.SelectedIndex = 0;
+                    sweepPanel.TriggerSlopeComboBox.Items.Clear();
+                    sweepPanel.TriggerSlopeComboBox.Items.Add(new ComboBoxItem { Content = "Positive", Tag = "POS" });
+                    sweepPanel.TriggerSlopeComboBox.Items.Add(new ComboBoxItem { Content = "Negative", Tag = "NEG" });
+                    sweepPanel.TriggerSlopeComboBox.SelectedIndex = 0;
                 }
 
                 // Set initial visibility
@@ -166,9 +182,10 @@ namespace DG2072_USB_Control.Sweep
                 }
 
                 // Enable/disable manual trigger button
-                if (_mainWindow.ManualTriggerButton != null)
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel?.ManualTriggerButton != null)
                 {
-                    _mainWindow.ManualTriggerButton.IsEnabled = enabled;
+                    sweepPanel.ManualTriggerButton.IsEnabled = enabled;
                 }
             });
         }
@@ -189,10 +206,11 @@ namespace DG2072_USB_Control.Sweep
         {
             _mainWindow.Dispatcher.Invoke(() =>
             {
-                if (_mainWindow.StartStopPanel != null && _mainWindow.CenterSpanPanel != null)
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel?.StartStopPanel != null && sweepPanel?.CenterSpanPanel != null)
                 {
-                    _mainWindow.StartStopPanel.Visibility = _useStartStop ? Visibility.Visible : Visibility.Collapsed;
-                    _mainWindow.CenterSpanPanel.Visibility = _useStartStop ? Visibility.Collapsed : Visibility.Visible;
+                    sweepPanel.StartStopPanel.Visibility = _useStartStop ? Visibility.Visible : Visibility.Collapsed;
+                    sweepPanel.CenterSpanPanel.Visibility = _useStartStop ? Visibility.Collapsed : Visibility.Visible;
                 }
             });
         }
@@ -235,17 +253,18 @@ namespace DG2072_USB_Control.Sweep
 
                 _mainWindow.Dispatcher.Invoke(() =>
                 {
-                    if (_mainWindow.SweepTypeComboBox != null)
+                    var sweepPanel = GetSweepPanel();
+                    if (sweepPanel?.SweepTypeComboBox != null)
                     {
-                        for (int i = 0; i < _mainWindow.SweepTypeComboBox.Items.Count; i++)
+                        for (int i = 0; i < sweepPanel.SweepTypeComboBox.Items.Count; i++)
                         {
-                            var item = _mainWindow.SweepTypeComboBox.Items[i] as ComboBoxItem;
+                            var item = sweepPanel.SweepTypeComboBox.Items[i] as ComboBoxItem;
                             if (item?.Tag?.ToString() == sweepType ||
                                 (sweepType.StartsWith("LIN") && item?.Tag?.ToString() == "LIN") ||
                                 (sweepType.StartsWith("LOG") && item?.Tag?.ToString() == "LOG") ||
                                 (sweepType.StartsWith("STE") && item?.Tag?.ToString() == "STE"))
                             {
-                                _mainWindow.SweepTypeComboBox.SelectedIndex = i;
+                                sweepPanel.SweepTypeComboBox.SelectedIndex = i;
                                 break;
                             }
                         }
@@ -267,7 +286,9 @@ namespace DG2072_USB_Control.Sweep
                 {
                     _mainWindow.Dispatcher.Invoke(() =>
                     {
-                        _mainWindow.SweepTimeTextBox.Text = sweepTime.ToString("F3");
+                        var sweepPanel = GetSweepPanel();
+                        if (sweepPanel?.SweepTimeTextBox != null)
+                            sweepPanel.SweepTimeTextBox.Text = sweepTime.ToString("F3");
                     });
                 }
             }
@@ -286,7 +307,9 @@ namespace DG2072_USB_Control.Sweep
                 {
                     _mainWindow.Dispatcher.Invoke(() =>
                     {
-                        _mainWindow.ReturnTimeTextBox.Text = returnTime.ToString("F3");
+                        var sweepPanel = GetSweepPanel();
+                        if (sweepPanel?.ReturnTimeTextBox != null)
+                            sweepPanel.ReturnTimeTextBox.Text = returnTime.ToString("F3");
                     });
                 }
             }
@@ -300,6 +323,9 @@ namespace DG2072_USB_Control.Sweep
         {
             try
             {
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel == null) return;
+
                 if (_useStartStop)
                 {
                     // Refresh start and stop frequencies
@@ -310,7 +336,7 @@ namespace DG2072_USB_Control.Sweep
                     {
                         _mainWindow.Dispatcher.Invoke(() =>
                         {
-                            _mainWindow.StartFrequencyTextBox.Text = FormatFrequency(startFreq);
+                            sweepPanel.StartFrequencyTextBox.Text = FormatFrequency(startFreq);
                         });
                     }
 
@@ -318,7 +344,7 @@ namespace DG2072_USB_Control.Sweep
                     {
                         _mainWindow.Dispatcher.Invoke(() =>
                         {
-                            _mainWindow.StopFrequencyTextBox.Text = FormatFrequency(stopFreq);
+                            sweepPanel.StopFrequencyTextBox.Text = FormatFrequency(stopFreq);
                         });
                     }
                 }
@@ -332,7 +358,7 @@ namespace DG2072_USB_Control.Sweep
                     {
                         _mainWindow.Dispatcher.Invoke(() =>
                         {
-                            _mainWindow.SweepCenterFrequencyTextBox.Text = FormatFrequency(centerFreq);
+                            sweepPanel.CenterFrequencyTextBox.Text = FormatFrequency(centerFreq);
                         });
                     }
 
@@ -340,7 +366,7 @@ namespace DG2072_USB_Control.Sweep
                     {
                         _mainWindow.Dispatcher.Invoke(() =>
                         {
-                            _mainWindow.SpanFrequencyTextBox.Text = FormatFrequency(spanFreq);
+                            sweepPanel.SpanFrequencyTextBox.Text = FormatFrequency(spanFreq);
                         });
                     }
                 }
@@ -361,7 +387,9 @@ namespace DG2072_USB_Control.Sweep
                 {
                     _mainWindow.Dispatcher.Invoke(() =>
                     {
-                        _mainWindow.MarkerFrequencyTextBox.Text = FormatFrequency(markerFreq);
+                        var sweepPanel = GetSweepPanel();
+                        if (sweepPanel?.MarkerFrequencyTextBox != null)
+                            sweepPanel.MarkerFrequencyTextBox.Text = FormatFrequency(markerFreq);
                     });
                 }
             }
@@ -379,11 +407,14 @@ namespace DG2072_USB_Control.Sweep
                 string startHold = _device.SendQuery($":SOUR{_activeChannel}:SWE:HTIM:STAR?");
                 string stopHold = _device.SendQuery($":SOUR{_activeChannel}:SWE:HTIM:STOP?");
 
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel == null) return;
+
                 if (double.TryParse(startHold, out double startHoldTime))
                 {
                     _mainWindow.Dispatcher.Invoke(() =>
                     {
-                        _mainWindow.StartHoldTextBox.Text = startHoldTime.ToString("F3");
+                        sweepPanel.StartHoldTextBox.Text = startHoldTime.ToString("F3");
                     });
                 }
 
@@ -391,7 +422,7 @@ namespace DG2072_USB_Control.Sweep
                 {
                     _mainWindow.Dispatcher.Invoke(() =>
                     {
-                        _mainWindow.StopHoldTextBox.Text = stopHoldTime.ToString("F3");
+                        sweepPanel.StopHoldTextBox.Text = stopHoldTime.ToString("F3");
                     });
                 }
             }
@@ -410,7 +441,9 @@ namespace DG2072_USB_Control.Sweep
                 {
                     _mainWindow.Dispatcher.Invoke(() =>
                     {
-                        _mainWindow.StepCountTextBox.Text = stepCount.ToString();
+                        var sweepPanel = GetSweepPanel();
+                        if (sweepPanel?.StepCountTextBox != null)
+                            sweepPanel.StepCountTextBox.Text = stepCount.ToString();
                     });
                 }
             }
@@ -424,18 +457,21 @@ namespace DG2072_USB_Control.Sweep
         {
             try
             {
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel == null) return;
+
                 // Refresh trigger source
                 string trigSource = _device.SendQuery($":SOUR{_activeChannel}:SWE:TRIG:SOUR?").Trim().ToUpper();
                 _mainWindow.Dispatcher.Invoke(() =>
                 {
-                    if (_mainWindow.TriggerSourceComboBox != null)
+                    if (sweepPanel.TriggerSourceComboBox != null)
                     {
-                        for (int i = 0; i < _mainWindow.TriggerSourceComboBox.Items.Count; i++)
+                        for (int i = 0; i < sweepPanel.TriggerSourceComboBox.Items.Count; i++)
                         {
-                            var item = _mainWindow.TriggerSourceComboBox.Items[i] as ComboBoxItem;
+                            var item = sweepPanel.TriggerSourceComboBox.Items[i] as ComboBoxItem;
                             if (item?.Tag?.ToString() == trigSource.Substring(0, 3))
                             {
-                                _mainWindow.TriggerSourceComboBox.SelectedIndex = i;
+                                sweepPanel.TriggerSourceComboBox.SelectedIndex = i;
                                 break;
                             }
                         }
@@ -446,14 +482,14 @@ namespace DG2072_USB_Control.Sweep
                 string trigSlope = _device.SendQuery($":SOUR{_activeChannel}:SWE:TRIG:SLOP?").Trim().ToUpper();
                 _mainWindow.Dispatcher.Invoke(() =>
                 {
-                    if (_mainWindow.TriggerSlopeComboBox != null)
+                    if (sweepPanel.TriggerSlopeComboBox != null)
                     {
-                        for (int i = 0; i < _mainWindow.TriggerSlopeComboBox.Items.Count; i++)
+                        for (int i = 0; i < sweepPanel.TriggerSlopeComboBox.Items.Count; i++)
                         {
-                            var item = _mainWindow.TriggerSlopeComboBox.Items[i] as ComboBoxItem;
+                            var item = sweepPanel.TriggerSlopeComboBox.Items[i] as ComboBoxItem;
                             if (item?.Tag?.ToString() == trigSlope.Substring(0, 3))
                             {
-                                _mainWindow.TriggerSlopeComboBox.SelectedIndex = i;
+                                sweepPanel.TriggerSlopeComboBox.SelectedIndex = i;
                                 break;
                             }
                         }
@@ -473,7 +509,9 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                if (double.TryParse(_mainWindow.SweepTimeTextBox.Text, out double sweepTime))
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel?.SweepTimeTextBox != null &&
+                    double.TryParse(sweepPanel.SweepTimeTextBox.Text, out double sweepTime))
                 {
                     _device.SendCommand($":SOUR{_activeChannel}:SWE:TIME {sweepTime}");
                     Log($"Set sweep time to {sweepTime} seconds");
@@ -491,7 +529,9 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                if (double.TryParse(_mainWindow.ReturnTimeTextBox.Text, out double returnTime))
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel?.ReturnTimeTextBox != null &&
+                    double.TryParse(sweepPanel.ReturnTimeTextBox.Text, out double returnTime))
                 {
                     _device.SendCommand($":SOUR{_activeChannel}:SWE:RTIM {returnTime}");
                     Log($"Set return time to {returnTime} seconds");
@@ -509,8 +549,11 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                double freq = ParseFrequencyWithUnit(_mainWindow.StartFrequencyTextBox.Text,
-                    _mainWindow.StartFrequencyUnitComboBox);
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel == null) return;
+
+                double freq = ParseFrequencyWithUnit(sweepPanel.StartFrequencyTextBox.Text,
+                    sweepPanel.StartFrequencyUnitComboBox);
                 _device.SendCommand($":SOUR{_activeChannel}:FREQ:STAR {freq}");
                 Log($"Set start frequency to {freq} Hz");
             }
@@ -526,8 +569,11 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                double freq = ParseFrequencyWithUnit(_mainWindow.StopFrequencyTextBox.Text,
-                    _mainWindow.StopFrequencyUnitComboBox);
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel == null) return;
+
+                double freq = ParseFrequencyWithUnit(sweepPanel.StopFrequencyTextBox.Text,
+                    sweepPanel.StopFrequencyUnitComboBox);
                 _device.SendCommand($":SOUR{_activeChannel}:FREQ:STOP {freq}");
                 Log($"Set stop frequency to {freq} Hz");
             }
@@ -543,8 +589,11 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                double freq = ParseFrequencyWithUnit(_mainWindow.SweepCenterFrequencyTextBox.Text,
-                    _mainWindow.SweepCenterFrequencyUnitComboBox);
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel == null) return;
+
+                double freq = ParseFrequencyWithUnit(sweepPanel.CenterFrequencyTextBox.Text,
+                    sweepPanel.CenterFrequencyUnitComboBox);
                 _device.SendCommand($":SOUR{_activeChannel}:FREQ:CENT {freq}");
                 Log($"Set center frequency to {freq} Hz");
             }
@@ -560,8 +609,11 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                double freq = ParseFrequencyWithUnit(_mainWindow.SpanFrequencyTextBox.Text,
-                    _mainWindow.SpanFrequencyUnitComboBox);
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel == null) return;
+
+                double freq = ParseFrequencyWithUnit(sweepPanel.SpanFrequencyTextBox.Text,
+                    sweepPanel.SpanFrequencyUnitComboBox);
                 _device.SendCommand($":SOUR{_activeChannel}:FREQ:SPAN {freq}");
                 Log($"Set frequency span to {freq} Hz");
             }
@@ -577,8 +629,11 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                double freq = ParseFrequencyWithUnit(_mainWindow.MarkerFrequencyTextBox.Text,
-                    _mainWindow.MarkerFrequencyUnitComboBox);
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel == null) return;
+
+                double freq = ParseFrequencyWithUnit(sweepPanel.MarkerFrequencyTextBox.Text,
+                    sweepPanel.MarkerFrequencyUnitComboBox);
                 _device.SendCommand($":SOUR{_activeChannel}:MARK:FREQ {freq}");
                 Log($"Set marker frequency to {freq} Hz");
             }
@@ -594,7 +649,9 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                if (double.TryParse(_mainWindow.StartHoldTextBox.Text, out double startHold))
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel?.StartHoldTextBox != null &&
+                    double.TryParse(sweepPanel.StartHoldTextBox.Text, out double startHold))
                 {
                     _device.SendCommand($":SOUR{_activeChannel}:SWE:HTIM:STAR {startHold}");
                     Log($"Set start hold time to {startHold} seconds");
@@ -612,7 +669,9 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                if (double.TryParse(_mainWindow.StopHoldTextBox.Text, out double stopHold))
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel?.StopHoldTextBox != null &&
+                    double.TryParse(sweepPanel.StopHoldTextBox.Text, out double stopHold))
                 {
                     _device.SendCommand($":SOUR{_activeChannel}:SWE:HTIM:STOP {stopHold}");
                     Log($"Set stop hold time to {stopHold} seconds");
@@ -630,7 +689,9 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                if (int.TryParse(_mainWindow.StepCountTextBox.Text, out int stepCount))
+                var sweepPanel = GetSweepPanel();
+                if (sweepPanel?.StepCountTextBox != null &&
+                    int.TryParse(sweepPanel.StepCountTextBox.Text, out int stepCount))
                 {
                     _device.SendCommand($":SOUR{_activeChannel}:SWE:STEP {stepCount}");
                     Log($"Set step count to {stepCount}");
@@ -649,7 +710,8 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                var selectedItem = _mainWindow.SweepTypeComboBox.SelectedItem as ComboBoxItem;
+                var sweepPanel = GetSweepPanel();
+                var selectedItem = sweepPanel?.SweepTypeComboBox.SelectedItem as ComboBoxItem;
                 if (selectedItem != null)
                 {
                     string sweepType = selectedItem.Tag.ToString();
@@ -660,7 +722,8 @@ namespace DG2072_USB_Control.Sweep
                     bool isStepMode = (sweepType == "STE");
                     _mainWindow.Dispatcher.Invoke(() =>
                     {
-                        _mainWindow.StepCountTextBox.IsEnabled = isStepMode;
+                        if (sweepPanel?.StepCountTextBox != null)
+                            sweepPanel.StepCountTextBox.IsEnabled = isStepMode;
                     });
                 }
             }
@@ -676,7 +739,8 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                var selectedItem = _mainWindow.TriggerSourceComboBox.SelectedItem as ComboBoxItem;
+                var sweepPanel = GetSweepPanel();
+                var selectedItem = sweepPanel?.TriggerSourceComboBox.SelectedItem as ComboBoxItem;
                 if (selectedItem != null)
                 {
                     string trigSource = selectedItem.Tag.ToString();
@@ -687,7 +751,8 @@ namespace DG2072_USB_Control.Sweep
                     bool isManual = (trigSource == "MAN");
                     _mainWindow.Dispatcher.Invoke(() =>
                     {
-                        _mainWindow.ManualTriggerButton.IsEnabled = _isSweepEnabled && isManual;
+                        if (sweepPanel?.ManualTriggerButton != null)
+                            sweepPanel.ManualTriggerButton.IsEnabled = _isSweepEnabled && isManual;
                     });
                 }
             }
@@ -703,7 +768,8 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                var selectedItem = _mainWindow.TriggerSlopeComboBox.SelectedItem as ComboBoxItem;
+                var sweepPanel = GetSweepPanel();
+                var selectedItem = sweepPanel?.TriggerSlopeComboBox.SelectedItem as ComboBoxItem;
                 if (selectedItem != null)
                 {
                     string trigSlope = selectedItem.Tag.ToString();
@@ -731,66 +797,16 @@ namespace DG2072_USB_Control.Sweep
         }
 
         // Debounced event handlers
-        // Debounced event handlers
-        public void OnSweepTimeChanged()
-        {
-            _sweepTimeTimer.Stop();
-            _sweepTimeTimer.Start();
-        }
-
-        public void OnReturnTimeChanged()
-        {
-            _returnTimeTimer.Stop();
-            _returnTimeTimer.Start();
-        }
-
-        public void OnStartFrequencyChanged()
-        {
-            _startFreqTimer.Stop();
-            _startFreqTimer.Start();
-        }
-
-        public void OnStopFrequencyChanged()
-        {
-            _stopFreqTimer.Stop();
-            _stopFreqTimer.Start();
-        }
-
-        public void OnCenterFrequencyChanged()
-        {
-            _centerFreqTimer.Stop();
-            _centerFreqTimer.Start();
-        }
-
-        public void OnSpanFrequencyChanged()
-        {
-            _spanFreqTimer.Stop();
-            _spanFreqTimer.Start();
-        }
-
-        public void OnMarkerFrequencyChanged()
-        {
-            _markerFreqTimer.Stop();
-            _markerFreqTimer.Start();
-        }
-
-        public void OnStartHoldChanged()
-        {
-            _startHoldTimer.Stop();
-            _startHoldTimer.Start();
-        }
-
-        public void OnStopHoldChanged()
-        {
-            _stopHoldTimer.Stop();
-            _stopHoldTimer.Start();
-        }
-
-        public void OnStepCountChanged()
-        {
-            _stepCountTimer.Stop();
-            _stepCountTimer.Start();
-        }
+        public void OnSweepTimeChanged() { _sweepTimeTimer.Stop(); _sweepTimeTimer.Start(); }
+        public void OnReturnTimeChanged() { _returnTimeTimer.Stop(); _returnTimeTimer.Start(); }
+        public void OnStartFrequencyChanged() { _startFreqTimer.Stop(); _startFreqTimer.Start(); }
+        public void OnStopFrequencyChanged() { _stopFreqTimer.Stop(); _stopFreqTimer.Start(); }
+        public void OnCenterFrequencyChanged() { _centerFreqTimer.Stop(); _centerFreqTimer.Start(); }
+        public void OnSpanFrequencyChanged() { _spanFreqTimer.Stop(); _spanFreqTimer.Start(); }
+        public void OnMarkerFrequencyChanged() { _markerFreqTimer.Stop(); _markerFreqTimer.Start(); }
+        public void OnStartHoldChanged() { _startHoldTimer.Stop(); _startHoldTimer.Start(); }
+        public void OnStopHoldChanged() { _stopHoldTimer.Stop(); _stopHoldTimer.Start(); }
+        public void OnStepCountChanged() { _stepCountTimer.Stop(); _stepCountTimer.Start(); }
 
         // Helper methods
         private double ParseFrequencyWithUnit(string value, ComboBox unitComboBox)
@@ -826,5 +842,3 @@ namespace DG2072_USB_Control.Sweep
         {
             LogEvent?.Invoke(this, message);
         }
-    }
-}

@@ -127,17 +127,17 @@
                 <DockPanel Margin="0,5">
                     <Label Content="Center Frequency:" Width="120" 
                            ToolTip="Center frequency of the sweep range"/>
-                    <TextBox x:Name="CenterFrequencyTextBox" 
+                    <TextBox x:Name="SweepCenterFrequencyTextBox" 
                              Width="100" 
                              Text="550.0" 
-                             TextChanged="CenterFrequencyTextBox_TextChanged"
-                             LostFocus="CenterFrequencyTextBox_LostFocus"
+                             TextChanged="SweepCenterFrequencyTextBox_TextChanged"
+                             LostFocus="SweepCenterFrequencyTextBox_LostFocus"
                              HorizontalContentAlignment="Right" 
                              VerticalContentAlignment="Center"/>
-                    <ComboBox x:Name="CenterFrequencyUnitComboBox" 
+                    <ComboBox x:Name="SweepCenterFrequencyUnitComboBox" 
                               Width="70" 
                               Margin="5,0,0,0"
-                              SelectionChanged="CenterFrequencyUnitComboBox_SelectionChanged"
+                              SelectionChanged="SweepCenterFrequencyUnitComboBox_SelectionChanged"
                               HorizontalAlignment="Left">
                         <ComboBoxItem Content="µHz"/>
                         <ComboBoxItem Content="mHz"/>

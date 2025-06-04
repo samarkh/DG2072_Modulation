@@ -332,7 +332,7 @@ namespace DG2072_USB_Control.Sweep
                     {
                         _mainWindow.Dispatcher.Invoke(() =>
                         {
-                            _mainWindow.CenterFrequencyTextBox.Text = FormatFrequency(centerFreq);
+                            _mainWindow.SweepCenterFrequencyTextBox.Text = FormatFrequency(centerFreq);
                         });
                     }
 
@@ -543,8 +543,8 @@ namespace DG2072_USB_Control.Sweep
 
             try
             {
-                double freq = ParseFrequencyWithUnit(_mainWindow.CenterFrequencyTextBox.Text,
-                    _mainWindow.CenterFrequencyUnitComboBox);
+                double freq = ParseFrequencyWithUnit(_mainWindow.SweepCenterFrequencyTextBox.Text,
+                    _mainWindow.SweepCenterFrequencyUnitComboBox);
                 _device.SendCommand($":SOUR{_activeChannel}:FREQ:CENT {freq}");
                 Log($"Set center frequency to {freq} Hz");
             }
@@ -731,16 +731,66 @@ namespace DG2072_USB_Control.Sweep
         }
 
         // Debounced event handlers
-        public void OnSweepTimeChanged() => _sweepTimeTimer.Stop(); _sweepTimeTimer.Start();
-        public void OnReturnTimeChanged() => _returnTimeTimer.Stop(); _returnTimeTimer.Start();
-        public void OnStartFrequencyChanged() => _startFreqTimer.Stop(); _startFreqTimer.Start();
-        public void OnStopFrequencyChanged() => _stopFreqTimer.Stop(); _stopFreqTimer.Start();
-        public void OnCenterFrequencyChanged() => _centerFreqTimer.Stop(); _centerFreqTimer.Start();
-        public void OnSpanFrequencyChanged() => _spanFreqTimer.Stop(); _spanFreqTimer.Start();
-        public void OnMarkerFrequencyChanged() => _markerFreqTimer.Stop(); _markerFreqTimer.Start();
-        public void OnStartHoldChanged() => _startHoldTimer.Stop(); _startHoldTimer.Start();
-        public void OnStopHoldChanged() => _stopHoldTimer.Stop(); _stopHoldTimer.Start();
-        public void OnStepCountChanged() => _stepCountTimer.Stop(); _stepCountTimer.Start();
+        // Debounced event handlers
+        public void OnSweepTimeChanged()
+        {
+            _sweepTimeTimer.Stop();
+            _sweepTimeTimer.Start();
+        }
+
+        public void OnReturnTimeChanged()
+        {
+            _returnTimeTimer.Stop();
+            _returnTimeTimer.Start();
+        }
+
+        public void OnStartFrequencyChanged()
+        {
+            _startFreqTimer.Stop();
+            _startFreqTimer.Start();
+        }
+
+        public void OnStopFrequencyChanged()
+        {
+            _stopFreqTimer.Stop();
+            _stopFreqTimer.Start();
+        }
+
+        public void OnCenterFrequencyChanged()
+        {
+            _centerFreqTimer.Stop();
+            _centerFreqTimer.Start();
+        }
+
+        public void OnSpanFrequencyChanged()
+        {
+            _spanFreqTimer.Stop();
+            _spanFreqTimer.Start();
+        }
+
+        public void OnMarkerFrequencyChanged()
+        {
+            _markerFreqTimer.Stop();
+            _markerFreqTimer.Start();
+        }
+
+        public void OnStartHoldChanged()
+        {
+            _startHoldTimer.Stop();
+            _startHoldTimer.Start();
+        }
+
+        public void OnStopHoldChanged()
+        {
+            _stopHoldTimer.Stop();
+            _stopHoldTimer.Start();
+        }
+
+        public void OnStepCountChanged()
+        {
+            _stepCountTimer.Stop();
+            _stepCountTimer.Start();
+        }
 
         // Helper methods
         private double ParseFrequencyWithUnit(string value, ComboBox unitComboBox)

@@ -98,22 +98,22 @@ namespace DG2072_USB_Control.Sweep
                 _mainWindow.StopFrequencyUnitComboBox_SelectionChanged(sender, e);
         }
 
-        private void CenterFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void SweepCenterFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_mainWindow != null && !_isInitializing)
-                _mainWindow.CenterFrequencyTextBox_TextChanged(sender, e);
+                _mainWindow.SweepCenterFrequencyTextBox_TextChanged(sender, e);
         }
 
-        private void CenterFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
+        private void SweepCenterFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (_mainWindow != null)
-                _mainWindow.CenterFrequencyTextBox_LostFocus(sender, e);
+                _mainWindow.SweepCenterFrequencyTextBox_LostFocus(sender, e);
         }
 
-        private void CenterFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SweepCenterFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_mainWindow != null && !_isInitializing)
-                _mainWindow.CenterFrequencyUnitComboBox_SelectionChanged(sender, e);
+                _mainWindow.SweepCenterFrequencyUnitComboBox_SelectionChanged(sender, e);
         }
 
         private void SpanFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)

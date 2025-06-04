@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DG2072_USB_Control.Sweep
 {
-    internal class FileName
+    public class SweepPanel
     {
     }
 }

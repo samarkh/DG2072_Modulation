@@ -97,6 +97,11 @@ namespace DG2072_USB_Control
         
         private DispatcherTimer _pulsePeriodUpdateTimer;
 
+        private DG2072_USB_Control.Sweep.SweepController _sweepController;
+
+
+        public GroupBox SweepPanel => SweepPanelControl?.SweepPanelGroupBox;
+
         // Constructor starts here
         // Constructor starts here
         // Constructor starts here
@@ -327,6 +332,9 @@ namespace DG2072_USB_Control
 
             if (dualToneGen != null)
                 dualToneGen.ActiveChannel = channel;
+
+            if (_sweepController != null)
+                _sweepController.ActiveChannel = channel;
         }
 
         private void RefreshChannelSettings()
@@ -631,6 +639,10 @@ namespace DG2072_USB_Control
                         _modulationController.RefreshModulationSettings();
                     }
                 }
+
+                if (_sweepController != null && isConnected)
+                    _sweepController.RefreshSweepSettings();
+
 
 
                 LogMessage("Instrument settings refreshed successfully");
@@ -1215,8 +1227,13 @@ namespace DG2072_USB_Control
 
             _modulationController = new ModulationController(rigolDG2072, activeChannel, this);
             _modulationController.LogEvent += (s, message) => LogMessage(message);
+
+            _sweepController = new DG2072_USB_Control.Sweep.SweepController(rigolDG2072, activeChannel, this);
+            _sweepController.LogEvent += (s, message) => LogMessage(message);
+
+
+
             // Don't initialize UI here - wait until after connection
-            
             // After window initialization, use a small delay before auto-connecting
             // This gives the UI time to fully render before connecting
             DispatcherTimer startupTimer = new DispatcherTimer
@@ -1229,7 +1246,7 @@ namespace DG2072_USB_Control
                 startupTimer.Stop();
 
                 // Auto-connect only if not already connected
-                if (!isConnected)
+                if (!isConnected) 
                 {
                     LogMessage("Auto-connecting to instrument...");
                     // Call the connection method to establish connection
@@ -1244,6 +1261,8 @@ namespace DG2072_USB_Control
                         ConnectionToggleButton.Content = "Disconnect";
                         IdentifyButton.IsEnabled = true;
                         RefreshButton.IsEnabled = true;
+                        
+                        
                         UpdateAutoRefreshState(true);
 
                         if (_modulationController != null)
@@ -1297,6 +1316,10 @@ namespace DG2072_USB_Control
                             };
                             delayedModCheck.Start();
                         }
+
+
+                        if (_sweepController != null)
+                            _sweepController.InitializeUI();
 
                         // NOW we're ready - clear the initialization flag
                         _isInitializing = false;
@@ -1449,7 +1472,10 @@ namespace DG2072_USB_Control
                         _modulationController.InitializeUI();
                     }
 
-
+                    if (_sweepController != null)
+                    {
+                        _sweepController.InitializeUI();
+                    }
 
                     // Clear the initialization flag now that we're connected
                     _isInitializing = false;

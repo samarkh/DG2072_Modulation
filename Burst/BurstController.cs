@@ -892,3 +892,6 @@ namespace DG2072_USB_Control.Burst
                 bestUnit = "V";
                 displayValue = voltageInVolts;
             }
+        }
+    }
+}

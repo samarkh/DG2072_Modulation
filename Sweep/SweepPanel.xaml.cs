@@ -6,204 +6,246 @@ using DG2072_USB_Control.Services;
 namespace DG2072_USB_Control.Sweep
 {
     /// <summary>
-    /// Interaction logic for SweepPanel.xaml
+    /// Self-contained SweepPanel that handles all its own events
+    /// THIS REPLACES YOUR CURRENT SweepPanel.xaml.cs FILE COMPLETELY
     /// </summary>
     public partial class SweepPanel : UserControl
     {
-        private MainWindow _mainWindow;
+        private SweepController _sweepController;
         private bool _isInitializing = false;
+
+        public event EventHandler<string> LogEvent;
 
         public SweepPanel()
         {
             InitializeComponent();
         }
 
-        // Property to set the main window reference
-        public void Initialize(MainWindow mainWindow)
+        /// <summary>
+        /// Initialize the panel with its controller
+        /// </summary>
+        public void Initialize(SweepController sweepController)
         {
-            _mainWindow = mainWindow;
+            _sweepController = sweepController;
             _isInitializing = false;
         }
 
-        // Pass all events to MainWindow
+        // All event handlers work directly with the SweepController
         private void SweepTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.SweepTypeComboBox_SelectionChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnSweepTypeChanged();
         }
 
         private void SweepTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.SweepTimeTextBox_TextChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnSweepTimeChanged();
         }
 
         private void SweepTimeTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (_mainWindow != null)
-                _mainWindow.SweepTimeTextBox_LostFocus(sender, e);
+            if (sender is TextBox textBox && double.TryParse(textBox.Text, out double value))
+            {
+                textBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(value);
+            }
         }
 
         private void ReturnTimeTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.ReturnTimeTextBox_TextChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnReturnTimeChanged();
         }
 
         private void ReturnTimeTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (_mainWindow != null)
-                _mainWindow.ReturnTimeTextBox_LostFocus(sender, e);
+            if (sender is TextBox textBox && double.TryParse(textBox.Text, out double value))
+            {
+                textBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(value);
+            }
         }
 
         private void FrequencyModeChanged(object sender, RoutedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.FrequencyModeChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+
+            if (sender is RadioButton radioButton)
+            {
+                bool useStartStop = radioButton.Name == "StartStopMode";
+                _sweepController.OnFrequencyModeChanged(useStartStop);
+            }
         }
 
+        // Start/Stop frequency event handlers
         private void StartFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.StartFrequencyTextBox_TextChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnStartFrequencyChanged();
         }
 
         private void StartFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (_mainWindow != null)
-                _mainWindow.StartFrequencyTextBox_LostFocus(sender, e);
+            if (sender is TextBox textBox && double.TryParse(textBox.Text, out double value))
+            {
+                textBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(value);
+            }
         }
 
         private void StartFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.StartFrequencyUnitComboBox_SelectionChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnStartFrequencyChanged();
         }
 
         private void StopFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.StopFrequencyTextBox_TextChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnStopFrequencyChanged();
         }
 
         private void StopFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (_mainWindow != null)
-                _mainWindow.StopFrequencyTextBox_LostFocus(sender, e);
+            if (sender is TextBox textBox && double.TryParse(textBox.Text, out double value))
+            {
+                textBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(value);
+            }
         }
 
         private void StopFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.StopFrequencyUnitComboBox_SelectionChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnStopFrequencyChanged();
         }
 
-        private void SweepCenterFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        // Center/Span frequency event handlers
+        private void CenterFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.SweepCenterFrequencyTextBox_TextChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnCenterFrequencyChanged();
         }
 
-        private void SweepCenterFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
+        private void CenterFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (_mainWindow != null)
-                _mainWindow.SweepCenterFrequencyTextBox_LostFocus(sender, e);
+            if (sender is TextBox textBox && double.TryParse(textBox.Text, out double value))
+            {
+                textBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(value);
+            }
         }
 
-        private void SweepCenterFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CenterFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.SweepCenterFrequencyUnitComboBox_SelectionChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnCenterFrequencyChanged();
         }
 
         private void SpanFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.SpanFrequencyTextBox_TextChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnSpanFrequencyChanged();
         }
 
         private void SpanFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (_mainWindow != null)
-                _mainWindow.SpanFrequencyTextBox_LostFocus(sender, e);
+            if (sender is TextBox textBox && double.TryParse(textBox.Text, out double value))
+            {
+                textBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(value);
+            }
         }
 
         private void SpanFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.SpanFrequencyUnitComboBox_SelectionChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnSpanFrequencyChanged();
         }
 
+        // Marker frequency event handlers
         private void MarkerFrequencyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.MarkerFrequencyTextBox_TextChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnMarkerFrequencyChanged();
         }
 
         private void MarkerFrequencyTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (_mainWindow != null)
-                _mainWindow.MarkerFrequencyTextBox_LostFocus(sender, e);
+            if (sender is TextBox textBox && double.TryParse(textBox.Text, out double value))
+            {
+                textBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(value);
+            }
         }
 
         private void MarkerFrequencyUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.MarkerFrequencyUnitComboBox_SelectionChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnMarkerFrequencyChanged();
         }
 
+        // Hold time event handlers
         private void StartHoldTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.StartHoldTextBox_TextChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnStartHoldChanged();
         }
 
         private void StartHoldTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (_mainWindow != null)
-                _mainWindow.StartHoldTextBox_LostFocus(sender, e);
+            if (sender is TextBox textBox && double.TryParse(textBox.Text, out double value))
+            {
+                textBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(value);
+            }
         }
 
         private void StopHoldTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.StopHoldTextBox_TextChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnStopHoldChanged();
         }
 
         private void StopHoldTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (_mainWindow != null)
-                _mainWindow.StopHoldTextBox_LostFocus(sender, e);
+            if (sender is TextBox textBox && double.TryParse(textBox.Text, out double value))
+            {
+                textBox.Text = UnitConversionUtility.FormatWithMinimumDecimals(value);
+            }
         }
 
+        // Step count event handlers
         private void StepCountTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.StepCountTextBox_TextChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnStepCountChanged();
         }
 
         private void StepCountTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (_mainWindow != null)
-                _mainWindow.StepCountTextBox_LostFocus(sender, e);
+            if (sender is TextBox textBox && int.TryParse(textBox.Text, out int value))
+            {
+                textBox.Text = value.ToString();
+            }
         }
 
+        // Trigger event handlers
         private void TriggerSourceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.TriggerSourceComboBox_SelectionChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnTriggerSourceChanged();
         }
 
         private void TriggerSlopeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_mainWindow != null && !_isInitializing)
-                _mainWindow.TriggerSlopeComboBox_SelectionChanged(sender, e);
+            if (_isInitializing || _sweepController == null) return;
+            _sweepController.OnTriggerSlopeChanged();
         }
 
         private void ManualTriggerButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_mainWindow != null)
-                _mainWindow.ManualTriggerButton_Click(sender, e);
+            if (_sweepController == null) return;
+            _sweepController.ExecuteManualTrigger();
+        }
+
+        // Helper method to log messages
+        private void Log(string message)
+        {
+            LogEvent?.Invoke(this, message);
         }
     }
 }

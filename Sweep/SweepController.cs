@@ -842,3 +842,5 @@ namespace DG2072_USB_Control.Sweep
         {
             LogEvent?.Invoke(this, message);
         }
+    }
+}

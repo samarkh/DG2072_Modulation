@@ -1228,9 +1228,11 @@ namespace DG2072_USB_Control
             _modulationController = new ModulationController(rigolDG2072, activeChannel, this);
             _modulationController.LogEvent += (s, message) => LogMessage(message);
 
-            _sweepController = new DG2072_USB_Control.Sweep.SweepController(rigolDG2072, activeChannel, this);
-            _sweepController.LogEvent += (s, message) => LogMessage(message);
+            //_sweepController = new DG2072_USB_Control.Sweep.SweepController(rigolDG2072, activeChannel, this);
+            //_sweepController.LogEvent += (s, message) => LogMessage(message);
 
+            _sweepController = new DG2072_USB_Control.Sweep.SweepController(rigolDG2072, activeChannel, SweepPanelControl);
+            _sweepController.LogEvent += (s, message) => LogMessage(message);
 
 
             // Don't initialize UI here - wait until after connection
@@ -3308,6 +3310,35 @@ namespace DG2072_USB_Control
 
         #endregion
 
+
+        #region Sweep
+
+        // ===================================================================
+        // ADDITIONS TO YOUR MAIN MainWindow.xaml.cs FILE
+        // ===================================================================
+
+        // Add this field declaration with your other private fields:
+       // private DG2072_USB_Control.Sweep.SweepController _sweepController;
+
+        // ===================================================================
+        // Add this ONE event handler method:
+        // ===================================================================
+
+        private void SweepToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_sweepController == null) return;
+
+            if (_sweepController.IsEnabled)
+            {
+                _sweepController.DisableSweep();
+            }
+            else
+            {
+                _sweepController.EnableSweep();
+            }
+        }
+
+        #endregion
     }
 }
 

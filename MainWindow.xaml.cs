@@ -1246,6 +1246,10 @@ namespace DG2072_USB_Control
             // Initialize the SweepPanel with the controller
             SweepPanelControl.Initialize(_sweepController);
 
+            // Initialize the burst controller after UI references are set up
+            _burstController = new DG2072_USB_Control.Burst.BurstController(rigolDG2072, activeChannel, this);
+            _burstController.LogEvent += (s, message) => LogMessage(message);
+
 
 
             // Don't initialize UI here - wait until after connection
@@ -1335,6 +1339,11 @@ namespace DG2072_USB_Control
 
                         if (_sweepController != null)
                             _sweepController.InitializeUI();
+
+
+                        if (_burstController != null)
+                            _burstController.InitializeUI();
+
 
                         // NOW we're ready - clear the initialization flag
                         _isInitializing = false;

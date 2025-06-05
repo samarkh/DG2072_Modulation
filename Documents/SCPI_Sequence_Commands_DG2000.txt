@@ -1,0 +1,113 @@
+SCPI Sequence Commands for Rigol DG2000 Series
+1. Apply Sequence Waveform
+* Syntax:
+[:SOURce[<n>]]:APPLy:SEQuence [{<sample_rate>|DEF|MIN|MAX}[,<amplitude>|DEF|MIN|MAX[,<offset>|DEF|MIN|MAX][,<phase>|DEF|MIN|MAX]]]
+* Abbreviation:
+:SOUR<n>:APPL:SEQ <sample_rate>[,<amp>[,<offset>[,<phase>]]]
+* Description:
+Selects 'Sequence' as the output waveform and sets parameters:
+- Sample Rate: 2 kSa/s – 60 MSa/s
+- Amplitude: based on output limits
+- Offset: based on output limits
+- Phase: 0°–360°
+Changing parameters enables Sequence on that channel.
+* Example:
+:SOUR1:APPL:SEQ 20000,2,0,45  ; Sequence at 20 kSa/s, 2 Vpp, 0 V, 45°
+2. Enable/Disable Sequence Function
+* Syntax:
+[:SOURce[<n>]]:FUNCtion:SEQuence[:STATe] {ON|1|OFF|0}
+[:SOURce[<n>]]:FUNCtion:SEQuence[:STATe]?
+* Abbreviation:
+:SOUR<n>:FUNC:SEQ[:STAT] {ON|OFF}
+:SOUR<n>:FUNC:SEQ[:STAT]?
+* Description:
+Turns the Sequence engine on/off. When enabled, the generator steps through each configured slot.
+* Example:
+:SOUR1:FUNC:SEQ ON     ; Enable Sequence
+:SOUR1:FUNC:SEQ?   ; Query: returns ON or OFF
+3. Set/Get Sequence Sample Rate
+* Syntax:
+[:SOURce[<n>]]:FUNCtion:SEQuence:SRATe {<rate>|MIN|MAX}
+[:SOURce[<n>]]:FUNCtion:SEQuence:SRATe?
+* Abbreviation:
+:SOUR<n>:FUNC:SEQ:SRAT <rate>
+:SOUR<n>:FUNC:SEQ:SRAT?
+* Description:
+Configures points per second for Sequence (2 kSa/s – 60 MSa/s). Query returns rate in scientific notation.
+* Example:
+:SOUR1:FUNC:SEQ:SRAT 5000   ; Set to 5 kSa/s
+:SOUR1:FUNC:SEQ:SRAT?  ; Returns 5.000000E+03
+4. Set/Get Sequence Filter Type
+* Syntax:
+[:SOURce[<n>]]:FUNCtion:SEQuence:FILTer {SMOOth|STEP|INSErt}
+[:SOURce[<n>]]:FUNCtion:SEQuence:FILTer?
+* Abbreviation:
+:SOUR<n>:FUNC:SEQ:FILT {SMOO|STEP|INSE}
+:SOUR<n>:FUNC:SEQ:FILT?
+* Description:
+Chooses interpolation method:
+- SMOOth: linear interpolation
+- STEP: zero-order hold
+- INSErt: higher-order interpolation
+
+* Example:
+:SOUR1:FUNC:SEQ:FILT STEP   ; Use STEP (zero-order hold)
+:SOUR1:FUNC:SEQ:FILT?   ; Returns STEP
+5. Set/Get Slot Waveform Type
+* Syntax:
+[:SOURce[<n>]]:FUNCtion:SEQuence:WAVE <slot>,<wavename>
+[:SOURce[<n>]]:FUNCtion:SEQuence:WAVE? <slot>
+* Abbreviation:
+:SOUR<n>:FUNC:SEQ:WAVE <slot>,<name>
+:SOUR<n>:FUNC:SEQ:WAVE? <slot>
+* Description:
+Assigns waveform to Sequence slot <slot> (1–8): e.g., SIN, SQU, RAMP, PULSE, PRBS, USER.
+* Example:
+:SOUR1:FUNC:SEQ:WAVE 1,SQU   ; Slot 1 = Square
+:SOUR1:FUNC:SEQ:WAVE? 1  ; Returns SQU
+6. Set/Get Slot Period (Points)
+* Syntax:
+[:SOURce[<n>]]:FUNCtion:SEQuence:PERiod <slot>,<value>
+[:SOURce[<n>]]:FUNCtion:SEQuence:PERiod? <slot>
+* Abbreviation:
+:SOUR<n>:FUNC:SEQ:PER <slot>,<value>
+:SOUR<n>:FUNC:SEQ:PER? <slot>
+* Description:
+Defines number of sample points (1–256) to output for slot <slot> before advancing.
+* Example:
+:SOUR1:FUNC:SEQ:PER 1,50   ; Slot 1 outputs 50 points
+:SOUR1:FUNC:SEQ:PER? 1  ; Returns 50
+7. Set/Get Edge Time (Interpolation)
+* Syntax:
+[:SOURce[<n>]]:FUNCtion:SEQuence:EDGETime <seconds>
+[:SOURce[<n>]]:FUNCtion:SEQuence:EDGETime?
+* Abbreviation:
+:SOUR<n>:FUNC:SEQ:EDGET <sec>
+:SOUR<n>:FUNC:SEQ:EDGET?
+* Description:
+When FILTer=SMOOth or INSErt, sets transition time between sample points (8 ns – (1/rate)/1.25). Query returns in scientific notation.
+* Example:
+:SOUR1:FUNC:SEQ:EDGET 1e-6   ; Set edge time = 1 µs
+:SOUR1:FUNC:SEQ:EDGET?   ; Returns 1.000000E-06
+8. Query Sequence Configuration
+* Syntax:
+[:SOURce[<n>]]:APPLy?
+Abbreviation: :SOUR<n>:APPL?
+* Description:
+Returns current waveform and parameters. If Sequence active, returns "SEQ,<rate>,<ampl>,<offset>,<phase>".
+* Example:
+:SOUR1:APPL?   ; Returns "SEQ,1.000000E+04,3.000000E+00,0.000000E+00,0.000000E+00"
+9. Example: 8-Slot Sequence Setup
+*IDN?                            ; Verify communication
+:SOUR1:APPL:SEQ 10000,3,0,0      ; Sequence @10 kSa/s, 3 Vpp, 0 V, 0° phase
+:SOUR1:FUNC:SEQ ON               ; Enable Sequence engine
+:SOUR1:FUNC:SEQ:FILT INSE        ; Use INSErt interpolation
+:SOUR1:FUNC:SEQ:EDGET 5e-7       ; Edge = 0.5 µs
+:SOUR1:FUNC:SEQ:WAVE 1,SIN       ; Slot 1 = Sine
+:SOUR1:FUNC:SEQ:PER 1,100        ; 100 points for slot 1
+:SOUR1:FUNC:SEQ:WAVE 2,SQU       ; Slot 2 = Square
+:SOUR1:FUNC:SEQ:PER 2,100        ; 100 points for slot 2
+; ...continue slots 3–8...
+:SOUR1:FUNC:SEQ:WAVE 8,RAMP      ; Slot 8 = Ramp
+:SOUR1:FUNC:SEQ:PER 8,100        ; 100 points for slot 8
+:SOUR1:APPL?                     ; Confirm Sequence settings

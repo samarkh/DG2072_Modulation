@@ -1,0 +1,59 @@
+SCPI RS232 Commands for Rigol DG2000 Series
+1. Apply RS232 Waveform
+* Command:
+[:SOURce[<n>]]:APPLy:RS232 [<amp>|DEFault|MINimum|MAXimum[,<offset>|DEFault|MINimum|MAXimum]]  ; Set RS232 waveform parameters
+* Example:
+:SOUR1:APPL:RS232 1,2  ; RS232 waveform with 1 Vpp amplitude and 2 Vdc offset
+2. RS232 Baud Rate
+* Command:
+[:SOURce[<n>]]:FUNCtion:RS232:BAUDrate {9600|14400|19200|38400|57600|115200|128000|230400}  ; Set baud rate
+* Query:
+[:SOURce[<n>]]:FUNCtion:RS232:BAUDrate?  ; Query current baud rate
+* Example:
+:SOUR1:FUNC:RS232:BAUD 9600  ; Set RS232 baud rate to 9600
+3. RS232 Data Bits
+* Command:
+[:SOURce[<n>]]:FUNCtion:RS232:DATABit {7|8}  ; Set number of data bits
+* Query:
+[:SOURce[<n>]]:FUNCtion:RS232:DATABit?  ; Query data bits
+* Example:
+:SOUR1:FUNC:RS232:DATAB 7  ; Set RS232 data bits to 7
+4. RS232 Stop Bits
+* Command:
+[:SOURce[<n>]]:FUNCtion:RS232:STOPBit {1|1.5|2}  ; Set number of stop bits
+* Query:
+[:SOURce[<n>]]:FUNCtion:RS232:STOPBit?  ; Query stop bits
+* Example:
+:SOUR1:FUNC:RS232:STOPB 2  ; Set RS232 stop bits to 2
+5. RS232 Parity (Check) Bit
+* Command:
+[:SOURce[<n>]]:FUNCtion:RS232:CHECKBit {NONE|ODD|EVEN}  ; Set parity bit
+* Query:
+[:SOURce[<n>]]:FUNCtion:RS232:CHECKBit?  ; Query parity bit
+* Example:
+:SOUR1:FUNC:RS232:CHECKB ODD  ; Set parity to ODD
+6. RS232 Data Byte
+* Command:
+[:SOURce[<n>]]:FUNCtion:RS232:DATA {<value>|MINimum|MAXimum}  ; Send data byte (0–255)
+* Query:
+[:SOURce[<n>]]:FUNCtion:RS232:DATA?  ; Query last data byte sent
+* Example:
+:SOUR1:FUNC:RS232:DATA 255  ; Send data byte 255
+7. Example Sequence
+*IDN?                           ; Verify communication
+:SOUR1:APPL:RS232 1,2                  ; Set RS232 waveform (1 Vpp, 2 V offset)
+:SOUR1:FUNC:RS232:BAUD 115200          ; Baud rate = 115200
+:SOUR1:FUNC:RS232:DATAB 8              ; Data bits = 8
+:SOUR1:FUNC:RS232:STOPB 1              ; Stop bits = 1
+:SOUR1:FUNC:RS232:CHECKB NONE          ; Parity = None
+:SOUR1:FUNC:RS232:DATA 85              ; Send data byte 0x55
+:OUTP1 ON                              ; Enable channel 1 output
+
+
+To send a sequence of characters (Hello):
+
+:SOUR1:FUNC:RS232:DATA 72    ; Transmit single byte 0x48 (‘H’ in ASCII)
+:SOUR1:FUNC:RS232:DATA 101   ; Transmit single byte 0x65 (‘e’ in ASCII)
+:SOUR1:FUNC:RS232:DATA 108   ; Transmit single byte 0x6C (‘l’ in ASCII)
+:SOUR1:FUNC:RS232:DATA 108   ; Transmit single byte 0x6C (‘l’ in ASCII)
+:SOUR1:FUNC:RS232:DATA 111   ; Transmit single byte 0x6F (‘o’ in ASCII)

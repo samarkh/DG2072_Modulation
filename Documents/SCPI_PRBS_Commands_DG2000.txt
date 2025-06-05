@@ -1,0 +1,49 @@
+SCPI PRBS Waveform Commands for Rigol DG2000 Series
+1. Apply PRBS Waveform
+* Command (abbr.):
+:SOUR1:APPL:PRBS <bit_rate>,<amp>,<offset>  ; Set PRBS waveform with specified parameters
+* Full Syntax:
+[:SOURce[<n>]]:APPLy:PRBS [<freq>|DEF][,<amp>|DEF][,<offset>|DEF]
+* Description:
+Sets the channel to output a PRBS waveform at the specified bit rate (2 kbps–60 Mbps), amplitude, and DC offset. Changing this restarts the output.
+* Example:
+:SOUR1:APPL:PRBS 10000,1,2  ; PRBS at 10 kbps, 1 Vpp, 2 Vdc offset
+2. Set PRBS Bit Rate
+* Command (abbr.):
+:SOUR1:FUNC:PRBS:BRAT <bit_rate>  ; Set PRBS bit rate
+* Full Syntax:
+[:SOURce[<n>]]:FUNCtion:PRBS:BRATe {<bit_rate>|MIN|MAX}
+* Description:
+Defines the PRBS bit rate. Range: 2 kbps to 60 Mbps. Changing this updates the PRBS generation rate.
+* Example:
+:SOUR1:FUNC:PRBS:BRAT 3000  ; Set PRBS bit rate to 3 kbps
+* Query Bit Rate:
+:SOUR1:FUNC:PRBS:BRAT?  ; Query current PRBS bit rate
+3. Set PRBS Data Type
+* Command (abbr.):
+:SOUR1:FUNC:PRBS:DATA {PN7|PN9|PN11}  ; Select PRBS sequence length
+* Full Syntax:
+[:SOURce[<n>]]:FUNCtion:PRBS:DATA {PN7|PN9|PN11}
+* Description:
+Chooses which maximal-length PN sequence (7, 9, or 11-stage) to output. Default is PN7.
+* Example:
+:SOUR1:FUNC:PRBS:DATA PN9  ; Use PN9 sequence
+* Query Data Type:
+:SOUR1:FUNC:PRBS:DATA?  ; Query current PRBS data type
+4. Query Current Waveform
+* Command:
+:SOUR1:APPL?  ; Returns current waveform and its parameters (e.g., "PRBS,1.000000E+04,1.000000E+00,2.000000E+00")
+* Description:
+Confirms that PRBS is active and shows bit rate (Hz), amplitude (Vpp), offset (V), and phase (always DEF for PRBS).
+5. Enable Output
+* Command:
+:OUTP1 ON  ; Turn channel 1 output ON
+* Description:
+Enables the channel’s analog output to start generating the PRBS waveform.
+6. Example Sequence
+*IDN?                                ; Verify communication
+:SOUR1:APPL:PRBS 15000,2,0                 ; Set PRBS at 15 kbps, 2 Vpp, 0 V offset
+:SOUR1:FUNC:PRBS:BRAT 15000                ; Ensure bit rate = 15 kbps
+:SOUR1:FUNC:PRBS:DATA PN11                 ; Use PN11 sequence
+:SOUR1:APPL?                                ; Confirm parameters (PRBS,1.500000E+04,2.000000E+00,0.000000E+00)
+:OUTP1 ON                                  ; Enable output

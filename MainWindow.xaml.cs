@@ -2498,7 +2498,7 @@ namespace DG2072_USB_Control
 
         #endregion
 
-    #region UI Formatting and Adjustment Methods
+        #region UI Formatting and Adjustment Methods
 
         // Update the UpdateWaveformSpecificControls method to use the pulse generator
         private void UpdateWaveformSpecificControls(string waveformType)
@@ -2519,6 +2519,54 @@ namespace DG2072_USB_Control
             bool isPRBS = (waveform == "PRBS");
             bool isRS232 = (waveform == "RS232");
 
+            // ADD THIS: First, restore standard controls for normal waveforms
+            bool isStandardWaveform = !isNoise && !isDC && !isDualTone && !isPRBS && !isRS232;
+
+            // Handle frequency/period control visibility 
+            if (FrequencyDockPanel != null && PeriodDockPanel != null)
+            {
+                bool showFrequency = !isNoise && !isDC && !isDualTone && !isPRBS && !isRS232;
+
+                if (_frequencyModeActive)
+                {
+                    FrequencyDockPanel.Visibility = showFrequency ? Visibility.Visible : Visibility.Collapsed;
+                    PeriodDockPanel.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    FrequencyDockPanel.Visibility = Visibility.Collapsed;
+                    PeriodDockPanel.Visibility = showFrequency ? Visibility.Visible : Visibility.Collapsed;
+                }
+            }
+
+            // Handle the GENERAL frequency/period toggle for ALL waveforms
+            if (FrequencyPeriodModeToggle != null)
+            {
+                bool showToggle = !isNoise && !isDC && !isDualTone && !isPRBS && !isRS232;
+                FrequencyPeriodModeToggle.Visibility = showToggle ? Visibility.Visible : Visibility.Collapsed;
+                FrequencyPeriodModeToggle.IsEnabled = showToggle;
+            }
+
+            // Handle phase control visibility - show for standard waveforms, hide for noise, DC, PRBS, RS232
+            if (PhaseDockPanel != null)
+            {
+                PhaseDockPanel.Visibility = (isNoise || isDC || isPRBS || isRS232) ? Visibility.Collapsed : Visibility.Visible;
+            }
+
+            // Handle amplitude and offset visibility
+            if (FindVisualParent<DockPanel>(ChannelAmplitudeTextBox) != null)
+            {
+                // Hide amplitude for DC and PRBS (they have their own controls)
+                FindVisualParent<DockPanel>(ChannelAmplitudeTextBox).Visibility = (isDC || isPRBS) ? Visibility.Collapsed : Visibility.Visible;
+            }
+
+            if (FindVisualParent<DockPanel>(ChannelOffsetTextBox) != null)
+            {
+                // Hide offset for DC and PRBS (they have their own controls)
+                FindVisualParent<DockPanel>(ChannelOffsetTextBox).Visibility = (isDC || isPRBS) ? Visibility.Collapsed : Visibility.Visible;
+            }
+
+            // Rest of your existing code for pulse-specific controls, panels, etc...
 
             // Use the pulse generator to update pulse controls
             if (pulseGenerator != null)
@@ -2538,167 +2586,25 @@ namespace DG2072_USB_Control
                 DutyCycleDockPanel.Visibility = (waveform == "SQUARE") ? Visibility.Visible : Visibility.Collapsed;
             }
 
-            // Handle frequency/period control visibility (hide for Noise)
-            if (FrequencyDockPanel != null && PeriodDockPanel != null)
-            {
-                bool showFrequency = !isNoise && !isDC && !isDualTone;
-
-                if (_frequencyModeActive)
-                {
-                    FrequencyDockPanel.Visibility = showFrequency ? Visibility.Visible : Visibility.Collapsed;
-                    PeriodDockPanel.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    FrequencyDockPanel.Visibility = Visibility.Collapsed;
-                    PeriodDockPanel.Visibility = showFrequency ? Visibility.Visible : Visibility.Collapsed;
-                }
-            }
-
-            // Handle pulse-specific controls
-            if (PulseWidthDockPanel != null &&
-                PulseRiseTimeDockPanel != null &&
-                PulseFallTimeDockPanel != null)
-            {
-                Visibility pulseVisibility = isPulse ? Visibility.Visible : Visibility.Collapsed;
-
-                // Show/hide pulse-specific controls
-                PulseWidthDockPanel.Visibility = pulseVisibility;
-                PulseRiseTimeDockPanel.Visibility = pulseVisibility;
-                PulseFallTimeDockPanel.Visibility = pulseVisibility;
-
-                // REMOVED: References to PulseRateModeDockPanel - we use the general toggle instead
-            }
-
-            // Handle the GENERAL frequency/period toggle for ALL waveforms
-            if (FrequencyPeriodModeToggle != null)
-            {
-                bool showToggle = !isNoise && !isDC && !isDualTone;
-                FrequencyPeriodModeToggle.Visibility = showToggle ? Visibility.Visible : Visibility.Collapsed;
-                FrequencyPeriodModeToggle.IsEnabled = showToggle;
-
-                LogMessage($"Setting FrequencyPeriodModeToggle visibility to {(showToggle ? "Visible" : "Collapsed")} for waveform {waveform}");
-            }
-
-            // Handle phase control visibility - hide for noise waveform
-            if (PhaseDockPanel != null)
-            {
-                PhaseDockPanel.Visibility = (isNoise || isDC) ? Visibility.Collapsed : Visibility.Visible;
-            }
-
-            // Handle fall time control visibility - hide for noise waveform (already handled for non-pulse waveforms)
-            if (PulseFallTimeDockPanel != null)
-            {
-                // For noise waveform, always hide
-                if (isNoise)
-                {
-                    PulseFallTimeDockPanel.Visibility = Visibility.Collapsed;
-                    LogMessage($"Setting PulseFallTimeDockPanel visibility to Collapsed for noise waveform");
-                }
-                // For non-noise, show only if it's pulse waveform
-                else
-                {
-                    PulseFallTimeDockPanel.Visibility = isPulse ? Visibility.Visible : Visibility.Collapsed;
-                }
-            }
-
-            // Hide Apply Settings button for dual tone waveform
-            if (ChannelApplyButton != null)
-            {
-                // Hide button for dual tone
-                if (isDualTone)
-                {
-                    // Hide main frequency controls when in dual tone mode
-                    if (FrequencyDockPanel != null)
-                        FrequencyDockPanel.Visibility = Visibility.Collapsed;
-
-                    if (PeriodDockPanel != null)
-                        PeriodDockPanel.Visibility = Visibility.Collapsed;
-
-                    // Make sure dual tone controls are visible
-                    if (DualToneGroupBox != null)
-                        DualToneGroupBox.Visibility = Visibility.Visible;
-                }
-            }
-
-            // Handle dual tone-specific controls
+            // Handle all the panel visibilities
             if (DualToneGroupBox != null)
             {
                 DualToneGroupBox.Visibility = isDualTone ? Visibility.Visible : Visibility.Collapsed;
-
-                // Also manage the secondary frequency controls' visibility
-                if (SecondaryFrequencyDockPanel != null)
-                {
-                    SecondaryFrequencyDockPanel.Visibility = isDualTone ? Visibility.Visible : Visibility.Collapsed;
-                }
-
-                // Reference to FrequencyRatioComboBox instead of FrequencyRatioDockPanel
-                if (FrequencyRatioComboBox != null)
-                {
-                    FrequencyRatioComboBox.Visibility = isDualTone ? Visibility.Visible : Visibility.Collapsed;
-                }
-
-                if (CenterOffsetPanel != null && DirectFrequencyPanel != null)
-                {
-                    // Respect the current dual tone mode
-                    if (CenterOffsetMode != null && DirectFrequencyMode != null)
-                    {
-                        bool isDirectMode = DirectFrequencyMode.IsChecked == true;
-                        DirectFrequencyPanel.Visibility = (isDualTone && isDirectMode) ? Visibility.Visible : Visibility.Collapsed;
-                        CenterOffsetPanel.Visibility = (isDualTone && !isDirectMode) ? Visibility.Visible : Visibility.Collapsed;
-                    }
-                }
-
-                if (SynchronizeFrequenciesCheckBox != null)
-                {
-                    SynchronizeFrequenciesCheckBox.Visibility = isDualTone ? Visibility.Visible : Visibility.Collapsed;
-                }
             }
 
-            // Handle harmonic-specific controls
             if (HarmonicsGroupBox != null)
             {
                 HarmonicsGroupBox.Visibility = isHarmonic ? Visibility.Visible : Visibility.Collapsed;
             }
 
-            // Handle arbitrary waveform controls visibility
             if (ArbitraryWaveformGroupBox != null)
             {
                 ArbitraryWaveformGroupBox.Visibility = isArbitraryWaveform ? Visibility.Visible : Visibility.Collapsed;
-
-                // Hide the Apply button since changes are auto-applied
-                if (ApplyArbitraryWaveformButton != null)
-                {
-                    ApplyArbitraryWaveformButton.Visibility = Visibility.Collapsed;
-                }
             }
 
-            // DC group box visibility
             if (DCGroupBox != null)
             {
                 DCGroupBox.Visibility = isDC ? Visibility.Visible : Visibility.Collapsed;
-            }
-
-            // Hide all standard controls and show only DC controls for DC waveform
-            if (isDC)
-            {
-                // Hide frequency/period, amplitude, phase controls
-                if (FrequencyDockPanel != null) FrequencyDockPanel.Visibility = Visibility.Collapsed;
-                if (PeriodDockPanel != null) PeriodDockPanel.Visibility = Visibility.Collapsed;
-
-                // Toggle buttons should be hidden for DC
-                if (FrequencyPeriodModeToggle != null) FrequencyPeriodModeToggle.Visibility = Visibility.Collapsed;
-
-                // Amplitude should be hidden for DC
-                if (FindVisualParent<DockPanel>(ChannelAmplitudeTextBox) != null)
-                    FindVisualParent<DockPanel>(ChannelAmplitudeTextBox).Visibility = Visibility.Collapsed;
-
-                // Phase should be hidden for DC
-                if (PhaseDockPanel != null) PhaseDockPanel.Visibility = Visibility.Collapsed;
-
-                // Offset control is redundant with DC voltage - hide it
-                if (FindVisualParent<DockPanel>(ChannelOffsetTextBox) != null)
-                    FindVisualParent<DockPanel>(ChannelOffsetTextBox).Visibility = Visibility.Collapsed;
             }
 
             if (PRBSPanelControl != null)
@@ -2706,50 +2612,12 @@ namespace DG2072_USB_Control
                 PRBSPanelControl.Visibility = isPRBS ? Visibility.Visible : Visibility.Collapsed;
             }
 
-            // Hide standard controls for PRBS (similar to DC handling)
-            if (isPRBS)
-            {
-                // Hide frequency/period, amplitude, phase controls as they're handled by PRBS panel
-                if (FrequencyDockPanel != null) FrequencyDockPanel.Visibility = Visibility.Collapsed;
-                if (PeriodDockPanel != null) PeriodDockPanel.Visibility = Visibility.Collapsed;
-                if (FrequencyPeriodModeToggle != null) FrequencyPeriodModeToggle.Visibility = Visibility.Collapsed;
-                if (FindVisualParent<DockPanel>(ChannelAmplitudeTextBox) != null)
-                    FindVisualParent<DockPanel>(ChannelAmplitudeTextBox).Visibility = Visibility.Collapsed;
-                if (PhaseDockPanel != null) PhaseDockPanel.Visibility = Visibility.Collapsed;
-                if (FindVisualParent<DockPanel>(ChannelOffsetTextBox) != null)
-                    FindVisualParent<DockPanel>(ChannelOffsetTextBox).Visibility = Visibility.Collapsed;
-            }
-
-            // And add RS232 panel visibility:
             if (RS232PanelControl != null)
             {
-                //RS232PanelControl.Visibility = isRS232 ? Visibility.Visible : Visibility.Collapsed;
-                
-                    // Hide frequency/period controls - not relevant for RS232
-                    if (FrequencyDockPanel != null) FrequencyDockPanel.Visibility = Visibility.Collapsed;
-                    if (PeriodDockPanel != null) PeriodDockPanel.Visibility = Visibility.Collapsed;
-                    if (FrequencyPeriodModeToggle != null) FrequencyPeriodModeToggle.Visibility = Visibility.Collapsed;
-
-                    // Hide phase control - not relevant for RS232
-                    if (PhaseDockPanel != null) PhaseDockPanel.Visibility = Visibility.Collapsed;
-
-                    // Keep amplitude and offset visible as they're used for RS232 signal levels
-                    // (These will be shown by the else block at the end of the method)
-                
-            }
-
-
-            else
-            {
-                // Show amplitude control for non-DC waveforms
-                // Show amplitude and offset controls for non-DC/non-PRBS waveforms (including RS232)
-                if (FindVisualParent<DockPanel>(ChannelAmplitudeTextBox) != null)
-                    FindVisualParent<DockPanel>(ChannelAmplitudeTextBox).Visibility = Visibility.Visible;
-
-                if (FindVisualParent<DockPanel>(ChannelOffsetTextBox) != null)
-                    FindVisualParent<DockPanel>(ChannelOffsetTextBox).Visibility = Visibility.Visible;
+                RS232PanelControl.Visibility = isRS232 ? Visibility.Visible : Visibility.Collapsed;
             }
         }
+
 
         private void ChannelDutyCycleTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {

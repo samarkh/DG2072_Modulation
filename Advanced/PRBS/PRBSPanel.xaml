@@ -1,0 +1,166 @@
+﻿<UserControl x:Class="DG2072_USB_Control.Advanced.PRBS.PRBSPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="650">
+
+    <!-- PRBS Function Panel -->
+    <GroupBox x:Name="PRBSPanelGroupBox" 
+              Header="🔢🔢🔢 PRBS FUNCTION SETTINGS 🔢🔢🔢" 
+              Background="LightYellow"
+              BorderBrush="DarkGoldenrod"
+              BorderThickness="3"
+              MinHeight="350">
+        <StackPanel Background="LightGoldenrodYellow">
+
+            <!-- PRBS Data Type -->
+            <DockPanel Margin="0,5">
+                <Label Content="Data Type:" Width="120" 
+                       ToolTip="Select PRBS sequence type (PN7, PN9, or PN11)"/>
+                <ComboBox x:Name="PRBSDataTypeComboBox" 
+                          Width="150" 
+                          SelectionChanged="PRBSDataTypeComboBox_SelectionChanged"
+                          HorizontalAlignment="Left"
+                          ToolTip="PN7: 2^7-1 = 127 bits&#x0a;PN9: 2^9-1 = 511 bits&#x0a;PN11: 2^11-1 = 2047 bits">
+                    <ComboBoxItem Content="PN7" Tag="PN7" IsSelected="True" ToolTip="7-bit sequence (127 bits)"/>
+                    <ComboBoxItem Content="PN9" Tag="PN9" ToolTip="9-bit sequence (511 bits)"/>
+                    <ComboBoxItem Content="PN11" Tag="PN11" ToolTip="11-bit sequence (2047 bits)"/>
+                </ComboBox>
+            </DockPanel>
+
+            <!-- Bit Rate -->
+            <DockPanel Margin="0,5">
+                <Label Content="Bit Rate:" Width="120" 
+                       ToolTip="PRBS generation bit rate (2 kbps to 60 Mbps)"/>
+                <TextBox x:Name="PRBSBitRateTextBox" 
+                         Width="100" 
+                         Text="10000" 
+                         TextChanged="PRBSBitRateTextBox_TextChanged"
+                         LostFocus="PRBSBitRateTextBox_LostFocus"
+                         HorizontalContentAlignment="Right" 
+                         VerticalContentAlignment="Center"
+                         ToolTip="Enter bit rate (2000 to 60000000)"/>
+                <ComboBox x:Name="PRBSBitRateUnitComboBox" 
+                          Width="70" 
+                          Margin="5,0,0,0"
+                          SelectionChanged="PRBSBitRateUnitComboBox_SelectionChanged"
+                          HorizontalAlignment="Left"
+                          ToolTip="Select bit rate unit">
+                    <ComboBoxItem Content="bps" ToolTip="Bits per second"/>
+                    <ComboBoxItem Content="kbps" IsSelected="True" ToolTip="Kilobits per second (1000 bps)"/>
+                    <ComboBoxItem Content="Mbps" ToolTip="Megabits per second (1000000 bps)"/>
+                </ComboBox>
+            </DockPanel>
+
+            <!-- Amplitude -->
+            <DockPanel Margin="0,5">
+                <Label Content="Amplitude:" Width="120" 
+                       ToolTip="Peak-to-peak amplitude of the PRBS signal"/>
+                <TextBox x:Name="PRBSAmplitudeTextBox" 
+                         Width="100" 
+                         Text="1.0" 
+                         TextChanged="PRBSAmplitudeTextBox_TextChanged"
+                         LostFocus="PRBSAmplitudeTextBox_LostFocus"
+                         HorizontalContentAlignment="Right" 
+                         VerticalContentAlignment="Center"
+                         ToolTip="Enter amplitude value"/>
+                <ComboBox x:Name="PRBSAmplitudeUnitComboBox" 
+                          Width="70" 
+                          Margin="5,0,0,0"
+                          SelectionChanged="PRBSAmplitudeUnitComboBox_SelectionChanged"
+                          HorizontalAlignment="Left"
+                          ToolTip="Select amplitude unit">
+                    <ComboBoxItem Content="Vpp" IsSelected="True" ToolTip="Volts peak-to-peak"/>
+                    <ComboBoxItem Content="mVpp" ToolTip="Millivolts peak-to-peak"/>
+                    <ComboBoxItem Content="Vrms" ToolTip="Volts RMS"/>
+                    <ComboBoxItem Content="mVrms" ToolTip="Millivolts RMS"/>
+                </ComboBox>
+            </DockPanel>
+
+            <!-- DC Offset -->
+            <DockPanel Margin="0,5">
+                <Label Content="DC Offset:" Width="120" 
+                       ToolTip="DC offset voltage for the PRBS signal"/>
+                <TextBox x:Name="PRBSOffsetTextBox" 
+                         Width="100" 
+                         Text="0.0" 
+                         TextChanged="PRBSOffsetTextBox_TextChanged"
+                         LostFocus="PRBSOffsetTextBox_LostFocus"
+                         HorizontalContentAlignment="Right" 
+                         VerticalContentAlignment="Center"
+                         ToolTip="Enter DC offset value"/>
+                <ComboBox x:Name="PRBSOffsetUnitComboBox" 
+                          Width="70" 
+                          Margin="5,0,0,0"
+                          SelectionChanged="PRBSOffsetUnitComboBox_SelectionChanged"
+                          HorizontalAlignment="Left"
+                          ToolTip="Select offset unit">
+                    <ComboBoxItem Content="V" IsSelected="True" ToolTip="Volts"/>
+                    <ComboBoxItem Content="mV" ToolTip="Millivolts"/>
+                </ComboBox>
+            </DockPanel>
+
+            <!-- Sequence Information -->
+            <Separator Margin="0,10,0,5"/>
+            <TextBlock Text="Sequence Information" FontWeight="Bold" Margin="0,0,0,5"/>
+
+            <!-- Current Sequence Length -->
+            <DockPanel Margin="0,5">
+                <Label Content="Sequence Length:" Width="120" 
+                       ToolTip="Total number of bits in the selected sequence"/>
+                <TextBlock x:Name="SequenceLengthTextBlock" 
+                           Text="127 bits" 
+                           VerticalAlignment="Center" 
+                           Foreground="#FF505050"
+                           ToolTip="Calculated sequence length for selected data type"/>
+            </DockPanel>
+
+            <!-- Period at Current Bit Rate -->
+            <DockPanel Margin="0,5">
+                <Label Content="Sequence Period:" Width="120" 
+                       ToolTip="Time duration for one complete sequence"/>
+                <TextBlock x:Name="SequencePeriodTextBlock" 
+                           Text="12.7 ms" 
+                           VerticalAlignment="Center" 
+                           Foreground="#FF505050"
+                           ToolTip="Time for one complete sequence at current bit rate"/>
+            </DockPanel>
+
+            <!-- Repetition Rate -->
+            <DockPanel Margin="0,5">
+                <Label Content="Repetition Rate:" Width="120" 
+                       ToolTip="How often the sequence repeats per second"/>
+                <TextBlock x:Name="RepetitionRateTextBlock" 
+                           Text="78.74 Hz" 
+                           VerticalAlignment="Center" 
+                           Foreground="#FF505050"
+                           ToolTip="Sequence repetition frequency"/>
+            </DockPanel>
+
+            <!-- Apply Button -->
+            <Separator Margin="0,10,0,5"/>
+            <Button x:Name="ApplyPRBSButton" 
+                    Content="Apply PRBS Settings" 
+                    Width="150"
+                    Height="30"
+                    Click="ApplyPRBSButton_Click"
+                    Background="#FFE6F0FF"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Center"
+                    Margin="0,5,0,10"
+                    ToolTip="Apply all PRBS settings to the device"/>
+
+            <!-- Help text -->
+            <TextBlock TextWrapping="Wrap" 
+                       Margin="0,10,0,0" 
+                       FontStyle="Italic" 
+                       Foreground="#FF505050">
+                PRBS (Pseudo-Random Binary Sequence) generates deterministic digital patterns for testing communication systems. 
+                PN7/PN9/PN11 refer to different polynomial generators producing sequences of different lengths. 
+                Changes are applied when you click Apply or change parameters.
+            </TextBlock>
+        </StackPanel>
+    </GroupBox>
+</UserControl>

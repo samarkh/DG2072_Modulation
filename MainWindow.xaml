@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:DG2072_USB_Control"
         xmlns:sweep="clr-namespace:DG2072_USB_Control.Sweep"
         xmlns:burst="clr-namespace:DG2072_USB_Control.Burst"
+        xmlns:prbs="clr-namespace:DG2072_USB_Control.Advanced.PRBS"
         
         mc:Ignorable="d"
         Title="Rigol DG2072 USB Control" Height="1050" Width="650"
@@ -95,6 +96,7 @@
                                                 <ComboBoxItem Content="Harmonic"/>
                                                 <ComboBoxItem Content="Arbitrary Waveform"/>
                                                 <ComboBoxItem Content="DC"/>
+                                                <ComboBoxItem Content="PRBS"/>\                                                 
                                             </ComboBox>
                                         </DockPanel>
 
@@ -291,6 +293,7 @@
 										<!-- Modulation Toggle Button -->
 										<DockPanel Margin="0,5">
 
+                                            <!-- Buttons -->
 											<Button x:Name="ModulationToggleButton" 
 													Content="Enable Modulation" 
 													Width="140"
@@ -326,7 +329,17 @@
                                                     HorizontalAlignment="Center"
                                                     ToolTip="Enable/disable burst function"/>
 
-
+                                            <!-- NEW: PRBS Button -->
+                                            <Button x:Name="PRBSToggleButton" 
+                                                    Content="PRBS Enable" 
+                                                    Width="140"
+                                                    Height="28"
+                                                    Click="PRBSToggleButton_Click"
+                                                    Background="DarkGoldenrod"
+                                                    FontWeight="Bold"
+                                                    Visibility="Visible"
+                                                    HorizontalAlignment="Center"
+                                                    ToolTip="Enable/disable PRBS function"/>
 
 
                                         </DockPanel>
@@ -1083,10 +1096,9 @@ For accurate voltage measurement, set the load impedance to match your actual lo
 
                                         <sweep:SweepPanel x:Name="SweepPanelControl" Visibility="Collapsed" Margin="0,10,0,0"/>
 
-                                        <!-- Add this after the SweepPanel in your TabItem -->
                                         <burst:BurstPanel x:Name="BurstPanelControl" Visibility="Collapsed" Margin="0,10,0,0"/>
 
-
+                                        <prbs:PRBSPanel   x:Name="PRBSPanelControl" Visibility="Collapsed"  Margin="0,10,0,0"/>
 
 
 

@@ -35,6 +35,7 @@ namespace DG2072_USB_Control
         private const string InstrumentAddress = "USB0::0x1AB1::0x0644::DG2P224100508::INSTR";
         private RigolDG2072 rigolDG2072;
 
+
         // Active channel tracking
         private int activeChannel = 1; // Default to Channel 1
 
@@ -68,10 +69,9 @@ namespace DG2072_USB_Control
         private DockPanel DCVoltageDockPanel;
 
         private DG2072_USB_Control.Modulation.ModulationController _modulationController;
+        
+        private DG2072_USB_Control.Advanced.PRBS.PRBSController _prbsController;
 
-        // Harmonics management
-        //private HarmonicsManager _harmonicsManager;
-        //private HarmonicsUIController _harmonicsUIController;
         private bool _isInitializing = true;
 
         // Dual Tone management
@@ -342,9 +342,20 @@ namespace DG2072_USB_Control
             if (_sweepController != null)
                 _sweepController.ActiveChannel = channel;
 
+            // Update burst controller
             if (_burstController != null)
                 _burstController.ActiveChannel = channel;
+
+            // Update PRBS controller
+            if (_prbsController != null)
+                _prbsController.ActiveChannel = channel;
+
+
+
         }
+
+
+
 
         private void RefreshChannelSettings()
         {
@@ -655,6 +666,9 @@ namespace DG2072_USB_Control
                 if (_burstController != null && isConnected)
                     _burstController.RefreshBurstSettings();
 
+                // NEW: Refresh PRBS settings
+                if (_prbsController != null && isConnected)
+                    _prbsController.RefreshPRBSSettings();
 
 
                 LogMessage("Instrument settings refreshed successfully");
@@ -1234,12 +1248,15 @@ namespace DG2072_USB_Control
             _harmonicsManager = new HarmonicsManager(rigolDG2072, activeChannel);
             _harmonicsManager.LogEvent += (s, message) => LogMessage(message);
 
+            // Initialize the harmonics UI controller
             _harmonicsUIController = new HarmonicsUIController(_harmonicsManager, this);
             _harmonicsUIController.LogEvent += (s, message) => LogMessage(message);
 
+            // Initialize the modulation controller after UI references are set up
             _modulationController = new ModulationController(rigolDG2072, activeChannel, this);
             _modulationController.LogEvent += (s, message) => LogMessage(message);
 
+            // Initialize the SweepController after UI references are set up
             _sweepController = new DG2072_USB_Control.Sweep.SweepController(rigolDG2072, activeChannel, SweepPanelControl, this);
             _sweepController.LogEvent += (s, message) => LogMessage(message);
 
@@ -1250,7 +1267,12 @@ namespace DG2072_USB_Control
             _burstController = new DG2072_USB_Control.Burst.BurstController(rigolDG2072, activeChannel, this);
             _burstController.LogEvent += (s, message) => LogMessage(message);
 
+            // Initialize the PRBS controller after UI references are set up    
+            _prbsController = new DG2072_USB_Control.Advanced.PRBS.PRBSController(rigolDG2072, activeChannel, PRBSPanelControl, this);
+            _prbsController.LogEvent += (s, message) => LogMessage(message);
 
+            // Initialize the PRBSPanel with the controller
+            PRBSPanelControl.Initialize(_prbsController);
 
             // Don't initialize UI here - wait until after connection
             // After window initialization, use a small delay before auto-connecting
@@ -1343,6 +1365,9 @@ namespace DG2072_USB_Control
 
                         if (_burstController != null)
                             _burstController.InitializeUI();
+
+                        if (_prbsController != null)
+                            _prbsController.InitializeUI();
 
 
                         // NOW we're ready - clear the initialization flag
@@ -1803,7 +1828,6 @@ namespace DG2072_USB_Control
                     MessageBox.Show($"Error setting {waveform} mode: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-
             // Special handling for DUAL TONE waveform
             else if (waveform == "DUAL TONE")
             {
@@ -1918,19 +1942,39 @@ namespace DG2072_USB_Control
                     MessageBox.Show($"Error setting {waveform} mode: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-
             // Add the sine generator code here
             else if (waveform == "SINE" && sineGenerator != null)
             {
                 sineGenerator.ApplyParameters(); // New way using base class method
             }
-
             // Add the Noise generator code here
             else if (waveform == "NOISE" && noiseGenerator != null)
             {
                 // Delegate to the noise generator
                 noiseGenerator.ApplyParameters();
             }
+            else if (waveform == "PRBS")
+            {
+                LogMessage("Switching to PRBS waveform mode...");
+                try
+                {
+                    // Enable PRBS through the controller
+                    if (_prbsController != null)
+                    {
+                        _prbsController.EnablePRBS();
+                    }
+
+                    // Verify the waveform was set correctly
+                    string verifyWaveform = rigolDG2072.SendQuery($":SOUR{activeChannel}:FUNC?").Trim().ToUpper();
+                    LogMessage($"Verification - Device waveform now: {verifyWaveform}");
+                }
+                catch (Exception ex)
+                {
+                    LogMessage($"Error setting {waveform} mode: {ex.Message}");
+                    MessageBox.Show($"Error setting {waveform} mode: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
             else
             {
                 // For all other waveforms, use the standard APPLY command to ensure it's set properly
@@ -2428,6 +2472,7 @@ namespace DG2072_USB_Control
             bool isHarmonic = (waveform == "HARMONIC");
             bool isDC = (waveform == "DC");
             bool isArbitraryWaveform = (waveform == "ARBITRARY WAVEFORMS");
+            bool isPRBS = (waveform == "PRBS");
 
             // Use the pulse generator to update pulse controls
             if (pulseGenerator != null)
@@ -2609,6 +2654,29 @@ namespace DG2072_USB_Control
                 if (FindVisualParent<DockPanel>(ChannelOffsetTextBox) != null)
                     FindVisualParent<DockPanel>(ChannelOffsetTextBox).Visibility = Visibility.Collapsed;
             }
+
+            if (PRBSPanelControl != null)
+            {
+                PRBSPanelControl.Visibility = isPRBS ? Visibility.Visible : Visibility.Collapsed;
+            }
+
+            // Hide standard controls for PRBS (similar to DC handling)
+            if (isPRBS)
+            {
+                // Hide frequency/period, amplitude, phase controls as they're handled by PRBS panel
+                if (FrequencyDockPanel != null) FrequencyDockPanel.Visibility = Visibility.Collapsed;
+                if (PeriodDockPanel != null) PeriodDockPanel.Visibility = Visibility.Collapsed;
+                if (FrequencyPeriodModeToggle != null) FrequencyPeriodModeToggle.Visibility = Visibility.Collapsed;
+                if (FindVisualParent<DockPanel>(ChannelAmplitudeTextBox) != null)
+                    FindVisualParent<DockPanel>(ChannelAmplitudeTextBox).Visibility = Visibility.Collapsed;
+                if (PhaseDockPanel != null) PhaseDockPanel.Visibility = Visibility.Collapsed;
+                if (FindVisualParent<DockPanel>(ChannelOffsetTextBox) != null)
+                    FindVisualParent<DockPanel>(ChannelOffsetTextBox).Visibility = Visibility.Collapsed;
+            }
+           
+
+
+
             else
             {
                 // Show amplitude control for non-DC waveforms
@@ -3389,7 +3457,29 @@ namespace DG2072_USB_Control
 
 
         #endregion
-    
+
+
+
+        #region PRBS
+
+        private void PRBSToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_prbsController == null) return;
+
+            if (_prbsController.IsEnabled)
+            {
+                _prbsController.DisablePRBS();
+            }
+            else
+            {
+                _prbsController.EnablePRBS();
+            }
+        }
+
+        #endregion
+
+
+
     }
 }
 

@@ -69,8 +69,6 @@ namespace DG2072_USB_Control
         private DockPanel DCVoltageDockPanel;
 
         private DG2072_USB_Control.Modulation.ModulationController _modulationController;
-        
-        private DG2072_USB_Control.Advanced.PRBS.PRBSController _prbsController;
 
         private bool _isInitializing = true;
 
@@ -103,10 +101,15 @@ namespace DG2072_USB_Control
         // public GroupBox SweepPanel => SweepPanelControl?.SweepPanelGroupBox;// Add this field declaration with your other private fields:
         private DG2072_USB_Control.Burst.BurstController _burstController;
 
+
+        private DG2072_USB_Control.Advanced.PRBS.PRBSController _prbsController;
+
+
         //public groupbox RS232 panel
         private DG2072_USB_Control.Advanced.RS232.RS232Controller _rs232Controller;
 
 
+        private DG2072_USB_Control.Advanced.Sequence.SequenceController _sequenceController;
 
 
         // Constructor starts here
@@ -678,6 +681,11 @@ namespace DG2072_USB_Control
                 // In RefreshInstrumentSettings method, add:
                 if (_rs232Controller != null && isConnected)
                     _rs232Controller.RefreshRS232Settings();
+
+                // Add sequence refresh
+                if (_sequenceController != null && isConnected)
+                    _sequenceController.RefreshSequenceSettings();
+
 
                 LogMessage("Instrument settings refreshed successfully");
             }
@@ -1289,6 +1297,12 @@ namespace DG2072_USB_Control
             // Initialize the RS232Panel with the controller
             RS232PanelControl.Initialize(_rs232Controller);
 
+            // Initialize the sequence controller after UI references are set up
+            _sequenceController = new DG2072_USB_Control.Advanced.Sequence.SequenceController(rigolDG2072, activeChannel, SequencePanelControl, this);
+            _sequenceController.LogEvent += (s, message) => LogMessage(message);
+
+            // Initialize the SequencePanel with the controller
+            SequencePanelControl.Initialize(_sequenceController);
 
 
             // Don't initialize UI here - wait until after connection
@@ -1391,7 +1405,8 @@ namespace DG2072_USB_Control
                         if (_rs232Controller != null)
                             _rs232Controller.InitializeUI();
 
-
+                        if (_sequenceController != null)
+                            _sequenceController.InitializeUI();
 
                         // NOW we're ready - clear the initialization flag
                         _isInitializing = false;
@@ -2018,6 +2033,24 @@ namespace DG2072_USB_Control
                 }
             }
 
+            else if (waveform == "SEQUENCE")
+            {
+                LogMessage("Switching to Sequence waveform mode...");
+                try
+                {
+                    if (_sequenceController != null)
+                    {
+                        _sequenceController.EnableSequence();
+                    }
+                    string verifyWaveform = rigolDG2072.SendQuery($":SOUR{activeChannel}:FUNC?").Trim().ToUpper();
+                    LogMessage($"Verification - Device waveform now: {verifyWaveform}");
+                }
+                catch (Exception ex)
+                {
+                    LogMessage($"Error setting {waveform} mode: {ex.Message}");
+                    MessageBox.Show($"Error setting {waveform} mode: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
 
             else
             {
@@ -2500,7 +2533,7 @@ namespace DG2072_USB_Control
 
         #region UI Formatting and Adjustment Methods
 
-        // Update the UpdateWaveformSpecificControls method to use the pulse generator
+        // Adjusts frequency and unit display for better user experience
         private void UpdateWaveformSpecificControls(string waveformType)
         {
             // Convert to uppercase for case-insensitive comparison
@@ -2518,6 +2551,7 @@ namespace DG2072_USB_Control
             bool isArbitraryWaveform = (waveform == "ARBITRARY WAVEFORMS");
             bool isPRBS = (waveform == "PRBS");
             bool isRS232 = (waveform == "RS232");
+            bool isSequence = (waveform == "SEQUENCE");
 
             // ADD THIS: First, restore standard controls for normal waveforms
             bool isStandardWaveform = !isNoise && !isDC && !isDualTone && !isPRBS && !isRS232;
@@ -2560,13 +2594,12 @@ namespace DG2072_USB_Control
                 FindVisualParent<DockPanel>(ChannelAmplitudeTextBox).Visibility = (isDC || isPRBS) ? Visibility.Collapsed : Visibility.Visible;
             }
 
+            // Handle offset visibility
             if (FindVisualParent<DockPanel>(ChannelOffsetTextBox) != null)
             {
                 // Hide offset for DC and PRBS (they have their own controls)
                 FindVisualParent<DockPanel>(ChannelOffsetTextBox).Visibility = (isDC || isPRBS) ? Visibility.Collapsed : Visibility.Visible;
             }
-
-            // Rest of your existing code for pulse-specific controls, panels, etc...
 
             // Use the pulse generator to update pulse controls
             if (pulseGenerator != null)
@@ -2592,31 +2625,45 @@ namespace DG2072_USB_Control
                 DualToneGroupBox.Visibility = isDualTone ? Visibility.Visible : Visibility.Collapsed;
             }
 
+            // Show or hide the Harmonics group box based on the waveform type
             if (HarmonicsGroupBox != null)
             {
                 HarmonicsGroupBox.Visibility = isHarmonic ? Visibility.Visible : Visibility.Collapsed;
             }
 
+            // Show or hide the Arbitrary Waveform group box based on the waveform type
             if (ArbitraryWaveformGroupBox != null)
             {
                 ArbitraryWaveformGroupBox.Visibility = isArbitraryWaveform ? Visibility.Visible : Visibility.Collapsed;
             }
 
+            // Show or hide the DC group box based on the waveform type
             if (DCGroupBox != null)
             {
                 DCGroupBox.Visibility = isDC ? Visibility.Visible : Visibility.Collapsed;
             }
 
+            // Show or hide the PRBS panel based on the waveform type
             if (PRBSPanelControl != null)
             {
                 PRBSPanelControl.Visibility = isPRBS ? Visibility.Visible : Visibility.Collapsed;
             }
 
+            // Show or hide the RS232 panel based on the waveform type
             if (RS232PanelControl != null)
             {
                 RS232PanelControl.Visibility = isRS232 ? Visibility.Visible : Visibility.Collapsed;
             }
+
+            // Show or hide the Sequence panel based on the waveform type
+            if (SequencePanelControl != null)
+            {
+                SequencePanelControl.Visibility = isSequence ? Visibility.Visible : Visibility.Collapsed;
+            }
+
         }
+
+
 
 
         private void ChannelDutyCycleTextBox_TextChanged(object sender, TextChangedEventArgs e)

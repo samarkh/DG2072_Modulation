@@ -1,0 +1,444 @@
+﻿<UserControl x:Class="DG2072_USB_Control.Advanced.Sequence.SequencePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="650">
+
+    <!-- Sequence Function Panel -->
+    <GroupBox x:Name="SequencePanelGroupBox" 
+              Header="🔄🔄🔄 SEQUENCE FUNCTION SETTINGS 🔄🔄🔄" 
+              Background="LightSteelBlue"
+              BorderBrush="DarkSlateBlue"
+              BorderThickness="3"
+              MinHeight="450">
+        <StackPanel Background="AliceBlue">
+
+            <!-- Sample Rate -->
+            <DockPanel Margin="0,5">
+                <Label Content="Sample Rate:" Width="120" 
+                       ToolTip="Set sequence sample rate (2 kSa/s to 60 MSa/s)"/>
+                <TextBox x:Name="SampleRateTextBox" 
+                         Width="100" 
+                         Text="10000" 
+                         TextChanged="SampleRateTextBox_TextChanged"
+                         LostFocus="SampleRateTextBox_LostFocus"
+                         HorizontalContentAlignment="Right" 
+                         VerticalContentAlignment="Center"
+                         ToolTip="Enter sample rate (2000 to 60000000)"/>
+                <ComboBox x:Name="SampleRateUnitComboBox" 
+                          Width="70" 
+                          Margin="5,0,0,0"
+                          SelectionChanged="SampleRateUnitComboBox_SelectionChanged"
+                          HorizontalAlignment="Left"
+                          ToolTip="Select sample rate unit">
+                    <ComboBoxItem Content="Sa/s" ToolTip="Samples per second"/>
+                    <ComboBoxItem Content="kSa/s" IsSelected="True" ToolTip="Kilosamples per second"/>
+                    <ComboBoxItem Content="MSa/s" ToolTip="Megasamples per second"/>
+                </ComboBox>
+            </DockPanel>
+
+            <!-- Filter Type -->
+            <DockPanel Margin="0,5">
+                <Label Content="Filter Type:" Width="120" 
+                       ToolTip="Select interpolation method between sequence points"/>
+                <ComboBox x:Name="FilterTypeComboBox" 
+                          Width="150" 
+                          SelectionChanged="FilterTypeComboBox_SelectionChanged"
+                          HorizontalAlignment="Left"
+                          ToolTip="Choose how to interpolate between sample points">
+                    <ComboBoxItem Content="Smooth" Tag="SMOO" ToolTip="Linear interpolation between points"/>
+                    <ComboBoxItem Content="Step" Tag="STEP" IsSelected="True" ToolTip="Zero-order hold (step changes)"/>
+                    <ComboBoxItem Content="Insert" Tag="INSE" ToolTip="Higher-order interpolation"/>
+                </ComboBox>
+            </DockPanel>
+
+            <!-- Edge Time (for Smooth/Insert modes) -->
+            <DockPanel Margin="0,5" x:Name="EdgeTimeDockPanel">
+                <Label Content="Edge Time:" Width="120" 
+                       ToolTip="Transition time between sample points (for Smooth/Insert modes)"/>
+                <TextBox x:Name="EdgeTimeTextBox" 
+                         Width="100" 
+                         Text="1.0" 
+                         TextChanged="EdgeTimeTextBox_TextChanged"
+                         LostFocus="EdgeTimeTextBox_LostFocus"
+                         HorizontalContentAlignment="Right" 
+                         VerticalContentAlignment="Center"
+                         ToolTip="Enter edge time in microseconds"/>
+                <ComboBox x:Name="EdgeTimeUnitComboBox" 
+                          Width="70" 
+                          Margin="5,0,0,0"
+                          SelectionChanged="EdgeTimeUnitComboBox_SelectionChanged"
+                          HorizontalAlignment="Left"
+                          ToolTip="Select edge time unit">
+                    <ComboBoxItem Content="s" ToolTip="Seconds"/>
+                    <ComboBoxItem Content="ms" ToolTip="Milliseconds"/>
+                    <ComboBoxItem Content="µs" IsSelected="True" ToolTip="Microseconds"/>
+                    <ComboBoxItem Content="ns" ToolTip="Nanoseconds"/>
+                </ComboBox>
+            </DockPanel>
+
+            <Separator Margin="0,10,0,5"/>
+            <TextBlock Text="Sequence Slots (1-8)" FontWeight="Bold" Margin="0,0,0,5"/>
+
+            <!-- Sequence Slots -->
+            <StackPanel x:Name="SequenceSlotsPanel" Margin="0,5">
+                <!-- Headers -->
+                <Grid Margin="0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <!-- Slot # -->
+                        <ColumnDefinition Width="80"/>
+                        <!-- Enable -->
+                        <ColumnDefinition Width="120"/>
+                        <!-- Waveform -->
+                        <ColumnDefinition Width="100"/>
+                        <!-- Points -->
+                        <ColumnDefinition Width="*"/>
+                        <!-- Duration -->
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Slot" Grid.Column="0" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Enable" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Waveform" Grid.Column="2" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Points" Grid.Column="3" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Duration" Grid.Column="4" FontWeight="Bold" HorizontalAlignment="Center"/>
+                </Grid>
+
+                <!-- Slot 1 -->
+                <Grid Margin="0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="1" Grid.Column="0" HorizontalAlignment="Center"/>
+                    <CheckBox x:Name="Slot1EnableCheckBox" Grid.Column="1" HorizontalAlignment="Center" 
+                              VerticalAlignment="Center" IsChecked="True"
+                              Checked="SlotEnableCheckBox_Changed" Unchecked="SlotEnableCheckBox_Changed" 
+                              Tag="1" ToolTip="Enable/disable slot 1"/>
+                    <ComboBox x:Name="Slot1WaveformComboBox" Grid.Column="2" Margin="2"
+                              SelectionChanged="SlotWaveformComboBox_SelectionChanged" Tag="1"
+                              ToolTip="Select waveform for slot 1">
+                        <ComboBoxItem Content="Sine" Tag="SIN" IsSelected="True"/>
+                        <ComboBoxItem Content="Square" Tag="SQU"/>
+                        <ComboBoxItem Content="Ramp" Tag="RAMP"/>
+                        <ComboBoxItem Content="Pulse" Tag="PULS"/>
+                        <ComboBoxItem Content="Dual Tone" Tag="DUAL"/>
+                        <ComboBoxItem Content="Harmonic" Tag="HARM"/>
+                        <ComboBoxItem Content="DC" Tag="DC"/>
+                        <ComboBoxItem Content="PRBS" Tag="PRBS"/>
+                    </ComboBox>
+                    <TextBox x:Name="Slot1PointsTextBox" Grid.Column="3" Margin="2" Text="50"
+                             TextChanged="SlotPointsTextBox_TextChanged" LostFocus="SlotPointsTextBox_LostFocus"
+                             Tag="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+                             ToolTip="Number of sample points for slot 1 (1-256)"/>
+                    <TextBlock x:Name="Slot1DurationTextBlock" Grid.Column="4" Margin="2" Text="5.0 ms"
+                               VerticalAlignment="Center" Foreground="DarkBlue"
+                               ToolTip="Calculated duration for slot 1"/>
+                </Grid>
+
+                <!-- Slot 2 -->
+                <Grid Margin="0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="2" Grid.Column="0" HorizontalAlignment="Center"/>
+                    <CheckBox x:Name="Slot2EnableCheckBox" Grid.Column="1" HorizontalAlignment="Center" 
+                              VerticalAlignment="Center"
+                              Checked="SlotEnableCheckBox_Changed" Unchecked="SlotEnableCheckBox_Changed" 
+                              Tag="2" ToolTip="Enable/disable slot 2"/>
+                    <ComboBox x:Name="Slot2WaveformComboBox" Grid.Column="2" Margin="2"
+                              SelectionChanged="SlotWaveformComboBox_SelectionChanged" Tag="2"
+                              ToolTip="Select waveform for slot 2">
+                        <ComboBoxItem Content="Sine" Tag="SIN"/>
+                        <ComboBoxItem Content="Square" Tag="SQU" IsSelected="True"/>
+                        <ComboBoxItem Content="Ramp" Tag="RAMP"/>
+                        <ComboBoxItem Content="Pulse" Tag="PULS"/>
+                        <ComboBoxItem Content="Dual Tone" Tag="DUAL"/>
+                        <ComboBoxItem Content="Harmonic" Tag="HARM"/>
+                        <ComboBoxItem Content="DC" Tag="DC"/>
+                        <ComboBoxItem Content="PRBS" Tag="PRBS"/>
+                    </ComboBox>
+                    <TextBox x:Name="Slot2PointsTextBox" Grid.Column="3" Margin="2" Text="50"
+                             TextChanged="SlotPointsTextBox_TextChanged" LostFocus="SlotPointsTextBox_LostFocus"
+                             Tag="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+                             ToolTip="Number of sample points for slot 2 (1-256)"/>
+                    <TextBlock x:Name="Slot2DurationTextBlock" Grid.Column="4" Margin="2" Text="5.0 ms"
+                               VerticalAlignment="Center" Foreground="DarkBlue"
+                               ToolTip="Calculated duration for slot 2"/>
+                </Grid>
+
+                <!-- Slot 3 -->
+                <Grid Margin="0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="3" Grid.Column="0" HorizontalAlignment="Center"/>
+                    <CheckBox x:Name="Slot3EnableCheckBox" Grid.Column="1" HorizontalAlignment="Center" 
+                              VerticalAlignment="Center"
+                              Checked="SlotEnableCheckBox_Changed" Unchecked="SlotEnableCheckBox_Changed" 
+                              Tag="3" ToolTip="Enable/disable slot 3"/>
+                    <ComboBox x:Name="Slot3WaveformComboBox" Grid.Column="2" Margin="2"
+                              SelectionChanged="SlotWaveformComboBox_SelectionChanged" Tag="3"
+                              ToolTip="Select waveform for slot 3">
+                        <ComboBoxItem Content="Sine" Tag="SIN"/>
+                        <ComboBoxItem Content="Square" Tag="SQU"/>
+                        <ComboBoxItem Content="Ramp" Tag="RAMP" IsSelected="True"/>
+                        <ComboBoxItem Content="Pulse" Tag="PULS"/>
+                        <ComboBoxItem Content="Dual Tone" Tag="DUAL"/>
+                        <ComboBoxItem Content="Harmonic" Tag="HARM"/>
+                        <ComboBoxItem Content="DC" Tag="DC"/>
+                        <ComboBoxItem Content="PRBS" Tag="PRBS"/>
+                    </ComboBox>
+                    <TextBox x:Name="Slot3PointsTextBox" Grid.Column="3" Margin="2" Text="50"
+                             TextChanged="SlotPointsTextBox_TextChanged" LostFocus="SlotPointsTextBox_LostFocus"
+                             Tag="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+                             ToolTip="Number of sample points for slot 3 (1-256)"/>
+                    <TextBlock x:Name="Slot3DurationTextBlock" Grid.Column="4" Margin="2" Text="5.0 ms"
+                               VerticalAlignment="Center" Foreground="DarkBlue"
+                               ToolTip="Calculated duration for slot 3"/>
+                </Grid>
+
+                <!-- Slot 4 -->
+                <Grid Margin="0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="4" Grid.Column="0" HorizontalAlignment="Center"/>
+                    <CheckBox x:Name="Slot4EnableCheckBox" Grid.Column="1" HorizontalAlignment="Center" 
+                              VerticalAlignment="Center"
+                              Checked="SlotEnableCheckBox_Changed" Unchecked="SlotEnableCheckBox_Changed" 
+                              Tag="4" ToolTip="Enable/disable slot 4"/>
+                    <ComboBox x:Name="Slot4WaveformComboBox" Grid.Column="2" Margin="2"
+                              SelectionChanged="SlotWaveformComboBox_SelectionChanged" Tag="4"
+                              ToolTip="Select waveform for slot 4">
+                        <ComboBoxItem Content="Sine" Tag="SIN"/>
+                        <ComboBoxItem Content="Square" Tag="SQU"/>
+                        <ComboBoxItem Content="Ramp" Tag="RAMP"/>
+                        <ComboBoxItem Content="Pulse" Tag="PULS" IsSelected="True"/>
+                        <ComboBoxItem Content="Dual Tone" Tag="DUAL"/>
+                        <ComboBoxItem Content="Harmonic" Tag="HARM"/>
+                        <ComboBoxItem Content="DC" Tag="DC"/>
+                        <ComboBoxItem Content="PRBS" Tag="PRBS"/>
+                    </ComboBox>
+                    <TextBox x:Name="Slot4PointsTextBox" Grid.Column="3" Margin="2" Text="50"
+                             TextChanged="SlotPointsTextBox_TextChanged" LostFocus="SlotPointsTextBox_LostFocus"
+                             Tag="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+                             ToolTip="Number of sample points for slot 4 (1-256)"/>
+                    <TextBlock x:Name="Slot4DurationTextBlock" Grid.Column="4" Margin="2" Text="5.0 ms"
+                               VerticalAlignment="Center" Foreground="DarkBlue"
+                               ToolTip="Calculated duration for slot 4"/>
+                </Grid>
+
+                <!-- Slots 5-8 (initially collapsed, can be expanded) -->
+                <Expander x:Name="AdvancedSlotsExpander" 
+                          Header="Show Slots 5-8" Margin="0,10,0,0" IsExpanded="False">
+                    <StackPanel>
+                        <!-- Slot 5 -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="5" Grid.Column="0" HorizontalAlignment="Center"/>
+                            <CheckBox x:Name="Slot5EnableCheckBox" Grid.Column="1" HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"
+                                      Checked="SlotEnableCheckBox_Changed" Unchecked="SlotEnableCheckBox_Changed" 
+                                      Tag="5" ToolTip="Enable/disable slot 5"/>
+                            <ComboBox x:Name="Slot5WaveformComboBox" Grid.Column="2" Margin="2"
+                                      SelectionChanged="SlotWaveformComboBox_SelectionChanged" Tag="5"
+                                      ToolTip="Select waveform for slot 5">
+                                <ComboBoxItem Content="Sine" Tag="SIN" IsSelected="True"/>
+                                <ComboBoxItem Content="Square" Tag="SQU"/>
+                                <ComboBoxItem Content="Ramp" Tag="RAMP"/>
+                                <ComboBoxItem Content="Pulse" Tag="PULS"/>
+                                <ComboBoxItem Content="Dual Tone" Tag="DUAL"/>
+                                <ComboBoxItem Content="Harmonic" Tag="HARM"/>
+                                <ComboBoxItem Content="DC" Tag="DC"/>
+                                <ComboBoxItem Content="PRBS" Tag="PRBS"/>
+                            </ComboBox>
+                            <TextBox x:Name="Slot5PointsTextBox" Grid.Column="3" Margin="2" Text="50"
+                                     TextChanged="SlotPointsTextBox_TextChanged" LostFocus="SlotPointsTextBox_LostFocus"
+                                     Tag="5" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+                                     ToolTip="Number of sample points for slot 5 (1-256)"/>
+                            <TextBlock x:Name="Slot5DurationTextBlock" Grid.Column="4" Margin="2" Text="5.0 ms"
+                                       VerticalAlignment="Center" Foreground="DarkBlue"
+                                       ToolTip="Calculated duration for slot 5"/>
+                        </Grid>
+
+                        <!-- Slot 6 -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="6" Grid.Column="0" HorizontalAlignment="Center"/>
+                            <CheckBox x:Name="Slot6EnableCheckBox" Grid.Column="1" HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"
+                                      Checked="SlotEnableCheckBox_Changed" Unchecked="SlotEnableCheckBox_Changed" 
+                                      Tag="6" ToolTip="Enable/disable slot 6"/>
+                            <ComboBox x:Name="Slot6WaveformComboBox" Grid.Column="2" Margin="2"
+                                      SelectionChanged="SlotWaveformComboBox_SelectionChanged" Tag="6"
+                                      ToolTip="Select waveform for slot 6">
+                                <ComboBoxItem Content="Sine" Tag="SIN"/>
+                                <ComboBoxItem Content="Square" Tag="SQU" IsSelected="True"/>
+                                <ComboBoxItem Content="Ramp" Tag="RAMP"/>
+                                <ComboBoxItem Content="Pulse" Tag="PULS"/>
+                                <ComboBoxItem Content="Dual Tone" Tag="DUAL"/>
+                                <ComboBoxItem Content="Harmonic" Tag="HARM"/>
+                                <ComboBoxItem Content="DC" Tag="DC"/>
+                                <ComboBoxItem Content="PRBS" Tag="PRBS"/>
+                            </ComboBox>
+                            <TextBox x:Name="Slot6PointsTextBox" Grid.Column="3" Margin="2" Text="50"
+                                     TextChanged="SlotPointsTextBox_TextChanged" LostFocus="SlotPointsTextBox_LostFocus"
+                                     Tag="6" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+                                     ToolTip="Number of sample points for slot 6 (1-256)"/>
+                            <TextBlock x:Name="Slot6DurationTextBlock" Grid.Column="4" Margin="2" Text="5.0 ms"
+                                       VerticalAlignment="Center" Foreground="DarkBlue"
+                                       ToolTip="Calculated duration for slot 6"/>
+                        </Grid>
+
+                        <!-- Slot 7 -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="7" Grid.Column="0" HorizontalAlignment="Center"/>
+                            <CheckBox x:Name="Slot7EnableCheckBox" Grid.Column="1" HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"
+                                      Checked="SlotEnableCheckBox_Changed" Unchecked="SlotEnableCheckBox_Changed" 
+                                      Tag="7" ToolTip="Enable/disable slot 7"/>
+                            <ComboBox x:Name="Slot7WaveformComboBox" Grid.Column="2" Margin="2"
+                                      SelectionChanged="SlotWaveformComboBox_SelectionChanged" Tag="7"
+                                      ToolTip="Select waveform for slot 7">
+                                <ComboBoxItem Content="Sine" Tag="SIN"/>
+                                <ComboBoxItem Content="Square" Tag="SQU"/>
+                                <ComboBoxItem Content="Ramp" Tag="RAMP"/>
+                                <ComboBoxItem Content="Pulse" Tag="PULS"/>
+                                <ComboBoxItem Content="Dual Tone" Tag="DUAL"/>
+                                <ComboBoxItem Content="Harmonic" Tag="HARM"/>
+                                <ComboBoxItem Content="DC" Tag="DC" IsSelected="True"/>
+                                <ComboBoxItem Content="PRBS" Tag="PRBS"/>
+                            </ComboBox>
+                            <TextBox x:Name="Slot7PointsTextBox" Grid.Column="3" Margin="2" Text="50"
+                                     TextChanged="SlotPointsTextBox_TextChanged" LostFocus="SlotPointsTextBox_LostFocus"
+                                     Tag="7" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+                                     ToolTip="Number of sample points for slot 7 (1-256)"/>
+                            <TextBlock x:Name="Slot7DurationTextBlock" Grid.Column="4" Margin="2" Text="5.0 ms"
+                                       VerticalAlignment="Center" Foreground="DarkBlue"
+                                       ToolTip="Calculated duration for slot 7"/>
+                        </Grid>
+
+                        <!-- Slot 8 -->
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="8" Grid.Column="0" HorizontalAlignment="Center"/>
+                            <CheckBox x:Name="Slot8EnableCheckBox" Grid.Column="1" HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"
+                                      Checked="SlotEnableCheckBox_Changed" Unchecked="SlotEnableCheckBox_Changed" 
+                                      Tag="8" ToolTip="Enable/disable slot 8"/>
+                            <ComboBox x:Name="Slot8WaveformComboBox" Grid.Column="2" Margin="2"
+                                      SelectionChanged="SlotWaveformComboBox_SelectionChanged" Tag="8"
+                                      ToolTip="Select waveform for slot 8">
+                                <ComboBoxItem Content="Sine" Tag="SIN"/>
+                                <ComboBoxItem Content="Square" Tag="SQU"/>
+                                <ComboBoxItem Content="Ramp" Tag="RAMP"/>
+                                <ComboBoxItem Content="Pulse" Tag="PULS"/>
+                                <ComboBoxItem Content="Dual Tone" Tag="DUAL"/>
+                                <ComboBoxItem Content="Harmonic" Tag="HARM"/>
+                                <ComboBoxItem Content="DC" Tag="DC"/>
+                                <ComboBoxItem Content="PRBS" Tag="PRBS" IsSelected="True"/>
+                            </ComboBox>
+                            <TextBox x:Name="Slot8PointsTextBox" Grid.Column="3" Margin="2" Text="50"
+                                     TextChanged="SlotPointsTextBox_TextChanged" LostFocus="SlotPointsTextBox_LostFocus"
+                                     Tag="8" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+                                     ToolTip="Number of sample points for slot 8 (1-256)"/>
+                            <TextBlock x:Name="Slot8DurationTextBlock" Grid.Column="4" Margin="2" Text="5.0 ms"
+                                       VerticalAlignment="Center" Foreground="DarkBlue"
+                                       ToolTip="Calculated duration for slot 8"/>
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+
+            <Separator Margin="0,10,0,5"/>
+            <TextBlock Text="Sequence Information" FontWeight="Bold" Margin="0,0,0,5"/>
+
+            <!-- Total Duration Display -->
+            <DockPanel Margin="0,5">
+                <Label Content="Total Duration:" Width="120" 
+                       ToolTip="Total time for one complete sequence cycle"/>
+                <TextBlock x:Name="TotalDurationTextBlock" 
+                           Text="20.0 ms" 
+                           VerticalAlignment="Center" 
+                           Foreground="#FF505050"
+                           ToolTip="Calculated total duration for enabled slots"/>
+            </DockPanel>
+
+            <!-- Active Slots Display -->
+            <DockPanel Margin="0,5">
+                <Label Content="Active Slots:" Width="120" 
+                       ToolTip="Number of enabled sequence slots"/>
+                <TextBlock x:Name="ActiveSlotsTextBlock" 
+                           Text="4 of 8" 
+                           VerticalAlignment="Center" 
+                           Foreground="#FF505050"
+                           ToolTip="Count of enabled slots out of total slots"/>
+            </DockPanel>
+
+            <!-- Apply Button -->
+            <Separator Margin="0,10,0,5"/>
+            <Button x:Name="ApplySequenceButton" 
+                    Content="Apply Sequence Settings" 
+                    Width="150"
+                    Height="30"
+                    Click="ApplySequenceButton_Click"
+                    Background="#FFE6F0FF"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Center"
+                    Margin="0,5,0,10"
+                    ToolTip="Apply all sequence settings to the device"/>
+
+            <!-- Help text -->
+            <TextBlock TextWrapping="Wrap" 
+                       Margin="0,10,0,0" 
+                       FontStyle="Italic" 
+                       Foreground="#FF505050">
+                Sequence function steps through up to 8 different waveforms in order. Configure each slot with a waveform type 
+                and point count. The sequence will cycle through all enabled slots continuously. Use the filter type to control 
+                how transitions between slots are handled. Changes are applied when you click Apply or change parameters.
+            </TextBlock>
+        </StackPanel>
+    </GroupBox>
+</UserControl>

@@ -2723,17 +2723,29 @@ namespace DG2072_USB_Control
             // And add RS232 panel visibility:
             if (RS232PanelControl != null)
             {
-                RS232PanelControl.Visibility = isRS232 ? Visibility.Visible : Visibility.Collapsed;
+                //RS232PanelControl.Visibility = isRS232 ? Visibility.Visible : Visibility.Collapsed;
+                
+                    // Hide frequency/period controls - not relevant for RS232
+                    if (FrequencyDockPanel != null) FrequencyDockPanel.Visibility = Visibility.Collapsed;
+                    if (PeriodDockPanel != null) PeriodDockPanel.Visibility = Visibility.Collapsed;
+                    if (FrequencyPeriodModeToggle != null) FrequencyPeriodModeToggle.Visibility = Visibility.Collapsed;
+
+                    // Hide phase control - not relevant for RS232
+                    if (PhaseDockPanel != null) PhaseDockPanel.Visibility = Visibility.Collapsed;
+
+                    // Keep amplitude and offset visible as they're used for RS232 signal levels
+                    // (These will be shown by the else block at the end of the method)
+                
             }
 
 
             else
             {
                 // Show amplitude control for non-DC waveforms
+                // Show amplitude and offset controls for non-DC/non-PRBS waveforms (including RS232)
                 if (FindVisualParent<DockPanel>(ChannelAmplitudeTextBox) != null)
                     FindVisualParent<DockPanel>(ChannelAmplitudeTextBox).Visibility = Visibility.Visible;
 
-                // Show offset control for non-DC waveforms
                 if (FindVisualParent<DockPanel>(ChannelOffsetTextBox) != null)
                     FindVisualParent<DockPanel>(ChannelOffsetTextBox).Visibility = Visibility.Visible;
             }

@@ -103,7 +103,8 @@ namespace DG2072_USB_Control
         // public GroupBox SweepPanel => SweepPanelControl?.SweepPanelGroupBox;// Add this field declaration with your other private fields:
         private DG2072_USB_Control.Burst.BurstController _burstController;
 
-
+        //public groupbox RS232 panel
+        private DG2072_USB_Control.Advanced.RS232.RS232Controller _rs232Controller;
 
 
 
@@ -349,6 +350,10 @@ namespace DG2072_USB_Control
             // Update PRBS controller
             if (_prbsController != null)
                 _prbsController.ActiveChannel = channel;
+
+            // Update RS232 controller
+            if (_rs232Controller != null)
+                _rs232Controller.ActiveChannel = channel;
 
 
 
@@ -670,6 +675,9 @@ namespace DG2072_USB_Control
                 if (_prbsController != null && isConnected)
                     _prbsController.RefreshPRBSSettings();
 
+                // In RefreshInstrumentSettings method, add:
+                if (_rs232Controller != null && isConnected)
+                    _rs232Controller.RefreshRS232Settings();
 
                 LogMessage("Instrument settings refreshed successfully");
             }
@@ -1274,6 +1282,15 @@ namespace DG2072_USB_Control
             // Initialize the PRBSPanel with the controller
             PRBSPanelControl.Initialize(_prbsController);
 
+            // Initialize the RS232 controller after UI references are set up
+            _rs232Controller = new DG2072_USB_Control.Advanced.RS232.RS232Controller(rigolDG2072, activeChannel, RS232PanelControl, this);
+            _rs232Controller.LogEvent += (s, message) => LogMessage(message);
+
+            // Initialize the RS232Panel with the controller
+            RS232PanelControl.Initialize(_rs232Controller);
+
+
+
             // Don't initialize UI here - wait until after connection
             // After window initialization, use a small delay before auto-connecting
             // This gives the UI time to fully render before connecting
@@ -1368,6 +1385,12 @@ namespace DG2072_USB_Control
 
                         if (_prbsController != null)
                             _prbsController.InitializeUI();
+
+
+                        // In connection initialization, add:
+                        if (_rs232Controller != null)
+                            _rs232Controller.InitializeUI();
+
 
 
                         // NOW we're ready - clear the initialization flag
@@ -1975,6 +1998,27 @@ namespace DG2072_USB_Control
                 }
             }
 
+            // In ChannelWaveformComboBox_SelectionChanged, add RS232 case:
+            else if (waveform == "RS232")
+            {
+                LogMessage("Switching to RS232 waveform mode...");
+                try
+                {
+                    if (_rs232Controller != null)
+                    {
+                        _rs232Controller.EnableRS232();
+                    }
+                    string verifyWaveform = rigolDG2072.SendQuery($":SOUR{activeChannel}:FUNC?").Trim().ToUpper();
+                    LogMessage($"Verification - Device waveform now: {verifyWaveform}");
+                }
+                catch (Exception ex)
+                {
+                    LogMessage($"Error setting {waveform} mode: {ex.Message}");
+                    MessageBox.Show($"Error setting {waveform} mode: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+
             else
             {
                 // For all other waveforms, use the standard APPLY command to ensure it's set properly
@@ -2473,6 +2517,8 @@ namespace DG2072_USB_Control
             bool isDC = (waveform == "DC");
             bool isArbitraryWaveform = (waveform == "ARBITRARY WAVEFORMS");
             bool isPRBS = (waveform == "PRBS");
+            bool isRS232 = (waveform == "RS232");
+
 
             // Use the pulse generator to update pulse controls
             if (pulseGenerator != null)
@@ -2673,8 +2719,12 @@ namespace DG2072_USB_Control
                 if (FindVisualParent<DockPanel>(ChannelOffsetTextBox) != null)
                     FindVisualParent<DockPanel>(ChannelOffsetTextBox).Visibility = Visibility.Collapsed;
             }
-           
 
+            // And add RS232 panel visibility:
+            if (RS232PanelControl != null)
+            {
+                RS232PanelControl.Visibility = isRS232 ? Visibility.Visible : Visibility.Collapsed;
+            }
 
 
             else

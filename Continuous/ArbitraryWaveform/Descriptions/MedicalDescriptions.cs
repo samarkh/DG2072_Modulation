@@ -94,27 +94,54 @@ namespace DG2072_USB_Control.Continuous.ArbitraryWaveform.Descriptions
             {
                 case "CARDIAC":
                     return "Parameters:\n" +
-                           "This waveform uses the basic frequency parameter to control the heart rate, " +
-                           "with amplitude and offset parameters determining signal strength and baseline.";
+                           "This waveform uses the basic frequency parameter to control the heart rate, with amplitude and offset parameters determining signal strength and baseline.";
 
                 case "ECG1":
+                    return "(Lead I), Bipolar limb lead measuring potential difference between right arm (-) and left arm (+), Detects left-sided heart issues and lateral wall infarctions";
+                
                 case "ECG2":
+                    return "(Lead II), Bipolar limb lead measuring potential difference between right arm (-) and left leg (+),Best for rhythm assessment, detects inferior wall issues";
+                
                 case "ECG3":
+                    return "(Lead III), Bipolar limb lead measuring potential difference between left arm (-) and left leg (+), Detects inferior myocardial infarction";
+                
                 case "ECG4":
+                    return "(Lead aVR), Augmented unipolar lead viewing heart from right shoulder, Detects dextrocardia and specific arrhythmias";
+                
                 case "ECG5":
+                    return "(Lead aVL), Augmented unipolar lead viewing heart from left shoulder, Detects high lateral wall infarctions";
+                
                 case "ECG6":
+                    return "(Lead aVF), Augmented unipolar lead viewing heart from left foot, Important for inferior wall infarction diagnosis";
+                
                 case "ECG7":
+                    return "(Lead V1), Precordial lead at 4th intercostal space right sternal border, Detects right bundle branch block and septal infarctions";
+                
                 case "ECG8":
+                    return "(Lead V2), Precordial lead at 4th intercostal space left sternal border, Important for anterior wall assessment";
+                
                 case "ECG9":
+                    return "(Lead V3), Precordial lead placed between V2 and V4, Crucial for anterior infarction detection";
+
                 case "ECG10":
+                    return "(Lead V4), Precordial lead at 5th intercostal space midclavicular line, Key for anterior/apical infarction detection";
+
                 case "ECG11":
+                    return "(Lead V5), Precordial lead at 5th intercostal space anterior axillary line, Important for lateral wall assessment";
+
                 case "ECG12":
+                    return "(Lead V6), Precordial lead at 5th intercostal space midaxillary line, Essential for lateral wall infarction diagnosis";
+
                 case "ECG13":
+                    return "(Lead V3R), Right-sided precordial lead (mirror of V3 on right chest), Used for right ventricular infarction diagnosis";
+
                 case "ECG14":
+                    return "(Lead V4R), Right-sided precordial lead (mirror of V4 on right chest), Most sensitive for right ventricular infarction";
+
                 case "ECG15":
                     return "Parameters:\n" +
                            "This ECG pattern uses the basic frequency parameter to control the heart rate (in beats per minute). " +
-                           "Standard amplitude and offset controls adjust signal strength and baseline.";
+                           "(Lead V7), Posterior lead at posterior axillary line same level as V4-V6, Used for posterior wall infarction detection.";
 
                 // Add more parameter descriptions...
 
